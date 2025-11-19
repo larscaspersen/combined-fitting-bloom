@@ -243,36 +243,133 @@ species.
 
 This document contains supplementary materials for the journal article:
 \emph{Combining temperate fruit tree cultivar to fit spring phenology
-models}. It contains some extra tables and files that were not included
-in the main article. Also, it contains code snippets that help the
-reader to replicate parts of the analyses.
+models}. It includes additional tables and files that were not part of
+the main article, as well as the code to replicate the analyses.
 
-The phenology data that we analyse is part of a long-term phenology
-dataset (Luedeling, Caspersen, Delgado Delgado, et al., 2024) compiled
-by the \emph{Adapting Mediterranean Orchards (AdaMedOr)} project. Of the
-more than 270 cultivars comprised by the dataset, a subset of 110
-cultivars has been analyzed with the PhenoFlex framework (Luedeling et
-al., 2021), available via the R package \emph{chillR} (Luedeling,
-Caspersen, \& Fernandez, 2024). The analysis contains next to model
-calibration also climate change impact projections on future bloom dates
-(Caspersen et al., 2025).
+The phenology analyzed here are part of a long-term phenology dataset
+(Luedeling, Caspersen, Delgado Delgado, et al., 2024) compiled within
+the \emph{Adapting Mediterranean Orchards (AdaMedOr)} project. Of the
+more than 270 cultivars in the dataset, a subset of 110 cultivars has
+been analyzed by Caspersen et al. (2025) using the PhenoFlex framework
+(Luedeling et al., 2021), available via the R package \emph{chillR}
+(Luedeling, Caspersen, \& Fernandez, 2024). In addition to model
+calibration, the analysis includes climate change impact projections on
+future bloom dates.
 
-More than 50\% of the cultivars in the dataset were not analysed,
-because the bloom observations were deemed too short to be analysed with
-PhenoFlex. We propose an alternative calibration method called
-combine-fitting, that reduces the number of model parameters estimated
-per cultivar and may allow the joined analysis too short for
-conventional model calibration. We evaluate the method for three
-temperate fruit and nut trees (almond, apricot, sweet cherry) and
-compared the results with a baseline model and a common calibration
-approach where each cultivar is calibrated separately. We perform the
-analysis for the full dataset and an artificially shortened dataset.
+More than 50\% of the cultivars in the dataset were not analyzed because
+the bloom observations were considered too short for calibration with
+PhenoFlex. We propose an alternative calibration method,
+\textbf{combine- fitting}, which reduces the number parameters estimated
+per cultivar and may allow the joint analysis of cultivars of the same
+fruit tree species. We evaluate combined-fit approach for three
+temperate fruit and nut species (almond, apricot, sweet cherry) and
+compare the results with those from a baseline model and from a common
+calibration approach in which each cultivar is calibrated seperately. We
+perform the analysis for the full dataset and for an artificially
+shortened dataset.
 
 Parts of the function that we present in this document are available via
 the R packages \emph{evalpheno} (Caspersen, 2025a) and \emph{LarsChill}
 (Caspersen, 2025b). Both packages are currently available via GitHub.
 
-\section{Preparing Bloom Data}\label{preparing-bloom-data}
+\section{Supplementary Table}\label{supplementary-table}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1806}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2222}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1667}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1528}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0417}}@{}}
+\caption{Table S1. Overview on the full bloom dataset for almond,
+apricot and sweet cherry cultivars}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Species
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Location
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Country
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cultivar
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Year Start
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Year End
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Species
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Location
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Country
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cultivar
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Year Start
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Year End
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Almond & Meknes & Morocco & Ferragnes & 1977 & 2014 & 38 \\
+Almond & Meknes & Morocco & Marcona & 1977 & 2014 & 38 \\
+Almond & Meknes & Morocco & Tuono & 1974 & 2014 & 41 \\
+Almond & Santomera & Spain & Achaak & 1997 & 2019 & 13 \\
+Almond & Santomera & Spain & Desmayo & 1997 & 2022 & 21 \\
+Almond & Santomera & Spain & Marta & 2005 & 2021 & 14 \\
+Almond & Sfax & Tunisia & Fasciuneddu & 1981 & 2015 & 22 \\
+Almond & Sfax & Tunisia & Mazzetto & 1981 & 2015 & 22 \\
+Almond & Sfax & Tunisia & Nonpareil & 1981 & 2016 & 23 \\
+Apricot & Cieza & Spain & Bulida & 2003 & 2022 & 21 \\
+Apricot & Cieza & Spain & Dorada & 2003 & 2022 & 20 \\
+Apricot & Zaragoza & Spain & Goldrich & 1999 & 2021 & 21 \\
+Apricot & Zaragoza & Spain & Harcot & 1999 & 2022 & 22 \\
+Apricot & Zaragoza & Spain & Henderson & 1999 & 2021 & 21 \\
+Apricot & Zaragoza & Spain & Sunglo & 1999 & 2022 & 22 \\
+Sweet Cherry & Klein-Altendorf & Germany & Burlat & 1978 & 2015 & 29 \\
+Sweet Cherry & Klein-Altendorf & Germany & Regina & 1988 & 2020 & 32 \\
+Sweet Cherry & Klein-Altendorf & Germany & Schneiders & 1984 & 2019 &
+32 \\
+Sweet Cherry & Zaragoza & Spain & Rainier & 1991 & 2022 & 24 \\
+Sweet Cherry & Zaragoza & Spain & Sam & 1991 & 2022 & 24 \\
+Sweet Cherry & Zaragoza & Spain & Van & 1991 & 2022 & 24 \\
+\end{longtable}
+
+\textsubscript{Source:
+\href{https://larscaspersen.github.io/combined-fitting-bloom/index.qmd.html}{Article
+Notebook}}
+
+\section{Supplementary Figure}\label{supplementary-figure}
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/rmse_slim_bycultivar.jpeg}}
+
+}
+
+\caption{Figure S1. Root Mean Square Error (RMSE, days) of predicted
+bloom dates for each species (almond, apricot, sweet cherry) and
+cultivar (indicated at the x-axis). Boxplot summarizes RMSE for
+calibration and validation split and for `scarce' and `full' calibration
+sets. Calibration methods are indicated by color, green for `Baseline
+Model', yellow for `Cultivar-Fit' and blue for `Combined-Fit'.}
+
+\end{figure}%
+
+\section{Supplementary Code}\label{supplementary-code}
+
+\subsection{Data splitting}\label{data-splitting}
 
 This notebook shows the preparation of the phenology data. Performs
 calibration and validation data splits. Check out the notebook for more
@@ -281,7 +378,27 @@ details:
 \href{notebooks/01-prepare-phenology.qmd}{Split data in calibration and
 validation}
 
-\section{Model Calibration}\label{model-calibration}
+\subsection{Model Calibration}\label{model-calibration}
+
+When calibrating the model, we specified the search space for each model
+parameter. We substituted the model parameters E\textsubscript{0},
+E\textsubscript{1}, A\textsubscript{0} and A\textsubscript{1} of the
+chill submodel with intermediate parameters \(\theta^*\) , \(\theta_c\)
+, \(\pi_c\) and \(\tau\) , following Egea et al. (2021) and implemented
+for PhenoFlex by Caspersen et al. (2024). Additionally, we restricted
+parameters, so that the \texttt{E10} quotient of the process modeling
+chill formation and degradation ranges between 1.5 and 3.5, a range said
+to be realistic in biological systems (Egea et al., 2021; Luedeling et
+al., 2021). During model calibration, the optimization algorithm ran for
+5,000 iterations for baseline model; 30,000 evaluations for single-fit;
+50,000 evaluations for combined fit. We chose different total number of
+evaluations for the calibration methods, to account for varying number
+of model parameters estimated during each individual calibration step.
+The optimization algorithm estimates model parameters by minimizing the
+residual sum of squares (RSS) of predicted and observed bloom dates. In
+a pre-trial we confirmed that by the end of the total number of model
+evaluations the RSS converged, indicating that the algorithm fails to
+find parameters providing better model performance.
 
 These three notebooks perform the model calibration. The notebook for
 almond calibration has also some more comments on the different
@@ -297,7 +414,7 @@ uncommented code.
   \href{04-calibrate-cherry.qmd}{Sweet Cherry calibration}
 \end{itemize}
 
-\section{Model Evaluation}\label{model-evaluation}
+\subsection{Model Evaluation}\label{model-evaluation}
 
 This code shows how the calibrated models are evaluated. This script
 generates figures and tables for the manuscript.
@@ -322,6 +439,12 @@ Caspersen, L. (2025b). {LarsChill}: {Supplementary} functions to the
 dormancy and phenology {R}-package {chillR}. Zenodo. Retrieved from
 \url{https://zenodo.org/doi/10.5281/zenodo.15174333}
 
+\bibitem[\citeproctext]{ref-caspersen2024}
+Caspersen, L., Jarvis-Shean, Katherine., \& Luedeling, E. (2024).
+Projecting almond bloom dates in California with the PhenoFlex
+framework. \emph{Acta Horticulturae}, (1406), 455--464.
+\url{https://doi.org/10.17660/ActaHortic.2024.1406.64}
+
 \bibitem[\citeproctext]{ref-caspersen_contrasting_2025}
 Caspersen, L., Schiffers, K., Picornell, A., Egea, J. A., Delgado, A.,
 El Yaacoubi, A., et al. (2025). Contrasting {Responses} to {Climate}
@@ -329,6 +452,13 @@ El Yaacoubi, A., et al. (2025). Contrasting {Responses} to {Climate}
 {Species} in the {Mediterranean} {Region} and {Central} {Europe}.
 \emph{Agricultural and Forest Meteorology}, \emph{375}, 110859.
 https://doi.org/\url{https://doi.org/10.1016/j.agrformet.2025.110859}
+
+\bibitem[\citeproctext]{ref-egea_reducing_2021}
+Egea, J. A., Egea, J., \& Ruiz, D. (2021). Reducing the uncertainty on
+chilling requirements for endodormancy breaking of temperate fruits by
+data-based parameter estimation of the dynamic model: A test case in
+apricot. \emph{Tree Physiology}, \emph{41}(4), 644--656.
+\url{https://doi.org/10.1093/treephys/tpaa054}
 
 \bibitem[\citeproctext]{ref-luedeling_phenoflex_2021}
 Luedeling, E., Schiffers, K., Fohrmann, T., \& Urbach, C. (2021).

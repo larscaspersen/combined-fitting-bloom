@@ -104,10 +104,10 @@ USA</institution>
 <corresp id="cor-1">lcaspers@uni-bonn.de</corresp>
 </author-notes>
 
-<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-11-19">
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-11-20">
 <year>2025</year>
 <month>11</month>
-<day>19</day>
+<day>20</day>
 </pub-date>
 
 
@@ -168,36 +168,36 @@ species.</p>
   <title>1 Introduction</title>
   <p>This document contains supplementary materials for the journal
   article: <italic>Combining temperate fruit tree cultivar to fit spring
-  phenology models</italic>. It contains some extra tables and files
-  that were not included in the main article. Also, it contains code
-  snippets that help the reader to replicate parts of the analyses.</p>
-  <p>The phenology data that we analyse is part of a long-term phenology
+  phenology models</italic>. It includes additional tables and files
+  that were not part of the main article, as well as the code to
+  replicate the analyses.</p>
+  <p>The phenology analyzed here are part of a long-term phenology
   dataset
   (<xref alt="Luedeling et al. 2024" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling
-  et al. 2024</xref>) compiled by the <italic>Adapting Mediterranean
+  et al. 2024</xref>) compiled within the <italic>Adapting Mediterranean
   Orchards (AdaMedOr)</italic> project. Of the more than 270 cultivars
-  comprised by the dataset, a subset of 110 cultivars has been analyzed
-  with the PhenoFlex framework
+  in the dataset, a subset of 110 cultivars has been analyzed by
+  Caspersen et al.
+  (<xref alt="2025" rid="ref-caspersen_contrasting_2025" ref-type="bibr">2025</xref>)
+  using the PhenoFlex framework
   (<xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
   et al. 2021</xref>), available via the R package
   <italic>chillR</italic>
   (<xref alt="Luedeling, Caspersen, and Fernandez 2024" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling,
-  Caspersen, and Fernandez 2024</xref>). The analysis contains next to
-  model calibration also climate change impact projections on future
-  bloom dates
-  (<xref alt="Caspersen et al. 2025" rid="ref-caspersen_contrasting_2025" ref-type="bibr">Caspersen
-  et al. 2025</xref>).</p>
-  <p>More than 50% of the cultivars in the dataset were not analysed,
-  because the bloom observations were deemed too short to be analysed
-  with PhenoFlex. We propose an alternative calibration method called
-  combine-fitting, that reduces the number of model parameters estimated
-  per cultivar and may allow the joined analysis too short for
-  conventional model calibration. We evaluate the method for three
-  temperate fruit and nut trees (almond, apricot, sweet cherry) and
-  compared the results with a baseline model and a common calibration
-  approach where each cultivar is calibrated separately. We perform the
-  analysis for the full dataset and an artificially shortened
-  dataset.</p>
+  Caspersen, and Fernandez 2024</xref>). In addition to model
+  calibration, the analysis includes climate change impact projections
+  on future bloom dates.</p>
+  <p>More than 50% of the cultivars in the dataset were not analyzed
+  because the bloom observations were considered too short for
+  calibration with PhenoFlex. We propose an alternative calibration
+  method, <bold>combine- fitting</bold>, which reduces the number
+  parameters estimated per cultivar and may allow the joint analysis of
+  cultivars of the same fruit tree species. We evaluate combined-fit
+  approach for three temperate fruit and nut species (almond, apricot,
+  sweet cherry) and compare the results with those from a baseline model
+  and from a common calibration approach in which each cultivar is
+  calibrated seperately. We perform the analysis for the full dataset
+  and for an artificially shortened dataset.</p>
   <p>Parts of the function that we present in this document are
   available via the R packages <italic>evalpheno</italic>
   (<xref alt="Caspersen 2025a" rid="ref-caspersen_evalpheno_2025" ref-type="bibr">Caspersen
@@ -205,41 +205,318 @@ species.</p>
   (<xref alt="Caspersen 2025b" rid="ref-caspersen_larschill_2025" ref-type="bibr">Caspersen
   2025b</xref>). Both packages are currently available via GitHub.</p>
 </sec>
-<sec id="preparing-bloom-data">
-  <title>2 Preparing Bloom Data</title>
-  <p>This notebook shows the preparation of the phenology data. Performs
-  calibration and validation data splits. Check out the notebook for
-  more details:</p>
-  <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
-  data in calibration and validation</ext-link></p>
+<sec id="supplementary-table">
+  <title>2 Supplementary Table</title>
+  <table-wrap>
+    <caption>
+      <p>Table S1. Overview on the full bloom dataset for almond,
+      apricot and sweet cherry cultivars</p>
+    </caption>
+    <table>
+      <colgroup>
+        <col width="18%" />
+        <col width="22%" />
+        <col width="11%" />
+        <col width="17%" />
+        <col width="15%" />
+        <col width="12%" />
+        <col width="4%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th align="left">Species</th>
+          <th align="left">Location</th>
+          <th align="left">Country</th>
+          <th align="left">Cultivar</th>
+          <th align="right">Year Start</th>
+          <th align="right">Year End</th>
+          <th align="right">n</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Ferragnes</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Marcona</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Tuono</td>
+          <td align="right">1974</td>
+          <td align="right">2014</td>
+          <td align="right">41</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Achaak</td>
+          <td align="right">1997</td>
+          <td align="right">2019</td>
+          <td align="right">13</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Desmayo</td>
+          <td align="right">1997</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Marta</td>
+          <td align="right">2005</td>
+          <td align="right">2021</td>
+          <td align="right">14</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Fasciuneddu</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Mazzetto</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Nonpareil</td>
+          <td align="right">1981</td>
+          <td align="right">2016</td>
+          <td align="right">23</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Bulida</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Dorada</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">20</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Goldrich</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Harcot</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Henderson</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sunglo</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Burlat</td>
+          <td align="right">1978</td>
+          <td align="right">2015</td>
+          <td align="right">29</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Regina</td>
+          <td align="right">1988</td>
+          <td align="right">2020</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Schneiders</td>
+          <td align="right">1984</td>
+          <td align="right">2019</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Rainier</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sam</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Van</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+      </tbody>
+    </table>
+  </table-wrap>
 </sec>
-<sec id="model-calibration">
-  <title>3 Model Calibration</title>
-  <p>These three notebooks perform the model calibration. The notebook
-  for almond calibration has also some more comments on the different
-  procedures. The notebooks for apricot and sweet cherry only contain
-  the uncommented code.</p>
-  <list list-type="bullet">
-    <list-item>
-      <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
-      calibration</ext-link></p>
-    </list-item>
-    <list-item>
-      <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
-      calibration</ext-link></p>
-    </list-item>
-    <list-item>
-      <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
-      Cherry calibration</ext-link></p>
-    </list-item>
-  </list>
+<sec id="supplementary-figure">
+  <title>3 Supplementary Figure</title>
+  <fig>
+    <caption><p>Figure S1. Root Mean Square Error (RMSE, days) of
+    predicted bloom dates for each species (almond, apricot, sweet
+    cherry) and cultivar (indicated at the x-axis). Boxplot summarizes
+    RMSE for calibration and validation split and for ‘scarce’ and
+    ‘full’ calibration sets. Calibration methods are indicated by color,
+    green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for
+    ‘Combined-Fit’.</p></caption>
+    <graphic mimetype="image" mime-subtype="jpeg" xlink:href="images/rmse_slim_bycultivar.jpeg" />
+  </fig>
 </sec>
-<sec id="model-evaluation">
-  <title>4 Model Evaluation</title>
-  <p>This code shows how the calibrated models are evaluated. This
-  script generates figures and tables for the manuscript.</p>
-  <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
-  figures for the manuscript</ext-link></p>
+<sec id="supplementary-code">
+  <title>4 Supplementary Code</title>
+  <sec id="data-splitting">
+    <title>4.1 Data splitting</title>
+    <p>This notebook shows the preparation of the phenology data.
+    Performs calibration and validation data splits. Check out the
+    notebook for more details:</p>
+    <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
+    data in calibration and validation</ext-link></p>
+  </sec>
+  <sec id="model-calibration">
+    <title>4.2 Model Calibration</title>
+    <p>When calibrating the model, we specified the search space for
+    each model parameter. We substituted the model parameters
+    E<sub>0</sub>, E<sub>1</sub>, A<sub>0</sub> and A<sub>1</sub> of the
+    chill submodel with intermediate parameters
+    <inline-formula><alternatives>
+    <tex-math><![CDATA[\theta^*]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>θ</mml:mi><mml:mo>*</mml:mo></mml:msup></mml:math></alternatives></inline-formula>
+    , <inline-formula><alternatives>
+    <tex-math><![CDATA[\theta_c]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>θ</mml:mi><mml:mi>c</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
+    , <inline-formula><alternatives>
+    <tex-math><![CDATA[\pi_c]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>π</mml:mi><mml:mi>c</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
+    and <inline-formula><alternatives>
+    <tex-math><![CDATA[\tau]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>τ</mml:mi></mml:math></alternatives></inline-formula>
+    , following Egea, Egea, and Ruiz
+    (<xref alt="2021" rid="ref-egea_reducing_2021" ref-type="bibr">2021</xref>)
+    and implemented for PhenoFlex by Caspersen, Jarvis-Shean, and
+    Luedeling
+    (<xref alt="2024" rid="ref-caspersen2024" ref-type="bibr">2024</xref>).
+    Additionally, we restricted parameters, so that the
+    <monospace>E10</monospace> quotient of the process modeling chill
+    formation and degradation ranges between 1.5 and 3.5, a range said
+    to be realistic in biological systems
+    (<xref alt="Egea, Egea, and Ruiz 2021" rid="ref-egea_reducing_2021" ref-type="bibr">Egea,
+    Egea, and Ruiz 2021</xref>;
+    <xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
+    et al. 2021</xref>). During model calibration, the optimization
+    algorithm ran for 5,000 iterations for baseline model; 30,000
+    evaluations for single-fit; 50,000 evaluations for combined fit. We
+    chose different total number of evaluations for the calibration
+    methods, to account for varying number of model parameters estimated
+    during each individual calibration step. The optimization algorithm
+    estimates model parameters by minimizing the residual sum of squares
+    (RSS) of predicted and observed bloom dates. In a pre-trial we
+    confirmed that by the end of the total number of model evaluations
+    the RSS converged, indicating that the algorithm fails to find
+    parameters providing better model performance.</p>
+    <p>These three notebooks perform the model calibration. The notebook
+    for almond calibration has also some more comments on the different
+    procedures. The notebooks for apricot and sweet cherry only contain
+    the uncommented code.</p>
+    <list list-type="bullet">
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
+        calibration</ext-link></p>
+      </list-item>
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
+        calibration</ext-link></p>
+      </list-item>
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
+        Cherry calibration</ext-link></p>
+      </list-item>
+    </list>
+  </sec>
+  <sec id="model-evaluation">
+    <title>4.3 Model Evaluation</title>
+    <p>This code shows how the calibrated models are evaluated. This
+    script generates figures and tables for the manuscript.</p>
+    <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
+    figures for the manuscript</ext-link></p>
+  </sec>
 </sec>
 </body>
 
@@ -264,6 +541,29 @@ species.</p>
       <pub-id pub-id-type="doi">10.1016/j.agrformet.2021.108491</pub-id>
       <fpage>108491</fpage>
       <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-egea_reducing_2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Egea</surname><given-names>Jose A</given-names></name>
+        <name><surname>Egea</surname><given-names>José</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+      </person-group>
+      <article-title>Reducing the uncertainty on chilling requirements for endodormancy breaking of temperate fruits by data-based parameter estimation of the dynamic model: A test case in apricot</article-title>
+      <source>Tree Physiology</source>
+      <person-group person-group-type="editor">
+        <name><surname>Singh</surname><given-names>Anil</given-names></name>
+      </person-group>
+      <year iso-8601-date="2021">2021</year>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2021-03-16">2021</year><month>03</month><day>16</day></date-in-citation>
+      <volume>41</volume>
+      <issue>4</issue>
+      <issn>1758-4469</issn>
+      <uri>https://academic.oup.com/treephys/advance-article/doi/10.1093/treephys/tpaa054/5825604</uri>
+      <pub-id pub-id-type="doi">10.1093/treephys/tpaa054</pub-id>
+      <fpage>644</fpage>
+      <lpage>656</lpage>
     </element-citation>
   </ref>
   <ref id="ref-luedelingChillRStatisticalMethods2024">
@@ -355,9 +655,692 @@ species.</p>
       <uri>https://zenodo.org/doi/10.5281/zenodo.15174333</uri>
     </element-citation>
   </ref>
+  <ref id="ref-caspersen2024">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Jarvis-Shean</surname><given-names>Katherine.</given-names></name>
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+      </person-group>
+      <article-title>Projecting almond bloom dates in California with the PhenoFlex framework</article-title>
+      <source>Acta Horticulturae</source>
+      <year iso-8601-date="2024-10">2024</year><month>10</month>
+      <issue>1406</issue>
+      <uri>https://www.actahort.org/books/1406/1406_64.htm</uri>
+      <pub-id pub-id-type="doi">10.17660/ActaHortic.2024.1406.64</pub-id>
+      <fpage>455</fpage>
+      <lpage>464</lpage>
+    </element-citation>
+  </ref>
 </ref-list>
 </back>
 
+<sub-article article-type="notebook" id="nb-16-nb-article">
+<front-stub>
+<title-group>
+<article-title>Supplementary Materials to the Manuscript: Combining
+temperate fruit tree cultivars to fit spring phenology
+models</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">0009-0000-3057-7327</contrib-id>
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+<email>lcaspers@uni-bonn.de</email>
+<xref ref-type="aff" rid="hortibonn-nb-article">a</xref>
+<xref ref-type="corresp" rid="cor-1-nb-article">&#x002A;</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0003-2559-6579</contrib-id>
+<name>
+<surname>Schiffers</surname>
+<given-names>Katja</given-names>
+</name>
+<string-name>Katja Schiffers</string-name>
+
+<xref ref-type="aff" rid="hortibonn-nb-article">a</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0001-7097-0625</contrib-id>
+<name>
+<surname>Jarvis-Shean</surname>
+<given-names>Katherine</given-names>
+</name>
+<string-name>Katherine Jarvis-Shean</string-name>
+
+<xref ref-type="aff" rid="ucdavis-nb-article">b</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0002-7316-3631</contrib-id>
+<name>
+<surname>Luedeling</surname>
+<given-names>Eike</given-names>
+</name>
+<string-name>Eike Luedeling</string-name>
+
+<xref ref-type="aff" rid="hortibonn-nb-article">a</xref>
+</contrib>
+</contrib-group>
+<aff id="hortibonn-nb-article">
+<institution-wrap>
+<institution>Department of Horticultural Sciences, Institue of Crop
+Science and Resource Conservation (INRES), University of Bonn, Auf dem
+Hügel 6, 53121 Bonn, Germany</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="ucdavis-nb-article">
+<institution-wrap>
+<institution>University of California, Division of Agriculture and
+Natural Resources,70 Cottonwood St, Woodland, CA 95695,
+USA</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<author-notes>
+<corresp id="cor-1-nb-article">lcaspers@uni-bonn.de</corresp>
+</author-notes>
+<abstract>
+<p>Phenological datasets for temperate fruit trees are often short ,
+fragmented and geographically restricted, which hampers the development
+of cultivar-specific spring phenology models. To address this, we
+propose a novel calibration approach (“combined-fitting”), which pools
+observations from several cultivars of the same species, distinguishing
+between shared and cultivar-specific parameters. This method requires
+fewer observations per cultivar and allows jointly analyzing cultivars
+of the same species. We evaluate combined-fitting using the PhenoFlex
+framework, comparing it to a baseline model and to models that are
+fitted only with data for single cultivars (“cultivar-fit”). Our
+analysis is based on flowering data from nine almond, six apricot and
+six sweet cherry cultivars across Mediterranean (Spain, Morocco,
+Tunisia) and German climates. The combined-fit model failed to achieve
+higher prediction accuracy compared to the cultivar-fit and the baseline
+approach, as evidenced by similar root mean square errors across the
+data splits and calibration dataset sizes. When comparing the estimated
+parameters of the chill and heat accumulation submodels, we observed a
+large variation among cultivars of the same species in the cultivar-fit
+models. In contrast and by design, the combined-fit yielded only one
+parameter set for cultivars of the same species. Our findings
+demonstrate that integrating data from multiple cultivars can yield
+spring phenology models with high accuracy. Even though the combined-fit
+approach did not outperform the cultivar-fit approach, combined-fitting
+offers a practical solution for spring phenology modeling with limited
+datasets and facilitates comparison across cultivars of the same
+species.</p>
+</abstract>
+</front-stub>
+
+<body>
+<sec id="introduction-nb-article">
+  <title>1 Introduction</title>
+  <p>This document contains supplementary materials for the journal
+  article: <italic>Combining temperate fruit tree cultivar to fit spring
+  phenology models</italic>. It includes additional tables and files
+  that were not part of the main article, as well as the code to
+  replicate the analyses.</p>
+  <p>The phenology analyzed here are part of a long-term phenology
+  dataset
+  (<xref alt="Luedeling et al. 2024" rid="ref-luedeling_long-term_2024-nb-article" ref-type="bibr">Luedeling
+  et al. 2024</xref>) compiled within the <italic>Adapting Mediterranean
+  Orchards (AdaMedOr)</italic> project. Of the more than 270 cultivars
+  in the dataset, a subset of 110 cultivars has been analyzed by
+  Caspersen et al.
+  (<xref alt="2025" rid="ref-caspersen_contrasting_2025-nb-article" ref-type="bibr">2025</xref>)
+  using the PhenoFlex framework
+  (<xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
+  et al. 2021</xref>), available via the R package
+  <italic>chillR</italic>
+  (<xref alt="Luedeling, Caspersen, and Fernandez 2024" rid="ref-luedelingChillRStatisticalMethods2024-nb-article" ref-type="bibr">Luedeling,
+  Caspersen, and Fernandez 2024</xref>). In addition to model
+  calibration, the analysis includes climate change impact projections
+  on future bloom dates.</p>
+  <p>More than 50% of the cultivars in the dataset were not analyzed
+  because the bloom observations were considered too short for
+  calibration with PhenoFlex. We propose an alternative calibration
+  method, <bold>combine- fitting</bold>, which reduces the number
+  parameters estimated per cultivar and may allow the joint analysis of
+  cultivars of the same fruit tree species. We evaluate combined-fit
+  approach for three temperate fruit and nut species (almond, apricot,
+  sweet cherry) and compare the results with those from a baseline model
+  and from a common calibration approach in which each cultivar is
+  calibrated seperately. We perform the analysis for the full dataset
+  and for an artificially shortened dataset.</p>
+  <p>Parts of the function that we present in this document are
+  available via the R packages <italic>evalpheno</italic>
+  (<xref alt="Caspersen 2025a" rid="ref-caspersen_evalpheno_2025-nb-article" ref-type="bibr">Caspersen
+  2025a</xref>) and <italic>LarsChill</italic>
+  (<xref alt="Caspersen 2025b" rid="ref-caspersen_larschill_2025-nb-article" ref-type="bibr">Caspersen
+  2025b</xref>). Both packages are currently available via GitHub.</p>
+</sec>
+<sec id="supplementary-table-nb-article">
+  <title>2 Supplementary Table</title>
+  <sec specific-use="notebook-content">
+  <code language="r script">library(tidyverse)</code>
+  <boxed-text>
+    <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+  </boxed-text>
+  <code language="r script">master &lt;- read.csv('notebooks/data/master_all.csv')
+
+master %&gt;% 
+  mutate(country = case_when(
+    location == 'Meknes' ~ 'Morocco',
+    location == 'Sfax' ~ 'Tunisia',
+    location %in% c('Zaragoza', 'Cieza', 'Santomera') ~ 'Spain',
+    location == 'Klein-Altendorf' ~ 'Germany'
+  )) %&gt;% 
+  mutate(Species = species,
+         Location = location, 
+         Country = country,
+         Cultivar = cultivar) %&gt;% 
+  filter(ncal == 'full') %&gt;% 
+  group_by(Species, Location, Country, Cultivar) %&gt;% 
+  summarise(`Year Start` =   min(year),
+            `Year End` =  max(year),
+            n = n()) %&gt;% 
+  knitr::kable()</code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'Species', 'Location', 'Country'. You can
+override using the `.groups` argument.</preformat>
+  </boxed-text>
+  <table-wrap>
+    <caption>
+      <p>Table S1. Overview on the full bloom dataset for almond,
+      apricot and sweet cherry cultivars</p>
+    </caption>
+    <table>
+      <colgroup>
+        <col width="18%" />
+        <col width="22%" />
+        <col width="11%" />
+        <col width="17%" />
+        <col width="15%" />
+        <col width="12%" />
+        <col width="4%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th align="left">Species</th>
+          <th align="left">Location</th>
+          <th align="left">Country</th>
+          <th align="left">Cultivar</th>
+          <th align="right">Year Start</th>
+          <th align="right">Year End</th>
+          <th align="right">n</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Ferragnes</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Marcona</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Tuono</td>
+          <td align="right">1974</td>
+          <td align="right">2014</td>
+          <td align="right">41</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Achaak</td>
+          <td align="right">1997</td>
+          <td align="right">2019</td>
+          <td align="right">13</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Desmayo</td>
+          <td align="right">1997</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Marta</td>
+          <td align="right">2005</td>
+          <td align="right">2021</td>
+          <td align="right">14</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Fasciuneddu</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Mazzetto</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Nonpareil</td>
+          <td align="right">1981</td>
+          <td align="right">2016</td>
+          <td align="right">23</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Bulida</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Dorada</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">20</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Goldrich</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Harcot</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Henderson</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sunglo</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Burlat</td>
+          <td align="right">1978</td>
+          <td align="right">2015</td>
+          <td align="right">29</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Regina</td>
+          <td align="right">1988</td>
+          <td align="right">2020</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Schneiders</td>
+          <td align="right">1984</td>
+          <td align="right">2019</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Rainier</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sam</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Van</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+      </tbody>
+    </table>
+  </table-wrap>
+  </sec>
+</sec>
+<sec id="supplementary-figure-nb-article">
+  <title>3 Supplementary Figure</title>
+  <fig>
+    <caption><p>Figure S1. Root Mean Square Error (RMSE, days) of
+    predicted bloom dates for each species (almond, apricot, sweet
+    cherry) and cultivar (indicated at the x-axis). Boxplot summarizes
+    RMSE for calibration and validation split and for ‘scarce’ and
+    ‘full’ calibration sets. Calibration methods are indicated by color,
+    green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for
+    ‘Combined-Fit’.</p></caption>
+    <graphic mimetype="image" mime-subtype="jpeg" xlink:href="images/rmse_slim_bycultivar.jpeg" />
+  </fig>
+</sec>
+<sec id="supplementary-code-nb-article">
+  <title>4 Supplementary Code</title>
+  <sec id="data-splitting-nb-article">
+    <title>4.1 Data splitting</title>
+    <p>This notebook shows the preparation of the phenology data.
+    Performs calibration and validation data splits. Check out the
+    notebook for more details:</p>
+    <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
+    data in calibration and validation</ext-link></p>
+  </sec>
+  <sec id="model-calibration-nb-article">
+    <title>4.2 Model Calibration</title>
+    <p>When calibrating the model, we specified the search space for
+    each model parameter. We substituted the model parameters
+    E<sub>0</sub>, E<sub>1</sub>, A<sub>0</sub> and A<sub>1</sub> of the
+    chill submodel with intermediate parameters
+    <inline-formula><alternatives>
+    <tex-math><![CDATA[\theta^*]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>θ</mml:mi><mml:mo>*</mml:mo></mml:msup></mml:math></alternatives></inline-formula>
+    , <inline-formula><alternatives>
+    <tex-math><![CDATA[\theta_c]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>θ</mml:mi><mml:mi>c</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
+    , <inline-formula><alternatives>
+    <tex-math><![CDATA[\pi_c]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>π</mml:mi><mml:mi>c</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
+    and <inline-formula><alternatives>
+    <tex-math><![CDATA[\tau]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>τ</mml:mi></mml:math></alternatives></inline-formula>
+    , following Egea, Egea, and Ruiz
+    (<xref alt="2021" rid="ref-egea_reducing_2021-nb-article" ref-type="bibr">2021</xref>)
+    and implemented for PhenoFlex by Caspersen, Jarvis-Shean, and
+    Luedeling
+    (<xref alt="2024" rid="ref-caspersen2024-nb-article" ref-type="bibr">2024</xref>).
+    Additionally, we restricted parameters, so that the
+    <monospace>E10</monospace> quotient of the process modeling chill
+    formation and degradation ranges between 1.5 and 3.5, a range said
+    to be realistic in biological systems
+    (<xref alt="Egea, Egea, and Ruiz 2021" rid="ref-egea_reducing_2021-nb-article" ref-type="bibr">Egea,
+    Egea, and Ruiz 2021</xref>;
+    <xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
+    et al. 2021</xref>). During model calibration, the optimization
+    algorithm ran for 5,000 iterations for baseline model; 30,000
+    evaluations for single-fit; 50,000 evaluations for combined fit. We
+    chose different total number of evaluations for the calibration
+    methods, to account for varying number of model parameters estimated
+    during each individual calibration step. The optimization algorithm
+    estimates model parameters by minimizing the residual sum of squares
+    (RSS) of predicted and observed bloom dates. In a pre-trial we
+    confirmed that by the end of the total number of model evaluations
+    the RSS converged, indicating that the algorithm fails to find
+    parameters providing better model performance.</p>
+    <p>These three notebooks perform the model calibration. The notebook
+    for almond calibration has also some more comments on the different
+    procedures. The notebooks for apricot and sweet cherry only contain
+    the uncommented code.</p>
+    <list list-type="bullet">
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
+        calibration</ext-link></p>
+      </list-item>
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
+        calibration</ext-link></p>
+      </list-item>
+      <list-item>
+        <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
+        Cherry calibration</ext-link></p>
+      </list-item>
+    </list>
+  </sec>
+  <sec id="model-evaluation-nb-article">
+    <title>4.3 Model Evaluation</title>
+    <p>This code shows how the calibrated models are evaluated. This
+    script generates figures and tables for the manuscript.</p>
+    <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
+    figures for the manuscript</ext-link></p>
+  </sec>
+</sec>
+</body>
+
+
+
+<back>
+<ref-list>
+  <title>References</title>
+  <ref id="ref-luedeling_phenoflex_2021-nb-article">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Schiffers</surname><given-names>Katja</given-names></name>
+        <name><surname>Fohrmann</surname><given-names>Till</given-names></name>
+        <name><surname>Urbach</surname><given-names>Carsten</given-names></name>
+      </person-group>
+      <article-title>Phenoflex - an Integrated Model to Predict Spring Phenology in Temperate Fruit Trees</article-title>
+      <source>Agricultural and Forest Meteorology</source>
+      <year iso-8601-date="2021-09">2021</year><month>09</month>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2022-02-15">2022</year><month>02</month><day>15</day></date-in-citation>
+      <volume>307</volume>
+      <issn>01681923</issn>
+      <uri>https://linkinghub.elsevier.com/retrieve/pii/S016819232100174X</uri>
+      <pub-id pub-id-type="doi">10.1016/j.agrformet.2021.108491</pub-id>
+      <fpage>108491</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-egea_reducing_2021-nb-article">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Egea</surname><given-names>Jose A</given-names></name>
+        <name><surname>Egea</surname><given-names>José</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+      </person-group>
+      <article-title>Reducing the uncertainty on chilling requirements for endodormancy breaking of temperate fruits by data-based parameter estimation of the dynamic model: A test case in apricot</article-title>
+      <source>Tree Physiology</source>
+      <person-group person-group-type="editor">
+        <name><surname>Singh</surname><given-names>Anil</given-names></name>
+      </person-group>
+      <year iso-8601-date="2021">2021</year>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2021-03-16">2021</year><month>03</month><day>16</day></date-in-citation>
+      <volume>41</volume>
+      <issue>4</issue>
+      <issn>1758-4469</issn>
+      <uri>https://academic.oup.com/treephys/advance-article/doi/10.1093/treephys/tpaa054/5825604</uri>
+      <pub-id pub-id-type="doi">10.1093/treephys/tpaa054</pub-id>
+      <fpage>644</fpage>
+      <lpage>656</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-luedelingChillRStatisticalMethods2024-nb-article">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Fernandez</surname><given-names>Eduardo</given-names></name>
+      </person-group>
+      <article-title>chillR: Statistical methods for phenology analysis in temperate fruit trees</article-title>
+      <publisher-name>https://cran.r-project.org/web/packages/chillR/</publisher-name>
+      <publisher-loc>Contributed package for R</publisher-loc>
+      <year iso-8601-date="2024">2024</year>
+      <uri>https://cran.r-project.org/web/packages/chillR/index.html</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_contrasting_2025-nb-article">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Schiffers</surname><given-names>Katja</given-names></name>
+        <name><surname>Picornell</surname><given-names>Antonio</given-names></name>
+        <name><surname>Egea</surname><given-names>Jose A.</given-names></name>
+        <name><surname>Delgado</surname><given-names>Alvaro</given-names></name>
+        <name><surname>El Yaacoubi</surname><given-names>Adnane</given-names></name>
+        <name><surname>Benmoussa</surname><given-names>Haïfa</given-names></name>
+        <name><surname>Rodrigo</surname><given-names>Javier</given-names></name>
+        <name><surname>Fadón</surname><given-names>Erica</given-names></name>
+        <name><surname>Ben Mimoun</surname><given-names>Mehdi</given-names></name>
+        <name><surname>Ghrab</surname><given-names>Mohamed</given-names></name>
+        <name><surname>Kodad</surname><given-names>Ossama</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+      </person-group>
+      <article-title>Contrasting Responses to Climate Change – Predicting Bloom of Major Temperate Fruit Tree Species in the Mediterranean Region and Central Europe</article-title>
+      <source>Agricultural and Forest Meteorology</source>
+      <year iso-8601-date="2025">2025</year>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2025-03-24">2025</year><month>03</month><day>24</day></date-in-citation>
+      <volume>375</volume>
+      <uri>https://doi.org/10.1016/j.agrformet.2025.110859</uri>
+      <pub-id pub-id-type="doi">https://doi.org/10.1016/j.agrformet.2025.110859</pub-id>
+      <fpage>110859</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-luedeling_long-term_2024-nb-article">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Delgado Delgado</surname><given-names>Alvaro</given-names></name>
+        <name><surname>Egea</surname><given-names>Jose A.</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+        <name><surname>Ben Mimoun</surname><given-names>Mehdi</given-names></name>
+        <name><surname>Benmoussa</surname><given-names>Haïfa</given-names></name>
+        <name><surname>Ghrab</surname><given-names>Mohamed</given-names></name>
+        <name><surname>Kodad</surname><given-names>Ossama</given-names></name>
+        <name><surname>El Yaacoubi</surname><given-names>Adnane</given-names></name>
+        <name><surname>Fadón</surname><given-names>Erica</given-names></name>
+        <name><surname>Rodrigo</surname><given-names>Javier</given-names></name>
+      </person-group>
+      <article-title>Long-Term Phenology Observations for Temperate Fruit Trees in the Mediterranean Region (and Germany): A Dataset Compiled by the Adamedor Project</article-title>
+      <publisher-name>bonndata</publisher-name>
+      <year iso-8601-date="2024-05">2024</year><month>05</month>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2025-04-04">2025</year><month>04</month><day>04</day></date-in-citation>
+      <uri>https://bonndata.uni-bonn.de/citation?persistentId=doi:10.60507/FK2/MZIELI</uri>
+      <pub-id pub-id-type="doi">10.60507/FK2/MZIELI</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_evalpheno_2025-nb-article">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+      </person-group>
+      <article-title>Evalpheno: Wrapper functions to customize calibration of the PhenoFlex phenology model</article-title>
+      <publisher-name>Zenodo</publisher-name>
+      <year iso-8601-date="2025">2025</year>
+      <uri>https://zenodo.org/doi/10.5281/zenodo.15174551</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_larschill_2025-nb-article">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+      </person-group>
+      <article-title>LarsChill: Supplementary functions to the dormancy and phenology R-package chillR</article-title>
+      <publisher-name>Zenodo</publisher-name>
+      <year iso-8601-date="2025">2025</year>
+      <uri>https://zenodo.org/doi/10.5281/zenodo.15174333</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen2024-nb-article">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Jarvis-Shean</surname><given-names>Katherine.</given-names></name>
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+      </person-group>
+      <article-title>Projecting almond bloom dates in California with the PhenoFlex framework</article-title>
+      <source>Acta Horticulturae</source>
+      <year iso-8601-date="2024-10">2024</year><month>10</month>
+      <issue>1406</issue>
+      <uri>https://www.actahort.org/books/1406/1406_64.htm</uri>
+      <pub-id pub-id-type="doi">10.17660/ActaHortic.2024.1406.64</pub-id>
+      <fpage>455</fpage>
+      <lpage>464</lpage>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+
+
+</sub-article>
 <sub-article article-type="notebook" id="nb-2-nb-1">
 <front-stub>
 <title-group>
@@ -2171,13 +3154,11 @@ rm(zaragoza, cieza, cka, meknes, sfax, santomera, station_list, weather_list)
   </sec>
   <p>Now we can do the actual bloom prediction. I use the
   <monospace>purrr::map</monospace> function, which works similar to a
-  loop or lapply, with the extra benefit of being a bit faster and
-  having a convenient loading bar implemented. I iterate over the rows
-  in the parameter data.frame and predict bloom dates for all the
-  seasonlist. That may take a few seconds longer, but I found it more
-  convenient to weed out the preditions that we do not need when merging
-  with observed bloom instead of weeding the unneeded combinations of
-  parameter and seasonlists beforehand.</p>
+  <monospace>for</monospace> loop or <monospace>lapply</monospace>, with
+  the extra benefit of being a bit faster and having a convenient
+  loading bar implemented. I iterate over the rows in the parameter
+  data.frame and predict bloom dates for all the respective entries in
+  the <monospace>seasonlist</monospace>.</p>
   <sec specific-use="notebook-content">
   <code language="r script">
 #predict bloom dates
@@ -2890,29 +3871,238 @@ par_all %&gt;%
   <sec specific-use="notebook-content">
   <code language="r script">#table for text
 master %&gt;% 
+  mutate(country = case_when(
+    location == 'Meknes' ~ 'Morocco',
+    location == 'Sfax' ~ 'Tunisia',
+    location %in% c('Zaragoza', 'Cieza', 'Santomera') ~ 'Spain',
+    location == 'Klein-Altendorf' ~ 'Germany'
+  )) %&gt;% 
   filter(ncal == 'full') %&gt;% 
-  group_by(species, location) %&gt;% 
-  summarise(n = n(),
-            start = min(year),
-            end = max(year))
+  group_by(species, location, country, cultivar) %&gt;% 
+  summarise(`Year Start` =   min(year),
+            `Year End` =  max(year),
+            n = n()) %&gt;% 
+  knitr::kable()
   </code>
   <boxed-text>
-    <preformat>`summarise()` has grouped output by 'species'. You can override using the
-`.groups` argument.</preformat>
+    <preformat>`summarise()` has grouped output by 'species', 'location', 'country'. You can
+override using the `.groups` argument.</preformat>
   </boxed-text>
-  <boxed-text>
-    <preformat># A tibble: 7 × 5
-# Groups:   species [3]
-  species      location            n start   end
-  &lt;chr&gt;        &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1 Almond       Meknes            117  1974  2014
-2 Almond       Santomera          48  1997  2022
-3 Almond       Sfax               67  1981  2016
-4 Apricot      Cieza              41  2003  2022
-5 Apricot      Zaragoza           86  1999  2022
-6 Sweet Cherry Klein-Altendorf    93  1978  2020
-7 Sweet Cherry Zaragoza           72  1991  2022</preformat>
-  </boxed-text>
+  <table-wrap>
+    <table>
+      <colgroup>
+        <col width="18%" />
+        <col width="22%" />
+        <col width="11%" />
+        <col width="17%" />
+        <col width="15%" />
+        <col width="12%" />
+        <col width="4%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th align="left">species</th>
+          <th align="left">location</th>
+          <th align="left">country</th>
+          <th align="left">cultivar</th>
+          <th align="right">Year Start</th>
+          <th align="right">Year End</th>
+          <th align="right">n</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Ferragnes</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Marcona</td>
+          <td align="right">1977</td>
+          <td align="right">2014</td>
+          <td align="right">38</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Meknes</td>
+          <td align="left">Morocco</td>
+          <td align="left">Tuono</td>
+          <td align="right">1974</td>
+          <td align="right">2014</td>
+          <td align="right">41</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Achaak</td>
+          <td align="right">1997</td>
+          <td align="right">2019</td>
+          <td align="right">13</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Desmayo</td>
+          <td align="right">1997</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Santomera</td>
+          <td align="left">Spain</td>
+          <td align="left">Marta</td>
+          <td align="right">2005</td>
+          <td align="right">2021</td>
+          <td align="right">14</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Fasciuneddu</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Mazzetto</td>
+          <td align="right">1981</td>
+          <td align="right">2015</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Almond</td>
+          <td align="left">Sfax</td>
+          <td align="left">Tunisia</td>
+          <td align="left">Nonpareil</td>
+          <td align="right">1981</td>
+          <td align="right">2016</td>
+          <td align="right">23</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Bulida</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Cieza</td>
+          <td align="left">Spain</td>
+          <td align="left">Dorada</td>
+          <td align="right">2003</td>
+          <td align="right">2022</td>
+          <td align="right">20</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Goldrich</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Harcot</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Henderson</td>
+          <td align="right">1999</td>
+          <td align="right">2021</td>
+          <td align="right">21</td>
+        </tr>
+        <tr>
+          <td align="left">Apricot</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sunglo</td>
+          <td align="right">1999</td>
+          <td align="right">2022</td>
+          <td align="right">22</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Burlat</td>
+          <td align="right">1978</td>
+          <td align="right">2015</td>
+          <td align="right">29</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Regina</td>
+          <td align="right">1988</td>
+          <td align="right">2020</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Klein-Altendorf</td>
+          <td align="left">Germany</td>
+          <td align="left">Schneiders</td>
+          <td align="right">1984</td>
+          <td align="right">2019</td>
+          <td align="right">32</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Rainier</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Sam</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+        <tr>
+          <td align="left">Sweet Cherry</td>
+          <td align="left">Zaragoza</td>
+          <td align="left">Spain</td>
+          <td align="left">Van</td>
+          <td align="right">1991</td>
+          <td align="right">2022</td>
+          <td align="right">24</td>
+        </tr>
+      </tbody>
+    </table>
+  </table-wrap>
   </sec>
 </sec>
 </body>

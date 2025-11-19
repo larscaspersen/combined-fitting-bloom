@@ -398,7 +398,7 @@ The following object is masked from 'package:tidyr':
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>master<span class="sc">$</span>cultivar <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(master<span class="sc">$</span>cultivar <span class="sc">==</span> <span class="st">'B</span><span class="sc">\xfa</span><span class="st">lida'</span>, <span class="at">yes =</span> <span class="st">'Bulida'</span>,</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">no =</span> master<span class="sc">$</span>cultivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<p>Now we can do the actual bloom prediction. I use the <code>purrr::map</code> function, which works similar to a loop or lapply, with the extra benefit of being a bit faster and having a convenient loading bar implemented. I iterate over the rows in the parameter data.frame and predict bloom dates for all the seasonlist. That may take a few seconds longer, but I found it more convenient to weed out the preditions that we do not need when merging with observed bloom instead of weeding the unneeded combinations of parameter and seasonlists beforehand.</p>
+<p>Now we can do the actual bloom prediction. I use the <code>purrr::map</code> function, which works similar to a <code>for</code> loop or <code>lapply</code>, with the extra benefit of being a bit faster and having a convenient loading bar implemented. I iterate over the rows in the parameter data.frame and predict bloom dates for all the respective entries in the <code>seasonlist</code>.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#predict bloom dates</span></span>
@@ -1123,27 +1123,236 @@ override using the `.groups` argument.</code></pre>
 <div class="cell-container"><div class="cell-decorator"><pre>In [25]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#table for text</span></span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>master <span class="sc">%&gt;%</span> </span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ncal <span class="sc">==</span> <span class="st">'full'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, location) <span class="sc">%&gt;%</span> </span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">start =</span> <span class="fu">min</span>(year),</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">end =</span> <span class="fu">max</span>(year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">country =</span> <span class="fu">case_when</span>(</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    location <span class="sc">==</span> <span class="st">'Meknes'</span> <span class="sc">~</span> <span class="st">'Morocco'</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    location <span class="sc">==</span> <span class="st">'Sfax'</span> <span class="sc">~</span> <span class="st">'Tunisia'</span>,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    location <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Zaragoza'</span>, <span class="st">'Cieza'</span>, <span class="st">'Santomera'</span>) <span class="sc">~</span> <span class="st">'Spain'</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    location <span class="sc">==</span> <span class="st">'Klein-Altendorf'</span> <span class="sc">~</span> <span class="st">'Germany'</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ncal <span class="sc">==</span> <span class="st">'full'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, location, country, cultivar) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">Year Start</span><span class="st">`</span> <span class="ot">=</span>   <span class="fu">min</span>(year),</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Year End</span><span class="st">`</span> <span class="ot">=</span>  <span class="fu">max</span>(year),</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'species'. You can override using the
-`.groups` argument.</code></pre>
+<pre><code>`summarise()` has grouped output by 'species', 'location', 'country'. You can
+override using the `.groups` argument.</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 5
-# Groups:   species [3]
-  species      location            n start   end
-  &lt;chr&gt;        &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1 Almond       Meknes            117  1974  2014
-2 Almond       Santomera          48  1997  2022
-3 Almond       Sfax               67  1981  2016
-4 Apricot      Cieza              41  2003  2022
-5 Apricot      Zaragoza           86  1999  2022
-6 Sweet Cherry Klein-Altendorf    93  1978  2020
-7 Sweet Cherry Zaragoza           72  1991  2022</code></pre>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 22%">
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: left;">location</th>
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">cultivar</th>
+<th style="text-align: right;">Year Start</th>
+<th style="text-align: right;">Year End</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Meknes</td>
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: left;">Ferragnes</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Meknes</td>
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: left;">Marcona</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Meknes</td>
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: left;">Tuono</td>
+<td style="text-align: right;">1974</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Santomera</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Achaak</td>
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Santomera</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Desmayo</td>
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Santomera</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Marta</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Sfax</td>
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: left;">Fasciuneddu</td>
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Sfax</td>
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: left;">Mazzetto</td>
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Almond</td>
+<td style="text-align: left;">Sfax</td>
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: left;">Nonpareil</td>
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Cieza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Bulida</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Cieza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Dorada</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Goldrich</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Harcot</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Henderson</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Apricot</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Sunglo</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Klein-Altendorf</td>
+<td style="text-align: left;">Germany</td>
+<td style="text-align: left;">Burlat</td>
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Klein-Altendorf</td>
+<td style="text-align: left;">Germany</td>
+<td style="text-align: left;">Regina</td>
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Klein-Altendorf</td>
+<td style="text-align: left;">Germany</td>
+<td style="text-align: left;">Schneiders</td>
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Rainier</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Sam</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweet Cherry</td>
+<td style="text-align: left;">Zaragoza</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Van</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">24</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div></div>
 </section>
