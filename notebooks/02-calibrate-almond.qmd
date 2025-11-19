@@ -1,0 +1,449 @@
+---
+title: "Calibrate Almond"
+author: Lars Caspersen
+editor: visual
+---
+
+## Aim
+
+The code takes the different calibration and validation splits and estimates model parameters for the different calibration treatments. Output will be a csv file with the estimated parameters per cultivar and treatment.
+
+First the weather data and bloom data needs to be read and prepared. Compile seasonlists with hourly temperature data for the weather stations.
+
+```{r}
+#| eval: false
+#devtools::install_github('https://github.com/larscaspersen/eval_phenoflex')
+#devtools::install_github('https://github.com/larscaspersen/addition_chillR')
+
+library(tidyverse)
+library(LarsChill)
+library(evalpheno)
+library(chillR)
+
+#read weather data
+sfax <- read.csv('data/sfax.csv')
+meknes <- read.csv('data/meknes.csv')
+santomera <- read.csv('data/santomera.csv')
+
+#merge it to a list
+weather_list <- list('Meknes' = meknes,
+                     'Santomera' = santomera, 
+                     'Sfax' = sfax)
+
+#read the table with the coordinates of the weather stations
+station_list <- read.csv('data/weather_stations.csv', sep = ',', dec = '.')
+
+#iterate over the stations, generate season lists for each station
+#data is currently in daily time step, but phenoflex needs hourly input
+seasonlist <- purrr::map2(weather_list, names(weather_list), function(weather, stat){
+  ymin <- min(weather$Year)
+  ymax <- max(weather$Year)
+  
+  weather %>% 
+    chillR::stack_hourly_temps(latitude = station_list$lat[station_list$station == stat]) %>% 
+    purrr::pluck('hourtemps') %>% 
+    chillR::genSeasonList(years = ymin:ymax) %>% 
+    setNames(ymin:ymax) %>% 
+    return()
+}) %>% 
+  unlist(recursive = FALSE)
+
+
+almond_master <- read.csv('data/master_almond.csv')
+```
+
+There will be three calibration treatments:
+
+-   single fit: calibrate all model parameters for each cultivar seperately
+
+-   combine-fit: cultivars share the parameters for the chill and heat submodel but have cultivar-specific chill and heat requirements, as well as cultivar-specific transition parameter s1
+
+-   baseline: use default chill and heat submodels and only adjust requirement parameters and s1
+
+In addition, the model gets calibrated based on the "full" calibration dataset and based on the "scarcity" dataset
+
+## Single cultivar fit
+
+Let's start with the single-fit.
+
+```{r}
+#| eval: false
+#calibrate single fit
+#table in which the results will be saved
+fname <- "data/par_almond.csv"
+
+#define the starting point and the boundaries. We chose here estimate parameters for the cultivar "Ferragnes" from the 
+#contrasting responses paper
+
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 <- c(21.3952307,   404.5477002,   0.8639453,  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U <- c(35,  700,   1.2,  30,        287,       48,             50,       10,   10,    5.00)
+x_L <- c(5,   100,   0.1,  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L <- c(  0,   0,   0,     1.5, 1.5)
+c_U <- c(Inf, Inf, Inf,     3.5, 3.5)
+
+#chose which wrapper function will be called durin calibration
+#the wrapper function I chose assumes that Tc and theta_star are kept constant and that an intermediate conversion step is carried out to convert the parameters theta_star. theta_c, pi_c and tau to the E0, E1, A0, A1 format 
+evalfun <- evalpheno::eval_phenoflex_single_twofixed
+
+#specify the optimization problem
+problem<-list(f="evalfun",
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts<-list(maxeval = 30000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+
+Tc <- 36
+theta_star <- 279
+
+for(ncali in unique(almond_master$ncal)){
+  for(c.l in unique(almond_master$cult_loc)){
+  print(c.l)
+    for(i in 1:max(almond_master$r)){
+      print(i)
+      #cult <- unique(pred_obs$cultivar)[1]
+      #i <- 1
+      
+      sub <- almond_master %>%
+        filter(r == i, cult_loc == c.l,
+               split == 'Calibration') %>%
+        arrange(year) %>%
+        mutate(loc.year = paste(location, year, sep ='.'))
+      
+      cult <- c.l %>% strsplit('-') %>%
+        purrr::pluck(1) %>%
+        purrr::pluck(1)
+      
+      loc <- c.l %>% strsplit('-') %>%
+        purrr::pluck(1) %>%
+        purrr::pluck(2)
+      
+      if(file.exists(fname)){
+        res <- read.csv(fname)
+        
+        if(any(res$repetition == i & res$cultivar == cult & res$location == loc & res$n_cal == 'scarce')) next()
+      }
+      
+      #-----------------------------------------------#
+      #run optimizer
+      #-----------------------------------------------#
+      
+      set.seed(123456789)
+      
+      res_list <- LarsChill::custom_essr(problem = problem,
+                              opts,
+                              modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                              bloomJDays = sub$yday,
+                              SeasonList = seasonlist[sub$loc.year])
+      
+      #save outcome in a table, append the table
+      data.frame(repetition = i,
+                 cultivar = cult,
+                 location = loc,
+                 yc = res_list$xbest[1],
+                 zc = res_list$xbest[2],
+                 s1 = res_list$xbest[3],
+                 Tu =  res_list$xbest[4],
+                 theta_star =  theta_star,
+                 theta_c =  res_list$xbest[5],
+                 tau =  res_list$xbest[6],
+                 pie_c =  res_list$xbest[7],
+                 Tf =  res_list$xbest[8],
+                 Tc =  Tc,
+                 Tb =  res_list$xbest[9],
+                 slope =  res_list$xbest[10],
+                 fit = 'single',
+                 n_cal = ncali) %>%
+        write.table(file = fname,
+                    append = TRUE,
+                    row.names = FALSE,
+                    sep = ',',
+                    col.names=!file.exists(fname))
+    }
+  }
+}
+```
+
+## Combined-fit
+
+Next comes the combined fit. The structure is similar, except that you use a different evaluation function in the `problem` list. Now we use the `eval_phenoflex_combined` function provided by the `evalpheno` package. That function interacts with the optimizer and it controls how to process the parameters. The `eval_phenoflex_combined` handles the seperation of the shared parameters from the chill and heat submodel and the cultivar-specific parameters (yc, zc, s1).
+
+`eval_phenoflex_combined` expects similar input as the regular evaluation function. Try running `?evalpheno::eval_phenoflex_combined` if you need more details), The function takes the following arguments:
+
+-   `x` : vector of parameters. the order needs to be the same as in `evalpheno::eval_phenoflex_single_twofixed` (yc, zc, s1, Tu, theta_c, pie_c, tau, Tf, Tb, slope). The cultivar-specific parameters yc, zc and s1 are repeated for the number of cultivars. For example in the case of two cultivars `x` would have the following structure: `c(yc_cultivar1, yc_cultivar2, zc_cultivar1, zc_cultivar2, s1_cultivar1, s1_cultivar2, Tu, theta_c, pie_c, tau, Tf, Tb, slope)`
+
+-   `modelfn` : function that gets called by the evaluation function. This function returns the actual bloomdate. Normally we used `evalpheno::custom_PhenoFlex_GDHwrapper`
+
+-   `bloomJDays` : list of phenology observation. Order of list element should correspond to the order of the cultivars. Each element contains phenology observation in format of Julian Days.
+
+-   `SeasonList` : list of seasonlists. Each element is a seperate seasonlist for the cultivars. Order of elements of `SeasonList` should correspond to the same order of cultivars in the `bloomJDays` list. Order within each seperate seasonlist should correspond to the order of the phenology observations.
+
+-   `ncult` : number of cultivars that we calibrate. Should be consistent with the repeated parameters in `x` and with the number of list elements in `SeasonList` and `bloomJDays`
+
+-   `Tc` the function expexts that parameter Tc is kept constant. If you don't want that, you can modify the `eval_phenoflex_combined` function
+
+-   `theta_star`: the function expects that parameter theta_star is kept constant
+
+-   `return_pred`: depricated. By default the function returns the performance score to the optimizier, but it could also return the bloom days.
+
+-   `na_penalty` : value that replaces the `NA` that may be returned if a parameter set failed to return a bloom date for a specific seasonlist.
+
+```{r}
+#| eval: false
+
+n_cult <- almond_master$cultivar %>%
+  unique() %>%
+  length()
+
+#took values of ferragnes repetition 1 from adamedor as starting point
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 <- c(rep(21.3952307,n_cult),   rep(404.5477002,n_cult),   rep(0.8639453,n_cult),  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U <- c(rep(35,n_cult),   rep(700,n_cult),   rep(1.2,n_cult),  30,        287,       48,             50,       10,   10,    5.00)
+x_L <- c(rep(5,n_cult),    rep(100,n_cult),   rep(0.1,n_cult),  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L <- c(  0,   0,   0,     1.5, 1.5)
+c_U <- c(Inf, Inf, Inf,     3.5, 3.5)
+
+evalfun <- evalpheno::eval_phenoflex_combined
+
+problem<-list(f="evalfun",
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts<-list(maxeval = 50000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+
+Tc <- 36
+theta_star <- 279
+fname <- "data/par_almond.csv"
+
+
+#for(i in unique(training_df$r)){
+for(ncali in unique(almond_master$ncal)){
+  
+}
+for(i in 1:max(almond_master$r)){
+
+  print(i)
+  
+  if(file.exists(fname)){
+    res <- read.csv(fname)
+    if(any(res$repetition == i & res$n_cal == ncali)) next()
+  }
+
+  #--------------------------------#
+  #prepare bloomday and seasonlist
+  #--------------------------------#
+
+  #i <- 1
+  sub <- almond_master %>%
+    filter(r == i, ncal == ncali, split == 'Calibration') %>%
+    mutate(loc.year = paste(location, year, sep = '.'))
+
+  bloomlist_train <- purrr::map(unique(sub$cultivar), function(cult){
+    sub %>%
+      filter(cultivar == cult) %>%
+      pull(yday)
+  })
+
+  seasonlist_train <- purrr::map(unique(sub$cultivar), function(cult){
+    sub %>%
+      filter(cultivar == cult) %>%
+      pull(loc.year) %>%
+      seasonlist[.]
+  })
+  
+  locs <- purrr::map_chr(unique(sub$cultivar), function(cult){
+    sub %>%
+      filter(cultivar == cult) %>%
+      slice(1) %>% 
+      pull(location)
+  })
+
+
+
+  #-----------------------------------------------#
+  #run optimizer
+  #-----------------------------------------------#
+
+
+  set.seed(123456789)
+
+  res_list <- custom_essr(problem = problem,
+                          opts,
+                          modelfn = custom_PhenoFlex_GDHwrapper,
+                          bloomJDays = bloomlist_train,
+                          SeasonList = seasonlist_train,
+                          ncult = n_cult)
+
+  #save outcome in a table, append the table
+  data.frame(repetition = i,
+             cultivar = unique(sub$cultivar),
+             location = locs,
+             yc = res_list$xbest[1:n_cult],
+             zc = res_list$xbest[(n_cult+1):(n_cult*2)],
+             s1 = res_list$xbest[(n_cult*2+1):(n_cult*3)],
+             Tu =  res_list$xbest[n_cult*3+1],
+             theta_star =  theta_star,
+             theta_c =  res_list$xbest[n_cult*3+2],
+             tau =  res_list$xbest[n_cult*3+3],
+             pie_c =  res_list$xbest[n_cult*3+4],
+             Tf =  res_list$xbest[n_cult*3+5],
+             Tc = Tc,
+             Tb =  res_list$xbest[n_cult*3+6],
+             slope =  res_list$xbest[n_cult*3+7],
+             fit = 'combined',
+             n_cal = 'scarce') %>%
+    write.table(file = fname,
+                append = TRUE,
+                row.names = FALSE,
+                sep = ',',
+                col.names=!file.exists(fname))
+}
+```
+
+## Baseline model
+
+Lastly the baseline model will be calibrated. Here we use the default parameterization of the Dynamic Model and the Growing Degree Hours model.
+
+For that purpose we use the `evalpheno::eval_phenoflex_onlyreq` function.
+
+```{r}
+#| eval: false
+#| 
+evalfun <- evalpheno::eval_phenoflex_onlyreq
+
+for(ncali in unique(almond_master$ncal)){
+  
+for(c.l in  unique(almond_master$cult_loc)){
+  print(c.l)
+  
+  #c.l <- unique(training_df$cult_loc)[1]
+    
+    #skip the calibration if there is already an entry in the table
+    for(i in 1:max(almond_master$r)){
+      
+      #i<- 1
+      
+      sub <- almond_master %>%
+        filter(r == i, cult_loc == c.l, ncal == ncali,
+               split == 'Calibration') %>%
+        arrange(year) %>%
+        mutate(loc.year = paste(location, year, sep ='.'))
+      
+      cult <- c.l %>% strsplit('-') %>%
+        purrr::pluck(1) %>%
+        purrr::pluck(1)
+      
+      loc <- c.l %>% strsplit('-') %>%
+        purrr::pluck(1) %>%
+        purrr::pluck(2)
+      
+      if(file.exists(fname)){
+        res <- read.csv(fname)
+        
+        if(any(res$repetition == i & res$cultivar == cult & res$location == loc & res$n_cal == 'scarce')) next()
+      }
+    
+    
+    
+    #realized that the default values of PhenoFlex paper are not default values of dynamic model
+    #taken from phenoflex function
+    #mistake in the E0 parameter
+    #par_fixed <- c(25, 3372.8, 9900.3, 6319.5, 5.939917e+13, 4,36, 4, 1.6)
+    
+    #use standard parameters of dynamic model by Erez 1990 (and not default in PhenoFlex!!!)
+    #             Tu    E0      E1      A0      A1         Tf  Tc  Tb  slope
+    par_fixed <- c(25, 4153.5, 12888.8, 139500, 2.567e+18, 4,  36, 4,   1.6)
+
+    
+    #took values of ferragnes repetition 1 from adamedor as starting point
+    x_0 <- c(21.3952307, 404.5477002, 0.8639453)
+    x_U <- c(50, 700, 1.2)
+    x_L <- c(5, 100, 0.1)
+    
+    #limits for the inequality constraints
+    #         #gdh parameters   #q10 for E0 and E1
+    #default parameters of dynamic model violate the q10 assumption, so just set large tolerance range
+    c_L <- c(  0,   0,   0,     0, 0)
+    c_U <- c(Inf, Inf, Inf,     Inf, Inf)
+    
+    problem<-list(f="evalfun",
+                  x_0 = x_0,
+                  x_L = x_L,
+                  x_U = x_U,
+                  c_L = c_L,
+                  c_U = c_U)
+    
+    #change iterations
+    #you can control the maximum time of running or max number of iterations
+    #options for fitter
+    opts<-list(maxeval = 5000,
+               #maxtime = 60 * 30,
+               local_solver = 'DHC',
+               local_bestx = 1,
+               inter_save = 0,
+               plot = 1)
+    
+    set.seed(123456789)
+    
+    res_list <- LarsChill::custom_essr(problem = problem,
+                            opts,
+                            modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                            bloomJDays = sub$yday,
+                            SeasonList = seasonlist[sub$loc.year],
+                            par_fixed = par_fixed)
+    
+    #save outcome in a table, append the table
+    data.frame(repetition = i,
+               cultivar = unique(sub$cultivar),
+               location = locs,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  res_list$xbest[4],
+               theta_star =  theta_star,
+               theta_c =  res_list$xbest[5],
+               tau =  res_list$xbest[6],
+               pie_c =  res_list$xbest[7],
+               Tf =  res_list$xbest[8],
+               Tc = Tc,
+               Tb =  res_list$xbest[9],
+               slope =  res_list$xbest[10],
+               fit = 'combined',
+               n_cal = ncali) %>%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    }
+  }
+}
+```

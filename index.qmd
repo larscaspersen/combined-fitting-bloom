@@ -1,111 +1,85 @@
 ---
-title: La Palma Earthquakes
-author:
-  - name: Steve Purves
-    orcid: 0000-0002-0760-5497
-    corresponding: true
-    email: steve@curvenote.com
-    roles:
-      - Investigation
-      - Project administration
-      - Software
-      - Visualization
-    affiliations:
-      - Curvenote
-  - name: Rowan Cockett
-    orcid: 0000-0002-7859-8394
-    corresponding: false
-    roles: []
-    affiliations:
-      - Curvenote
+title: "Supplementary Materials to the Manuscript:
+Combining temperate fruit tree cultivars to fit spring phenology models"
+authors:
+    - name: Lars Caspersen
+      orcid: 0009-0000-3057-7327
+      affil-id: 1
+      affiliation:
+        - ref: hortibonn
+      email: lcaspers@uni-bonn.de
+      corresponding: true
+    - name: Katja Schiffers
+      orcid: 0000-0003-2559-6579
+      affil-id: 1
+      affiliation:
+        - ref: hortibonn
+    - name: Katherine Jarvis-Shean
+      orcid: 0000-0001-7097-0625
+      affil-id: 2
+      affiliation:
+        - ref: ucdavis
+    - name: Eike Luedeling
+      orcid: 0000-0002-7316-3631
+      affil-id: 1
+      affiliation:
+        - ref: hortibonn
+      
+affiliations:
+  - id: hortibonn
+    name: Department of Horticultural Sciences, Institue of Crop Science and Resource Conservation (INRES), University of Bonn, Auf dem Hügel 6, 53121 Bonn, Germany
+  - id: ucdavis
+    name: University of California, Division of Agriculture and Natural Resources,70 Cottonwood St, Woodland, CA 95695, USA
+    
 keywords:
-  - La Palma
-  - Earthquakes
-abstract: |
-  In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). ...
-plain-language-summary: |
-  Earthquake data for the island of La Palma from the September 2021 eruption is found ...
-key-points:
-  - A web scraping script was developed to pull data from the Instituto Geogràphico Nacional into a machine-readable form for analysis
-  - Earthquake events on La Palma are consistent with the presence of both mantle and crustal reservoirs.
+  - dormancy
+  - model calibration
+  - data-scarcity
+  - almond
+  - phenology
+  - flowering
+abstract: >
+  Phenological datasets for temperate fruit trees are often short , fragmented and geographically restricted, which hampers the development of cultivar-specific spring phenology models. To address this, we propose a novel calibration approach (“combined-fitting”), which pools observations from several cultivars of the same species, distinguishing between shared and cultivar-specific parameters. This method requires fewer observations per cultivar and allows jointly analyzing cultivars of the same species. We evaluate combined-fitting using the PhenoFlex framework, comparing it to a baseline model and to models that are fitted only with data for single cultivars (“cultivar-fit”). Our analysis is based on flowering data from nine almond, six apricot and six sweet cherry cultivars across Mediterranean (Spain, Morocco, Tunisia) and German climates. The combined-fit model failed to achieve higher prediction accuracy compared to the cultivar-fit and the baseline approach, as evidenced by similar root mean square errors across the data splits and calibration dataset sizes. When comparing the estimated parameters of the chill and heat accumulation submodels, we observed a large variation among cultivars of the same species in the cultivar-fit models. In contrast and by design, the combined-fit yielded only one parameter set for cultivars of the same species. Our findings demonstrate that integrating data from multiple cultivars can yield spring phenology models with high accuracy. Even though the combined-fit approach did not outperform the cultivar-fit approach, combined-fitting offers a practical solution for spring phenology modeling with limited datasets and facilitates comparison across cultivars of the same species.
 date: last-modified
 bibliography: references.bib
 citation:
-  container-title: Earth and Space Science
+  container-title: International Journal of Biometeorology
 number-sections: true
 ---
 
 ## Introduction
 
-```{r}
-eruptions <- c(1492, 1585, 1646, 1677, 1712, 1949, 1971, 2021)
-n_eruptions <- length(eruptions)
-```
+This document contains supplementary materials for the journal article: *Combining temperate fruit tree cultivar to fit spring phenology models*. It contains some extra tables and files that were not included in the main article. Also, it contains code snippets that help the reader to replicate parts of the analyses.
 
-```{r}
-#| label: fig-timeline
-#| fig-cap: Timeline of recent earthquakes on La Palma
-#| fig-alt: An event plot of the years of the last 8 eruptions on La Palma.
-#| fig-height: 1.5
-#| fig-width: 6
-par(mar = c(3, 1, 1, 1) + 0.1)
-plot(eruptions, rep(0, n_eruptions), 
-  pch = "|", axes = FALSE)
-axis(1)
-box()
-```
+The phenology data that we analyse is part of a long-term phenology dataset [@luedeling_long-term_2024] compiled by the *Adapting Mediterranean Orchards (AdaMedOr)* project. Of the more than 270 cultivars comprised by the dataset, a subset of 110 cultivars has been analyzed with the PhenoFlex framework [@luedeling_phenoflex_2021], available via the R package *chillR* [@luedelingChillRStatisticalMethods2024]. The analysis contains next to model calibration also climate change impact projections on future bloom dates [@caspersen_contrasting_2025].
 
-```{r}
-#| output: false
-avg_years_between_eruptions <- mean(diff(eruptions[-n_eruptions]))
-avg_years_between_eruptions
-```
+More than 50% of the cultivars in the dataset were not analysed, because the bloom observations were deemed too short to be analysed with PhenoFlex. We propose an alternative calibration method called combine-fitting, that reduces the number of model parameters estimated per cultivar and may allow the joined analysis too short for conventional model calibration. We evaluate the method for three temperate fruit and nut trees (almond, apricot, sweet cherry) and compared the results with a baseline model and a common calibration approach where each cultivar is calibrated separately. We perform the analysis for the full dataset and an artificially shortened dataset.
 
-Based on data up to and including 1971, eruptions on La Palma happen every `{r} round(avg_years_between_eruptions, 1)` years on average.
+Parts of the function that we present in this document are available via the R packages *evalpheno* [@caspersen_evalpheno_2025] and *LarsChill* [@caspersen_larschill_2025]. Both packages are currently available via GitHub.
 
-Studies of the magma systems feeding the volcano, such as @marrero2019, have proposed that there are two main magma reservoirs feeding the Cumbre Vieja volcano; one in the mantle (30-40km depth) which charges and in turn feeds a shallower crustal reservoir (10-20km depth).
+## Preparing Bloom Data
 
-Eight eruptions have been recorded since the late 1400s (@fig-timeline).
+This notebook shows the preparation of the phenology data. Performs calibration and validation data splits. Check out the notebook for more details:
 
-Data and methods are discussed in @sec-data-methods.
+[Split data in calibration and validation](notebooks/01-prepare-phenology.qmd)
 
-Let $x$ denote the number of eruptions in a year. Then, $x$ can be modeled by a Poisson distribution
+## Model Calibration
 
-$$
-p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
-$$ {#eq-poisson}
+These three notebooks perform the model calibration. The notebook for almond calibration has also some more comments on the different procedures. The notebooks for apricot and sweet cherry only contain the uncommented code.
 
-where $\lambda$ is the rate of eruptions per year. Using @eq-poisson, the probability of an eruption in the next $t$ years can be calculated.
+-   [Almond calibration](notebooks/02-calibrate-almond.qmd)
 
-| Name                 | Year   |
-| -------------------- | ------ |
-| Current              | 2021   |
-| Teneguía             | 1971   |
-| Nambroque            | 1949   |
-| El Charco            | 1712   |
-| Volcán San Antonio   | 1677   |
-| Volcán San Martin    | 1646   |
-| Tajuya near El Paso  | 1585   |
-| Montaña Quemada      | 1492   |
+-   [Apricot calibration](03-calibrate-apricot.qmd)
 
-: Recent historic eruptions on La Palma {#tbl-history}
+-   [Sweet Cherry calibration](04-calibrate-cherry.qmd)
 
-@tbl-history summarises the eruptions recorded since the colonization of the islands by Europeans in the late 1400s.
+## Model Evaluation
 
-![Map of La Palma](images/la-palma-map.png){#fig-map}
+This code shows how the calibrated models are evaluated. This script generates figures and tables for the manuscript.
 
-La Palma is one of the west most islands in the Volcanic Archipelago of the Canary Islands (@fig-map). 
-
-{{< embed notebooks/explore-earthquakes.qmd#fig-spatial-plot >}}
-
-@fig-spatial-plot shows the location of recent Earthquakes on La Palma.
-
-## Data & Methods {#sec-data-methods}
-
-## Conclusion
+[Generate figures for the manuscript](notebooks/05-make-figures.qmd)
 
 ## References {.unnumbered}
 
-:::{#refs}
-
+::: {#refs}
 :::
