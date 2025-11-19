@@ -94,7 +94,7 @@ master %>%
 
 This notebook shows the preparation of the phenology data. Performs calibration and validation data splits. Check out the notebook for more details:
 
-[Split data in calibration and validation](notebooks/01-prepare-phenology.qmd)
+[Split data in calibration and validation](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/01-prepare-phenology.html)
 
 ### Model Calibration
 
@@ -102,17 +102,17 @@ When calibrating the model, we specified the search space for each model paramet
 
 These three notebooks perform the model calibration. The notebook for almond calibration has also some more comments on the different procedures. The notebooks for apricot and sweet cherry only contain the uncommented code.
 
--   [Almond calibration](notebooks/02-calibrate-almond.qmd)
+-   [Almond calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/02-calibrate-almond.html)
 
--   [Apricot calibration](03-calibrate-apricot.qmd)
+-   [Apricot calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/03-calibrate-apricot.html)
 
--   [Sweet Cherry calibration](04-calibrate-cherry.qmd)
+-   [Sweet Cherry calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/04-calibrate-cherry.html)
 
 ### Model Evaluation
 
 This code shows how the calibrated models are evaluated. This script generates figures and tables for the manuscript.
 
-[Generate figures for the manuscript](notebooks/05-make-figures.qmd)
+[Generate figures for the manuscript](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/05-make-figures.html)
 
 ## References {.unnumbered}
 

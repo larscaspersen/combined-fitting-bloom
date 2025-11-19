@@ -447,7 +447,7 @@ species.</p>
     <p>This notebook shows the preparation of the phenology data.
     Performs calibration and validation data splits. Check out the
     notebook for more details:</p>
-    <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
+    <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/01-prepare-phenology.html">Split
     data in calibration and validation</ext-link></p>
   </sec>
   <sec id="model-calibration">
@@ -497,15 +497,15 @@ species.</p>
     the uncommented code.</p>
     <list list-type="bullet">
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/02-calibrate-almond.html">Almond
         calibration</ext-link></p>
       </list-item>
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/03-calibrate-apricot.html">Apricot
         calibration</ext-link></p>
       </list-item>
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/04-calibrate-cherry.html">Sweet
         Cherry calibration</ext-link></p>
       </list-item>
     </list>
@@ -514,7 +514,7 @@ species.</p>
     <title>4.3 Model Evaluation</title>
     <p>This code shows how the calibrated models are evaluated. This
     script generates figures and tables for the manuscript.</p>
-    <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
+    <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/05-make-figures.html">Generate
     figures for the manuscript</ext-link></p>
   </sec>
 </sec>
@@ -675,7 +675,7 @@ species.</p>
 </ref-list>
 </back>
 
-<sub-article article-type="notebook" id="nb-16-nb-article">
+<sub-article article-type="notebook" id="nb-14-nb-article">
 <front-stub>
 <title-group>
 <article-title>Supplementary Materials to the Manuscript: Combining
@@ -1109,7 +1109,7 @@ override using the `.groups` argument.</preformat>
     <p>This notebook shows the preparation of the phenology data.
     Performs calibration and validation data splits. Check out the
     notebook for more details:</p>
-    <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
+    <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/01-prepare-phenology.html">Split
     data in calibration and validation</ext-link></p>
   </sec>
   <sec id="model-calibration-nb-article">
@@ -1159,15 +1159,15 @@ override using the `.groups` argument.</preformat>
     the uncommented code.</p>
     <list list-type="bullet">
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/02-calibrate-almond.html">Almond
         calibration</ext-link></p>
       </list-item>
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/03-calibrate-apricot.html">Apricot
         calibration</ext-link></p>
       </list-item>
       <list-item>
-        <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
+        <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/04-calibrate-cherry.html">Sweet
         Cherry calibration</ext-link></p>
       </list-item>
     </list>
@@ -1176,7 +1176,7 @@ override using the `.groups` argument.</preformat>
     <title>4.3 Model Evaluation</title>
     <p>This code shows how the calibrated models are evaluated. This
     script generates figures and tables for the manuscript.</p>
-    <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
+    <p><ext-link ext-link-type="uri" xlink:href="https://larscaspersen.github.io/combined-fitting-bloom/notebooks/05-make-figures.html">Generate
     figures for the manuscript</ext-link></p>
   </sec>
 </sec>
@@ -2948,7 +2948,7 @@ for(ncali in unique(cherry_master$ncal)){
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-12-nb-5">
+<sub-article article-type="notebook" id="nb-10-nb-5">
 <front-stub>
 <title-group>
 <article-title>Evaluate parameters</article-title>
