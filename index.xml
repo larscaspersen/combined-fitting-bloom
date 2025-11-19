@@ -1,0 +1,2928 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving
+and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
+
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+
+<front>
+<journal-meta>
+<journal-id></journal-id>
+
+<journal-title-group>
+<journal-title>International Journal of Biometeorology</journal-title>
+</journal-title-group>
+<issn></issn>
+
+<publisher>
+<publisher-name></publisher-name>
+</publisher>
+</journal-meta>
+
+
+<article-meta>
+
+
+<title-group>
+<article-title>Supplementary Materials to the Manuscript: Combining
+temperate fruit tree cultivars to fit spring phenology
+models</article-title>
+</title-group>
+
+<contrib-group>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">0009-0000-3057-7327</contrib-id>
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+<email>lcaspers@uni-bonn.de</email>
+<xref ref-type="aff" rid="hortibonn">a</xref>
+<xref ref-type="corresp" rid="cor-1">&#x002A;</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0003-2559-6579</contrib-id>
+<name>
+<surname>Schiffers</surname>
+<given-names>Katja</given-names>
+</name>
+<string-name>Katja Schiffers</string-name>
+
+<xref ref-type="aff" rid="hortibonn">a</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0001-7097-0625</contrib-id>
+<name>
+<surname>Jarvis-Shean</surname>
+<given-names>Katherine</given-names>
+</name>
+<string-name>Katherine Jarvis-Shean</string-name>
+
+<xref ref-type="aff" rid="ucdavis">b</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0002-7316-3631</contrib-id>
+<name>
+<surname>Luedeling</surname>
+<given-names>Eike</given-names>
+</name>
+<string-name>Eike Luedeling</string-name>
+
+<xref ref-type="aff" rid="hortibonn">a</xref>
+</contrib>
+</contrib-group>
+<aff id="hortibonn">
+<institution-wrap>
+<institution>Department of Horticultural Sciences, Institue of Crop
+Science and Resource Conservation (INRES), University of Bonn, Auf dem
+Hügel 6, 53121 Bonn, Germany</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="ucdavis">
+<institution-wrap>
+<institution>University of California, Division of Agriculture and
+Natural Resources,70 Cottonwood St, Woodland, CA 95695,
+USA</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<author-notes>
+<corresp id="cor-1">lcaspers@uni-bonn.de</corresp>
+</author-notes>
+
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-11-19">
+<year>2025</year>
+<month>11</month>
+<day>19</day>
+</pub-date>
+
+
+
+
+
+
+
+<history></history>
+
+
+<abstract>
+<p>Phenological datasets for temperate fruit trees are often short ,
+fragmented and geographically restricted, which hampers the development
+of cultivar-specific spring phenology models. To address this, we
+propose a novel calibration approach (“combined-fitting”), which pools
+observations from several cultivars of the same species, distinguishing
+between shared and cultivar-specific parameters. This method requires
+fewer observations per cultivar and allows jointly analyzing cultivars
+of the same species. We evaluate combined-fitting using the PhenoFlex
+framework, comparing it to a baseline model and to models that are
+fitted only with data for single cultivars (“cultivar-fit”). Our
+analysis is based on flowering data from nine almond, six apricot and
+six sweet cherry cultivars across Mediterranean (Spain, Morocco,
+Tunisia) and German climates. The combined-fit model failed to achieve
+higher prediction accuracy compared to the cultivar-fit and the baseline
+approach, as evidenced by similar root mean square errors across the
+data splits and calibration dataset sizes. When comparing the estimated
+parameters of the chill and heat accumulation submodels, we observed a
+large variation among cultivars of the same species in the cultivar-fit
+models. In contrast and by design, the combined-fit yielded only one
+parameter set for cultivars of the same species. Our findings
+demonstrate that integrating data from multiple cultivars can yield
+spring phenology models with high accuracy. Even though the combined-fit
+approach did not outperform the cultivar-fit approach, combined-fitting
+offers a practical solution for spring phenology modeling with limited
+datasets and facilitates comparison across cultivars of the same
+species.</p>
+</abstract>
+<kwd-group kwd-group-type="author">
+<kwd>dormancy</kwd>
+<kwd>model calibration</kwd>
+<kwd>data-scarcity</kwd>
+<kwd>almond</kwd>
+<kwd>phenology</kwd>
+<kwd>flowering</kwd>
+</kwd-group>
+
+
+
+
+</article-meta>
+
+</front>
+
+<body>
+<sec id="introduction">
+  <title>1 Introduction</title>
+  <p>This document contains supplementary materials for the journal
+  article: <italic>Combining temperate fruit tree cultivar to fit spring
+  phenology models</italic>. It contains some extra tables and files
+  that were not included in the main article. Also, it contains code
+  snippets that help the reader to replicate parts of the analyses.</p>
+  <p>The phenology data that we analyse is part of a long-term phenology
+  dataset
+  (<xref alt="Luedeling et al. 2024" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling
+  et al. 2024</xref>) compiled by the <italic>Adapting Mediterranean
+  Orchards (AdaMedOr)</italic> project. Of the more than 270 cultivars
+  comprised by the dataset, a subset of 110 cultivars has been analyzed
+  with the PhenoFlex framework
+  (<xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
+  et al. 2021</xref>), available via the R package
+  <italic>chillR</italic>
+  (<xref alt="Luedeling, Caspersen, and Fernandez 2024" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling,
+  Caspersen, and Fernandez 2024</xref>). The analysis contains next to
+  model calibration also climate change impact projections on future
+  bloom dates
+  (<xref alt="Caspersen et al. 2025" rid="ref-caspersen_contrasting_2025" ref-type="bibr">Caspersen
+  et al. 2025</xref>).</p>
+  <p>More than 50% of the cultivars in the dataset were not analysed,
+  because the bloom observations were deemed too short to be analysed
+  with PhenoFlex. We propose an alternative calibration method called
+  combine-fitting, that reduces the number of model parameters estimated
+  per cultivar and may allow the joined analysis too short for
+  conventional model calibration. We evaluate the method for three
+  temperate fruit and nut trees (almond, apricot, sweet cherry) and
+  compared the results with a baseline model and a common calibration
+  approach where each cultivar is calibrated separately. We perform the
+  analysis for the full dataset and an artificially shortened
+  dataset.</p>
+  <p>Parts of the function that we present in this document are
+  available via the R packages <italic>evalpheno</italic>
+  (<xref alt="Caspersen 2025a" rid="ref-caspersen_evalpheno_2025" ref-type="bibr">Caspersen
+  2025a</xref>) and <italic>LarsChill</italic>
+  (<xref alt="Caspersen 2025b" rid="ref-caspersen_larschill_2025" ref-type="bibr">Caspersen
+  2025b</xref>). Both packages are currently available via GitHub.</p>
+</sec>
+<sec id="preparing-bloom-data">
+  <title>2 Preparing Bloom Data</title>
+  <p>This notebook shows the preparation of the phenology data. Performs
+  calibration and validation data splits. Check out the notebook for
+  more details:</p>
+  <p><ext-link ext-link-type="uri" xlink:href="notebooks/01-prepare-phenology.qmd">Split
+  data in calibration and validation</ext-link></p>
+</sec>
+<sec id="model-calibration">
+  <title>3 Model Calibration</title>
+  <p>These three notebooks perform the model calibration. The notebook
+  for almond calibration has also some more comments on the different
+  procedures. The notebooks for apricot and sweet cherry only contain
+  the uncommented code.</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><ext-link ext-link-type="uri" xlink:href="notebooks/02-calibrate-almond.qmd">Almond
+      calibration</ext-link></p>
+    </list-item>
+    <list-item>
+      <p><ext-link ext-link-type="uri" xlink:href="03-calibrate-apricot.qmd">Apricot
+      calibration</ext-link></p>
+    </list-item>
+    <list-item>
+      <p><ext-link ext-link-type="uri" xlink:href="04-calibrate-cherry.qmd">Sweet
+      Cherry calibration</ext-link></p>
+    </list-item>
+  </list>
+</sec>
+<sec id="model-evaluation">
+  <title>4 Model Evaluation</title>
+  <p>This code shows how the calibrated models are evaluated. This
+  script generates figures and tables for the manuscript.</p>
+  <p><ext-link ext-link-type="uri" xlink:href="notebooks/05-make-figures.qmd">Generate
+  figures for the manuscript</ext-link></p>
+</sec>
+</body>
+
+<back>
+<ref-list>
+  <title>References</title>
+  <ref id="ref-luedeling_phenoflex_2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Schiffers</surname><given-names>Katja</given-names></name>
+        <name><surname>Fohrmann</surname><given-names>Till</given-names></name>
+        <name><surname>Urbach</surname><given-names>Carsten</given-names></name>
+      </person-group>
+      <article-title>Phenoflex - an Integrated Model to Predict Spring Phenology in Temperate Fruit Trees</article-title>
+      <source>Agricultural and Forest Meteorology</source>
+      <year iso-8601-date="2021-09">2021</year><month>09</month>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2022-02-15">2022</year><month>02</month><day>15</day></date-in-citation>
+      <volume>307</volume>
+      <issn>01681923</issn>
+      <uri>https://linkinghub.elsevier.com/retrieve/pii/S016819232100174X</uri>
+      <pub-id pub-id-type="doi">10.1016/j.agrformet.2021.108491</pub-id>
+      <fpage>108491</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-luedelingChillRStatisticalMethods2024">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Fernandez</surname><given-names>Eduardo</given-names></name>
+      </person-group>
+      <article-title>chillR: Statistical methods for phenology analysis in temperate fruit trees</article-title>
+      <publisher-name>https://cran.r-project.org/web/packages/chillR/</publisher-name>
+      <publisher-loc>Contributed package for R</publisher-loc>
+      <year iso-8601-date="2024">2024</year>
+      <uri>https://cran.r-project.org/web/packages/chillR/index.html</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_contrasting_2025">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Schiffers</surname><given-names>Katja</given-names></name>
+        <name><surname>Picornell</surname><given-names>Antonio</given-names></name>
+        <name><surname>Egea</surname><given-names>Jose A.</given-names></name>
+        <name><surname>Delgado</surname><given-names>Alvaro</given-names></name>
+        <name><surname>El Yaacoubi</surname><given-names>Adnane</given-names></name>
+        <name><surname>Benmoussa</surname><given-names>Haïfa</given-names></name>
+        <name><surname>Rodrigo</surname><given-names>Javier</given-names></name>
+        <name><surname>Fadón</surname><given-names>Erica</given-names></name>
+        <name><surname>Ben Mimoun</surname><given-names>Mehdi</given-names></name>
+        <name><surname>Ghrab</surname><given-names>Mohamed</given-names></name>
+        <name><surname>Kodad</surname><given-names>Ossama</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+      </person-group>
+      <article-title>Contrasting Responses to Climate Change – Predicting Bloom of Major Temperate Fruit Tree Species in the Mediterranean Region and Central Europe</article-title>
+      <source>Agricultural and Forest Meteorology</source>
+      <year iso-8601-date="2025">2025</year>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2025-03-24">2025</year><month>03</month><day>24</day></date-in-citation>
+      <volume>375</volume>
+      <uri>https://doi.org/10.1016/j.agrformet.2025.110859</uri>
+      <pub-id pub-id-type="doi">https://doi.org/10.1016/j.agrformet.2025.110859</pub-id>
+      <fpage>110859</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-luedeling_long-term_2024">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Luedeling</surname><given-names>Eike</given-names></name>
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+        <name><surname>Delgado Delgado</surname><given-names>Alvaro</given-names></name>
+        <name><surname>Egea</surname><given-names>Jose A.</given-names></name>
+        <name><surname>Ruiz</surname><given-names>David</given-names></name>
+        <name><surname>Ben Mimoun</surname><given-names>Mehdi</given-names></name>
+        <name><surname>Benmoussa</surname><given-names>Haïfa</given-names></name>
+        <name><surname>Ghrab</surname><given-names>Mohamed</given-names></name>
+        <name><surname>Kodad</surname><given-names>Ossama</given-names></name>
+        <name><surname>El Yaacoubi</surname><given-names>Adnane</given-names></name>
+        <name><surname>Fadón</surname><given-names>Erica</given-names></name>
+        <name><surname>Rodrigo</surname><given-names>Javier</given-names></name>
+      </person-group>
+      <article-title>Long-Term Phenology Observations for Temperate Fruit Trees in the Mediterranean Region (and Germany): A Dataset Compiled by the Adamedor Project</article-title>
+      <publisher-name>bonndata</publisher-name>
+      <year iso-8601-date="2024-05">2024</year><month>05</month>
+      <date-in-citation content-type="access-date"><year iso-8601-date="2025-04-04">2025</year><month>04</month><day>04</day></date-in-citation>
+      <uri>https://bonndata.uni-bonn.de/citation?persistentId=doi:10.60507/FK2/MZIELI</uri>
+      <pub-id pub-id-type="doi">10.60507/FK2/MZIELI</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_evalpheno_2025">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+      </person-group>
+      <article-title>Evalpheno: Wrapper functions to customize calibration of the PhenoFlex phenology model</article-title>
+      <publisher-name>Zenodo</publisher-name>
+      <year iso-8601-date="2025">2025</year>
+      <uri>https://zenodo.org/doi/10.5281/zenodo.15174551</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-caspersen_larschill_2025">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Caspersen</surname><given-names>Lars</given-names></name>
+      </person-group>
+      <article-title>LarsChill: Supplementary functions to the dormancy and phenology R-package chillR</article-title>
+      <publisher-name>Zenodo</publisher-name>
+      <year iso-8601-date="2025">2025</year>
+      <uri>https://zenodo.org/doi/10.5281/zenodo.15174333</uri>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+
+<sub-article article-type="notebook" id="nb-4-nb-1">
+<front-stub>
+<title-group>
+<article-title>Prepare data splits for calibration and
+validation</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<sec id="aim-nb-1">
+  <title>Aim</title>
+  <p>This notebook creates two versions of calibration / validation
+  splits of the bloom observations: a “full” split using a common 75%
+  calibration and 25% validation and a “scarcity” split with only ten
+  observations per cultivar for calibration and the remaining data for
+  validation.</p>
+  <p>We decided to have three cultivars per location. We only included
+  phenology data from a single location even if there were observations
+  from multiple locations to balance the experiment design.</p>
+  <p>Prepare the cherry data</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">library(tidyverse)
+  </code>
+  <boxed-text>
+    <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+  </boxed-text>
+  <code language="r script">library(lubridate)
+#take three cultivars per location
+cherry &lt;- read.csv('data/combined_phenological_data_adamedor_clean.csv') %&gt;% 
+  filter(species == 'Sweet Cherry') %&gt;% 
+  select(species, cultivar, location, flowering_f50, year) %&gt;% 
+  mutate(yday = lubridate::mdy(flowering_f50) %&gt;% lubridate::yday()) %&gt;% 
+  na.omit()  
+
+
+cherry_summary &lt;- cherry %&gt;% 
+  group_by(cultivar, location) %&gt;% 
+  summarise(n = n(),
+            mean = mean(yday)) %&gt;% 
+  filter(n &gt;= 20)
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'cultivar'. You can override using the
+`.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">#also take lapins from zaragoza
+
+#need to take burlat schneiders and regina from klein-altendorf
+#rainier, sam, van from zaragoza
+
+cherry_sub &lt;- cherry %&gt;% 
+  filter(cultivar == 'Burlat' &amp; location == 'Klein-Altendorf' |
+         cultivar == 'Regina' &amp; location == 'Klein-Altendorf' |
+         cultivar == 'Schneiders' &amp; location == 'Klein-Altendorf'|
+         cultivar == 'Rainier' &amp; location == 'Zaragoza' |
+         cultivar == 'Van' &amp; location == 'Zaragoza' |
+         cultivar == 'Sam' &amp; location == 'Zaragoza')
+
+#sample for full and scarcity split
+cherry_master &lt;- data.frame()
+share_full&lt;- 0.75
+n_scarce &lt;- 10
+
+set.seed(12345667)
+for(cult in unique(cherry_sub$cultivar)){
+  sub &lt;- cherry_sub %&gt;% 
+    filter(cultivar == cult)
+  
+  i_cal_full &lt;- sample(1:nrow(sub), size = floor(share_full*nrow(sub)))
+  i_cal_scarce &lt;- sample(i_cal_full, size = 10)
+  
+  cherry_master &lt;- cherry_master %&gt;% 
+    rbind(data.frame(sub[i_cal_full,],
+             split = 'Calibration',
+             ncal = 'full')) %&gt;% 
+    rbind(data.frame(sub[i_cal_scarce,],
+             split = 'Calibration',
+             ncal = 'scarce')) %&gt;% 
+    rbind(data.frame(sub[-i_cal_full,],
+             split = 'Validation',
+             ncal = 'full')) %&gt;% 
+    rbind(data.frame(sub[-i_cal_scarce,],
+             split = 'Validation',
+             ncal = 'scarce'))
+  
+}
+
+write.csv(cherry_master, 'data/master_cherry.csv', row.names = FALSE)
+  </code>
+  </sec>
+  <p>Prepare the apricot data</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#take three cultivars per location
+apricot &lt;- read.csv('data/combined_phenological_data_adamedor_clean.csv') %&gt;% 
+  filter(species == 'Apricot') %&gt;% 
+  select(species, cultivar, location, flowering_f50, year) %&gt;% 
+  mutate(yday = lubridate::mdy(flowering_f50) %&gt;% lubridate::yday()) %&gt;% 
+  na.omit()  
+
+#sometimes R makes trouble with accents. So remove it from Bulida
+apricot$cultivar &lt;- ifelse(apricot$cultivar == &quot;B\xfalida&quot;,
+                           yes = 'Bulida',
+                           no = apricot$cultivar)
+
+
+apricot_summary &lt;- apricot %&gt;% 
+  group_by(cultivar, location) %&gt;% 
+  summarise(n = n(),
+            mean = mean(yday)) %&gt;% 
+  filter(n &gt;= 20)
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'cultivar'. You can override using the
+`.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">#select cultivars
+apricot_sub &lt;- apricot %&gt;% 
+  filter(cultivar == 'Bulida' &amp; location == 'Cieza' |
+           cultivar == 'Dorada' &amp; location == 'Cieza' |
+           cultivar == 'Goldrich' &amp; location == 'Zaragoza'|
+           cultivar == 'Henderson' &amp; location == 'Zaragoza' |
+           cultivar == 'Sunglo' &amp; location == 'Zaragoza' |
+           cultivar == 'Harcot' &amp; location == 'Zaragoza')
+
+#exclude one way too early observation of bulida
+apricot_sub &lt;- apricot_sub %&gt;% 
+  filter(yday &gt; 44)
+
+# ggplot(apricot_sub, aes(x = yday, y = cultivar)) +
+#   geom_point() +
+#   facet_grid(~location)
+
+share_full&lt;- 0.75
+n_scarce &lt;- 10
+
+apricot_master &lt;- data.frame()
+
+set.seed(12345667)
+for(cult in unique(apricot_sub$cultivar)){
+  sub &lt;- apricot_sub %&gt;% 
+    filter(cultivar == cult)
+  
+  i_cal_full &lt;- sample(1:nrow(sub), size = floor(share_full*nrow(sub)))
+  i_cal_scarce &lt;- sample(i_cal_full, size = 10)
+  
+  apricot_master &lt;- apricot_master %&gt;% 
+    rbind(data.frame(sub[i_cal_full,],
+                     split = 'Calibration',
+                     ncal = 'full')) %&gt;% 
+    rbind(data.frame(sub[i_cal_scarce,],
+                     split = 'Calibration',
+                     ncal = 'scarce')) %&gt;% 
+    rbind(data.frame(sub[-i_cal_full,],
+                     split = 'Validation',
+                     ncal = 'full')) %&gt;% 
+    rbind(data.frame(sub[-i_cal_scarce,],
+                     split = 'Validation',
+                     ncal = 'scarce'))
+  
+}
+
+write.csv(apricot_master, 'data/master_apricot.csv', row.names = FALSE)
+  </code>
+  </sec>
+  <p>Prepare the almond data. In almond data I accidentally started
+  first with the scarcity split, but in the end it has the same
+  structure. Calibration data that is part of the scarcity split is also
+  present in the calibration data of the “full split”. I decided to keep
+  this structure, so that the splits are reproducible.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">almond_adamedor &lt;- read.csv('data/combined_phenological_data_adamedor_clean.csv') %&gt;%
+  filter(species == 'Almond') %&gt;% 
+  select(species, cultivar, location, year, flowering_f50) %&gt;%
+  drop_na() %&gt;%
+  mutate(yday = lubridate::mdy(flowering_f50) %&gt;% lubridate::yday())
+
+overview &lt;- almond_adamedor %&gt;%
+  mutate(cult_loc = paste(cultivar, location, sep ='-')) %&gt;%
+  group_by(cult_loc, cultivar, location) %&gt;%
+  summarise(n = n())
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'cult_loc', 'cultivar'. You can override
+using the `.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">#keep it flexible so that I can do cross-validation if I want to
+repetitions &lt;- 1
+sample_size &lt;- 10
+training_df &lt;- data.frame()
+validation_df &lt;- data.frame()
+
+#use all cultivars of meknes, santomera and the
+#cultivars mazzetto (late flowering, good performance),
+#garghzel (early flowering, good performance) and
+#fasciuneddu (normal flowering, inconsistent performance)
+
+# overview %&gt;%
+#   filter(location %in% c('Meknes', 'Santomera')) %&gt;%
+#   filter(n &gt; 10)
+
+#achaak santomera, desmayo santomera, ferragnes meknes, ferragnes santomera, marcona meknes, marcona santomera,
+
+cult_loc_fit &lt;-c('Achaak-Santomera', 'Desmayo-Santomera', 'Marta-Santomera',
+  'Marcona-Meknes', 'Ferragnes-Meknes', 'Tuono-Meknes',
+  'Nonpareil-Sfax', 'Fasciuneddu-Sfax', 'Mazzetto-Sfax')
+
+overview_sub &lt;- overview %&gt;%
+  filter(cult_loc %in% cult_loc_fit)
+
+
+for(l in unique(overview_sub$cult_loc)){
+  #l &lt;- overview_sub$cult_loc[1]
+
+  sub &lt;- almond_adamedor %&gt;%
+    mutate(cult_loc = paste(cultivar, location, sep ='-')) %&gt;%
+    filter(cult_loc == l)
+
+  set.seed(123456789)
+  for(i in 1:repetitions){
+    sample_row &lt;-sample(1:nrow(sub), size = sample_size)
+    sub_sub &lt;- sub[sample_row,] %&gt;%
+      mutate(r  = i)
+    sub_val &lt;- sub[-sample_row,] %&gt;%
+      mutate(r  = i)
+
+    training_df &lt;- rbind(training_df, sub_sub)
+    validation_df &lt;- rbind(validation_df, sub_val)
+  }
+}
+
+#--------------------#
+#&quot;full calibration####
+#--------------------#
+share_train &lt;- 0.75
+
+train_full &lt;- data.frame()
+val_full &lt;- data.frame()
+
+#take some of the validation data and put it in calibration
+for(i in 1:repetitions){
+  for(cult in unique(training_df$cultivar)){
+    #i &lt;- 1
+   # cult &lt;- unique(training_df$cultivar)[2]
+    train_sub &lt;- training_df %&gt;% 
+      filter(r == i,
+             cultivar == cult)
+    
+    val_sub &lt;- validation_df %&gt;% 
+      filter(r == i,
+             cultivar == cult)
+    
+    n_train &lt;- floor((nrow(train_sub) + nrow(val_sub))*share_train)
+    n_val &lt;- nrow(train_sub) + nrow(val_sub) - n_train
+    
+    if(n_train &lt;= nrow(train_sub)){
+      train_full &lt;- rbind(train_full, train_sub)
+      val_full &lt;- rbind(val_full, val_sub)
+    } else {
+      
+      #sample which validation goes to training
+      set.seed(123456789)
+      i_new_train &lt;- sample(x = 1:nrow(val_sub), size = nrow(val_sub) - n_val)
+      train_sub &lt;- train_sub %&gt;% 
+        rbind(val_sub[i_new_train,])
+      train_full &lt;- rbind(train_full, train_sub)
+      val_full &lt;- rbind(val_full, val_sub[-i_new_train,])
+    }
+    
+  }
+}
+
+#bring the datasets together in one master file
+train_full$split &lt;- 'Calibration'
+training_df$split &lt;- 'Calibration'
+validation_df$split &lt;- 'Validation'
+val_full$split &lt;- 'Validation'
+
+train_full$ncal &lt;- 'full'
+training_df$ncal &lt;- 'scarce'
+validation_df$ncal &lt;- 'scarce'
+val_full$ncal &lt;- 'full'
+
+almond_master &lt;- rbind(train_full,
+                       training_df) %&gt;% 
+  rbind(validation_df) %&gt;% 
+  rbind(val_full)
+
+write.csv(almond_master, 'data/master_almond.csv', row.names = FALSE)
+  </code>
+  </sec>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+<sub-article article-type="notebook" id="nb-8-nb-2">
+<front-stub>
+<title-group>
+<article-title>Calibrate Almond</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<sec id="aim-nb-2">
+  <title>Aim</title>
+  <p>The code takes the different calibration and validation splits and
+  estimates model parameters for the different calibration treatments.
+  Output will be a csv file with the estimated parameters per cultivar
+  and treatment.</p>
+  <p>First the weather data and bloom data needs to be read and
+  prepared. Compile seasonlists with hourly temperature data for the
+  weather stations.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#devtools::install_github('https://github.com/larscaspersen/eval_phenoflex')
+#devtools::install_github('https://github.com/larscaspersen/addition_chillR')
+
+library(tidyverse)
+library(LarsChill)
+library(evalpheno)
+library(chillR)
+
+#read weather data
+sfax &lt;- read.csv('data/sfax.csv')
+meknes &lt;- read.csv('data/meknes.csv')
+santomera &lt;- read.csv('data/santomera.csv')
+
+#merge it to a list
+weather_list &lt;- list('Meknes' = meknes,
+                     'Santomera' = santomera, 
+                     'Sfax' = sfax)
+
+#read the table with the coordinates of the weather stations
+station_list &lt;- read.csv('data/weather_stations.csv', sep = ',', dec = '.')
+
+#iterate over the stations, generate season lists for each station
+#data is currently in daily time step, but phenoflex needs hourly input
+seasonlist &lt;- purrr::map2(weather_list, names(weather_list), function(weather, stat){
+  ymin &lt;- min(weather$Year)
+  ymax &lt;- max(weather$Year)
+  
+  weather %&gt;% 
+    chillR::stack_hourly_temps(latitude = station_list$lat[station_list$station == stat]) %&gt;% 
+    purrr::pluck('hourtemps') %&gt;% 
+    chillR::genSeasonList(years = ymin:ymax) %&gt;% 
+    setNames(ymin:ymax) %&gt;% 
+    return()
+}) %&gt;% 
+  unlist(recursive = FALSE)
+
+
+almond_master &lt;- read.csv('data/master_almond.csv')
+  </code>
+  </sec>
+  <p>There will be three calibration treatments:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p>single fit: calibrate all model parameters for each cultivar
+      seperately</p>
+    </list-item>
+    <list-item>
+      <p>combine-fit: cultivars share the parameters for the chill and
+      heat submodel but have cultivar-specific chill and heat
+      requirements, as well as cultivar-specific transition parameter
+      s1</p>
+    </list-item>
+    <list-item>
+      <p>baseline: use default chill and heat submodels and only adjust
+      requirement parameters and s1</p>
+    </list-item>
+  </list>
+  <p>In addition, the model gets calibrated based on the “full”
+  calibration dataset and based on the “scarcity” dataset</p>
+</sec>
+<sec id="single-cultivar-fit-nb-2">
+  <title>Single cultivar fit</title>
+  <p>Let’s start with the single-fit.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#calibrate single fit
+#table in which the results will be saved
+fname &lt;- &quot;data/par_almond.csv&quot;
+
+#define the starting point and the boundaries. We chose here estimate parameters for the cultivar &quot;Ferragnes&quot; from the 
+#contrasting responses paper
+
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 &lt;- c(21.3952307,   404.5477002,   0.8639453,  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U &lt;- c(35,  700,   1.2,  30,        287,       48,             50,       10,   10,    5.00)
+x_L &lt;- c(5,   100,   0.1,  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+
+#chose which wrapper function will be called durin calibration
+#the wrapper function I chose assumes that Tc and theta_star are kept constant and that an intermediate conversion step is carried out to convert the parameters theta_star. theta_c, pi_c and tau to the E0, E1, A0, A1 format 
+evalfun &lt;- evalpheno::eval_phenoflex_single_twofixed
+
+#specify the optimization problem
+problem&lt;-list(f=&quot;evalfun&quot;,
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts&lt;-list(maxeval = 30000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+
+Tc &lt;- 36
+theta_star &lt;- 279
+
+for(ncali in unique(almond_master$ncal)){
+  for(c.l in unique(almond_master$cult_loc)){
+  print(c.l)
+    for(i in 1:max(almond_master$r)){
+      print(i)
+      #cult &lt;- unique(pred_obs$cultivar)[1]
+      #i &lt;- 1
+      
+      sub &lt;- almond_master %&gt;%
+        filter(r == i, cult_loc == c.l,
+               split == 'Calibration') %&gt;%
+        arrange(year) %&gt;%
+        mutate(loc.year = paste(location, year, sep ='.'))
+      
+      cult &lt;- c.l %&gt;% strsplit('-') %&gt;%
+        purrr::pluck(1) %&gt;%
+        purrr::pluck(1)
+      
+      loc &lt;- c.l %&gt;% strsplit('-') %&gt;%
+        purrr::pluck(1) %&gt;%
+        purrr::pluck(2)
+      
+      if(file.exists(fname)){
+        res &lt;- read.csv(fname)
+        
+        if(any(res$repetition == i &amp; res$cultivar == cult &amp; res$location == loc &amp; res$n_cal == 'scarce')) next()
+      }
+      
+      #-----------------------------------------------#
+      #run optimizer
+      #-----------------------------------------------#
+      
+      set.seed(123456789)
+      
+      res_list &lt;- LarsChill::custom_essr(problem = problem,
+                              opts,
+                              modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                              bloomJDays = sub$yday,
+                              SeasonList = seasonlist[sub$loc.year])
+      
+      #save outcome in a table, append the table
+      data.frame(repetition = i,
+                 cultivar = cult,
+                 location = loc,
+                 yc = res_list$xbest[1],
+                 zc = res_list$xbest[2],
+                 s1 = res_list$xbest[3],
+                 Tu =  res_list$xbest[4],
+                 theta_star =  theta_star,
+                 theta_c =  res_list$xbest[5],
+                 tau =  res_list$xbest[6],
+                 pie_c =  res_list$xbest[7],
+                 Tf =  res_list$xbest[8],
+                 Tc =  Tc,
+                 Tb =  res_list$xbest[9],
+                 slope =  res_list$xbest[10],
+                 fit = 'single',
+                 n_cal = ncali) %&gt;%
+        write.table(file = fname,
+                    append = TRUE,
+                    row.names = FALSE,
+                    sep = ',',
+                    col.names=!file.exists(fname))
+    }
+  }
+}
+  </code>
+  </sec>
+</sec>
+<sec id="combined-fit-nb-2">
+  <title>Combined-fit</title>
+  <p>Next comes the combined fit. The structure is similar, except that
+  you use a different evaluation function in the
+  <monospace>problem</monospace> list. Now we use the
+  <monospace>eval_phenoflex_combined</monospace> function provided by
+  the <monospace>evalpheno</monospace> package. That function interacts
+  with the optimizer and it controls how to process the parameters. The
+  <monospace>eval_phenoflex_combined</monospace> handles the seperation
+  of the shared parameters from the chill and heat submodel and the
+  cultivar-specific parameters (yc, zc, s1).</p>
+  <p><monospace>eval_phenoflex_combined</monospace> expects similar
+  input as the regular evaluation function. Try running
+  <monospace>?evalpheno::eval_phenoflex_combined</monospace> if you need
+  more details), The function takes the following arguments:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><monospace>x</monospace> : vector of parameters. the order
+      needs to be the same as in
+      <monospace>evalpheno::eval_phenoflex_single_twofixed</monospace>
+      (yc, zc, s1, Tu, theta_c, pie_c, tau, Tf, Tb, slope). The
+      cultivar-specific parameters yc, zc and s1 are repeated for the
+      number of cultivars. For example in the case of two cultivars
+      <monospace>x</monospace> would have the following structure:
+      <monospace>c(yc_cultivar1, yc_cultivar2, zc_cultivar1, zc_cultivar2, s1_cultivar1, s1_cultivar2, Tu, theta_c, pie_c, tau, Tf, Tb, slope)</monospace></p>
+    </list-item>
+    <list-item>
+      <p><monospace>modelfn</monospace> : function that gets called by
+      the evaluation function. This function returns the actual
+      bloomdate. Normally we used
+      <monospace>evalpheno::custom_PhenoFlex_GDHwrapper</monospace></p>
+    </list-item>
+    <list-item>
+      <p><monospace>bloomJDays</monospace> : list of phenology
+      observation. Order of list element should correspond to the order
+      of the cultivars. Each element contains phenology observation in
+      format of Julian Days.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>SeasonList</monospace> : list of seasonlists. Each
+      element is a seperate seasonlist for the cultivars. Order of
+      elements of <monospace>SeasonList</monospace> should correspond to
+      the same order of cultivars in the
+      <monospace>bloomJDays</monospace> list. Order within each seperate
+      seasonlist should correspond to the order of the phenology
+      observations.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>ncult</monospace> : number of cultivars that we
+      calibrate. Should be consistent with the repeated parameters in
+      <monospace>x</monospace> and with the number of list elements in
+      <monospace>SeasonList</monospace> and
+      <monospace>bloomJDays</monospace></p>
+    </list-item>
+    <list-item>
+      <p><monospace>Tc</monospace> the function expexts that parameter
+      Tc is kept constant. If you don’t want that, you can modify the
+      <monospace>eval_phenoflex_combined</monospace> function</p>
+    </list-item>
+    <list-item>
+      <p><monospace>theta_star</monospace>: the function expects that
+      parameter theta_star is kept constant</p>
+    </list-item>
+    <list-item>
+      <p><monospace>return_pred</monospace>: depricated. By default the
+      function returns the performance score to the optimizier, but it
+      could also return the bloom days.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>na_penalty</monospace> : value that replaces the
+      <monospace>NA</monospace> that may be returned if a parameter set
+      failed to return a bloom date for a specific seasonlist.</p>
+    </list-item>
+  </list>
+  <sec specific-use="notebook-content">
+  <code language="r script">
+n_cult &lt;- almond_master$cultivar %&gt;%
+  unique() %&gt;%
+  length()
+
+#took values of ferragnes repetition 1 from adamedor as starting point
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 &lt;- c(rep(21.3952307,n_cult),   rep(404.5477002,n_cult),   rep(0.8639453,n_cult),  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U &lt;- c(rep(35,n_cult),   rep(700,n_cult),   rep(1.2,n_cult),  30,        287,       48,             50,       10,   10,    5.00)
+x_L &lt;- c(rep(5,n_cult),    rep(100,n_cult),   rep(0.1,n_cult),  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+
+evalfun &lt;- evalpheno::eval_phenoflex_combined
+
+problem&lt;-list(f=&quot;evalfun&quot;,
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts&lt;-list(maxeval = 50000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+
+Tc &lt;- 36
+theta_star &lt;- 279
+fname &lt;- &quot;data/par_almond.csv&quot;
+
+
+#for(i in unique(training_df$r)){
+for(ncali in unique(almond_master$ncal)){
+  
+}
+for(i in 1:max(almond_master$r)){
+
+  print(i)
+  
+  if(file.exists(fname)){
+    res &lt;- read.csv(fname)
+    if(any(res$repetition == i &amp; res$n_cal == ncali)) next()
+  }
+
+  #--------------------------------#
+  #prepare bloomday and seasonlist
+  #--------------------------------#
+
+  #i &lt;- 1
+  sub &lt;- almond_master %&gt;%
+    filter(r == i, ncal == ncali, split == 'Calibration') %&gt;%
+    mutate(loc.year = paste(location, year, sep = '.'))
+
+  bloomlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(yday)
+  })
+
+  seasonlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(loc.year) %&gt;%
+      seasonlist[.]
+  })
+  
+  locs &lt;- purrr::map_chr(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      slice(1) %&gt;% 
+      pull(location)
+  })
+
+
+
+  #-----------------------------------------------#
+  #run optimizer
+  #-----------------------------------------------#
+
+
+  set.seed(123456789)
+
+  res_list &lt;- custom_essr(problem = problem,
+                          opts,
+                          modelfn = custom_PhenoFlex_GDHwrapper,
+                          bloomJDays = bloomlist_train,
+                          SeasonList = seasonlist_train,
+                          ncult = n_cult)
+
+  #save outcome in a table, append the table
+  data.frame(repetition = i,
+             cultivar = unique(sub$cultivar),
+             location = locs,
+             yc = res_list$xbest[1:n_cult],
+             zc = res_list$xbest[(n_cult+1):(n_cult*2)],
+             s1 = res_list$xbest[(n_cult*2+1):(n_cult*3)],
+             Tu =  res_list$xbest[n_cult*3+1],
+             theta_star =  theta_star,
+             theta_c =  res_list$xbest[n_cult*3+2],
+             tau =  res_list$xbest[n_cult*3+3],
+             pie_c =  res_list$xbest[n_cult*3+4],
+             Tf =  res_list$xbest[n_cult*3+5],
+             Tc = Tc,
+             Tb =  res_list$xbest[n_cult*3+6],
+             slope =  res_list$xbest[n_cult*3+7],
+             fit = 'combined',
+             n_cal = 'scarce') %&gt;%
+    write.table(file = fname,
+                append = TRUE,
+                row.names = FALSE,
+                sep = ',',
+                col.names=!file.exists(fname))
+}
+  </code>
+  </sec>
+</sec>
+<sec id="baseline-model-nb-2">
+  <title>Baseline model</title>
+  <p>Lastly the baseline model will be calibrated. Here we use the
+  default parameterization of the Dynamic Model and the Growing Degree
+  Hours model.</p>
+  <p>For that purpose we use the
+  <monospace>evalpheno::eval_phenoflex_onlyreq</monospace> function.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#| 
+evalfun &lt;- evalpheno::eval_phenoflex_onlyreq
+
+for(ncali in unique(almond_master$ncal)){
+  
+for(c.l in  unique(almond_master$cult_loc)){
+  print(c.l)
+  
+  #c.l &lt;- unique(training_df$cult_loc)[1]
+    
+    #skip the calibration if there is already an entry in the table
+    for(i in 1:max(almond_master$r)){
+      
+      #i&lt;- 1
+      
+      sub &lt;- almond_master %&gt;%
+        filter(r == i, cult_loc == c.l, ncal == ncali,
+               split == 'Calibration') %&gt;%
+        arrange(year) %&gt;%
+        mutate(loc.year = paste(location, year, sep ='.'))
+      
+      cult &lt;- c.l %&gt;% strsplit('-') %&gt;%
+        purrr::pluck(1) %&gt;%
+        purrr::pluck(1)
+      
+      loc &lt;- c.l %&gt;% strsplit('-') %&gt;%
+        purrr::pluck(1) %&gt;%
+        purrr::pluck(2)
+      
+      if(file.exists(fname)){
+        res &lt;- read.csv(fname)
+        
+        if(any(res$repetition == i &amp; res$cultivar == cult &amp; res$location == loc &amp; res$n_cal == 'scarce')) next()
+      }
+    
+    
+    
+    #realized that the default values of PhenoFlex paper are not default values of dynamic model
+    #taken from phenoflex function
+    #mistake in the E0 parameter
+    #par_fixed &lt;- c(25, 3372.8, 9900.3, 6319.5, 5.939917e+13, 4,36, 4, 1.6)
+    
+    #use standard parameters of dynamic model by Erez 1990 (and not default in PhenoFlex!!!)
+    #             Tu    E0      E1      A0      A1         Tf  Tc  Tb  slope
+    par_fixed &lt;- c(25, 4153.5, 12888.8, 139500, 2.567e+18, 4,  36, 4,   1.6)
+
+    
+    #took values of ferragnes repetition 1 from adamedor as starting point
+    x_0 &lt;- c(21.3952307, 404.5477002, 0.8639453)
+    x_U &lt;- c(50, 700, 1.2)
+    x_L &lt;- c(5, 100, 0.1)
+    
+    #limits for the inequality constraints
+    #         #gdh parameters   #q10 for E0 and E1
+    #default parameters of dynamic model violate the q10 assumption, so just set large tolerance range
+    c_L &lt;- c(  0,   0,   0,     0, 0)
+    c_U &lt;- c(Inf, Inf, Inf,     Inf, Inf)
+    
+    problem&lt;-list(f=&quot;evalfun&quot;,
+                  x_0 = x_0,
+                  x_L = x_L,
+                  x_U = x_U,
+                  c_L = c_L,
+                  c_U = c_U)
+    
+    #change iterations
+    #you can control the maximum time of running or max number of iterations
+    #options for fitter
+    opts&lt;-list(maxeval = 5000,
+               #maxtime = 60 * 30,
+               local_solver = 'DHC',
+               local_bestx = 1,
+               inter_save = 0,
+               plot = 1)
+    
+    set.seed(123456789)
+    
+    res_list &lt;- LarsChill::custom_essr(problem = problem,
+                            opts,
+                            modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                            bloomJDays = sub$yday,
+                            SeasonList = seasonlist[sub$loc.year],
+                            par_fixed = par_fixed)
+    
+    #save outcome in a table, append the table
+    data.frame(repetition = i,
+               cultivar = unique(sub$cultivar),
+               location = locs,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  res_list$xbest[4],
+               theta_star =  theta_star,
+               theta_c =  res_list$xbest[5],
+               tau =  res_list$xbest[6],
+               pie_c =  res_list$xbest[7],
+               Tf =  res_list$xbest[8],
+               Tc = Tc,
+               Tb =  res_list$xbest[9],
+               slope =  res_list$xbest[10],
+               fit = 'combined',
+               n_cal = ncali) %&gt;%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    }
+  }
+}
+  </code>
+  </sec>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+<sub-article article-type="notebook" id="nb-12-nb-3">
+<front-stub>
+<title-group>
+<article-title>Calibrate Apricot</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<p>The structure is similar to the calibration of almonds.</p>
+<sec specific-use="notebook-content">
+<code language="r script">library(chillR)
+library(LarsChill)
+library(evalpheno)
+library(tidyverse)
+
+#prepare temperature data
+zaragoza &lt;- read.csv('data/zaragoza_clean.csv') %&gt;%
+  chillR::stack_hourly_temps(latitude = 41.65) %&gt;%
+  purrr::pluck('hourtemps') %&gt;%
+  chillR::genSeasonList(years = 1974:2022) %&gt;%
+  setNames(paste0('Zaragoza.',1974:2022))
+cieza &lt;- read.csv('data/cieza_clean.csv') %&gt;%
+  chillR::stack_hourly_temps(latitude = 38.24) %&gt;%
+  purrr::pluck('hourtemps') %&gt;%
+  chillR::genSeasonList(years = 1996:2022) %&gt;%
+  setNames(paste0('Cieza.', 1996:2022))
+
+seasonlist &lt;- c(cieza, zaragoza)
+rm(cieza, zaragoza)
+
+apricot_master &lt;- read.csv('data/master_apricot.csv')
+
+
+#par file
+fname &lt;- 'data/par-apricot.csv'
+
+
+
+#-----------------------#
+#combined fitting #
+#-----------------------#
+for(ncali in unique(apricot_master$ncal)){
+  if(file.exists(fname)){
+    res &lt;- read.csv(fname)
+    if(any(res$n_cal == ncali &amp; res$fit == 'combined')) next()
+  }
+  n_cult &lt;- apricot_master$cultivar %&gt;% unique() %&gt;% length()
+  
+  #choose different starting point
+  #         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+  x_0 &lt;- c(rep(21.3952307,n_cult),   rep(404.5477002,n_cult),   rep(0.8639453,n_cult),  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+  x_U &lt;- c(rep(80,n_cult),   rep(700,n_cult),   rep(1.2,n_cult),  30,        287,       48,             50,       10,   10,    5.00)
+  x_L &lt;- c(rep(5,n_cult),    rep(100,n_cult),   rep(0.1,n_cult),  15,        286,       16,             24,        2,    0,    1.2)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+  c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+  
+  problem&lt;-list(f=&quot;eval_phenoflex_combined&quot;,
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts&lt;-list(maxeval = 50000,
+             #maxeval = 1000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc &lt;- 36
+  theta_star &lt;- 279
+  
+  sub &lt;- apricot_master %&gt;% 
+    filter(ncal == ncali) %&gt;% 
+    filter(split == 'Calibration') %&gt;% 
+    mutate(loc.year = paste(location, year, sep ='.'))
+  
+  bloomlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(yday)
+  })
+  
+  
+  seasonlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(loc.year) %&gt;%
+      seasonlist[.]
+  })
+  
+  set.seed(123456789)
+  
+  res_list &lt;- LarsChill::custom_essr(problem = problem,
+                                     opts,
+                                     modelfn = custom_PhenoFlex_GDHwrapper,
+                                     bloomJDays = bloomlist_train,
+                                     SeasonList = seasonlist_train,
+                                     ncult = n_cult)
+  
+  location &lt;- c()
+  for(cult in unique(sub$cultivar)){
+    l &lt;-   sub %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      pull(location) %&gt;% 
+      unique()
+    location &lt;- c(location,l)
+  }
+  
+  
+  #save outcome in a table, append the table
+  data.frame(cultivar = unique(sub$cultivar),
+             location = location,
+             yc = res_list$xbest[1:n_cult],
+             zc = res_list$xbest[(n_cult+1):(n_cult*2)],
+             s1 = res_list$xbest[(n_cult*2+1):(n_cult*3)],
+             Tu =  res_list$xbest[n_cult*3+1],
+             theta_star =  theta_star,
+             theta_c =  res_list$xbest[n_cult*3+2],
+             tau =  res_list$xbest[n_cult*3+3],
+             pie_c =  res_list$xbest[n_cult*3+4],
+             Tf =  res_list$xbest[n_cult*3+5],
+             Tc = Tc,
+             Tb =  res_list$xbest[n_cult*3+6],
+             slope =  res_list$xbest[n_cult*3+7],
+             E0 = NA,
+             E1 = NA,
+             A0 = NA,
+             A1 = NA,
+             fit = 'combined',
+             n_cal = ncali) %&gt;%
+    write.table(file = fname,
+                append = TRUE,
+                row.names = FALSE,
+                sep = ',',
+                col.names=!file.exists(fname))
+}
+
+
+#--------------------#
+#single fitting #
+#--------------------#
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 &lt;- c(21.3952307,   404.5477002,   0.8639453,  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U &lt;- c(80,  700,   1.2,  30,        287,       48,             50,       10,   10,    5.00)
+x_L &lt;- c(5,   100,   0.1,  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+
+evalfun &lt;- evalpheno::eval_phenoflex_single_twofixed
+
+problem&lt;-list(f=&quot;evalfun&quot;,
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts&lt;-list(maxeval = 30000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+Tc &lt;- 36
+theta_star &lt;- 279
+
+# cult &lt;- unique(pheno_master$cultivar)[1]
+# ncal_i &lt;- c('full', 'scarce')[1]
+# i &lt;- unique(apricot_master$repetition)[1]
+for(ncali in unique(apricot_master$ncal)){
+  
+  for(cult in unique(apricot_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res &lt;- read.csv(fname)
+      if(any(res$n_cal == ncali &amp; 
+             res$cultivar == cult &amp;
+             res$fit == 'single')) next()
+    }
+    
+    
+    sub &lt;- apricot_master %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      filter(ncal == ncali) %&gt;% 
+      filter(split == 'Calibration') %&gt;% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc &lt;- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list &lt;- custom_essr(problem = problem,
+                            opts,
+                            modelfn = custom_PhenoFlex_GDHwrapper,
+                            bloomJDays = sub$yday,
+                            SeasonList = seasonlist[as.character(sub$loc.year)],
+                            Tc = Tc,
+                            theta_star = theta_star)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  res_list$xbest[4],
+               theta_star =  theta_star,
+               theta_c =  res_list$xbest[5],
+               tau =  res_list$xbest[6],
+               pie_c =  res_list$xbest[7],
+               Tf =  res_list$xbest[8],
+               Tc =  Tc,
+               Tb =  res_list$xbest[9],
+               slope =  res_list$xbest[10],
+               E0 = NA,
+               E1 = NA,
+               A0 = NA,
+               A1 = NA,
+               fit = 'single',
+               n_cal = ncali) %&gt;%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+  }
+}
+
+
+
+#--------------------#
+#baseline fitting #
+#--------------------#
+
+for(ncali in unique(apricot_master$ncal)){
+  
+  
+  #calibrate baseline (with dynamic model paraemters)
+  par_names &lt;- c( 'yc', 'zc', 's1', 'Tu', 'theta_star', 'theta_c', 'tau', 'pie_c', 'Tf', 'Tc', 'Tb', 'slope')
+  par_names_old &lt;- par_names
+  par_names_old[5:8] &lt;- c('E0', 'E1', 'A0', 'A1')
+  
+  evalfun &lt;- evalpheno::eval_phenoflex_onlyreq
+  
+  #             Tu    E0      E1      A0      A1         Tf  Tc  Tb  slope
+  par_fixed &lt;- c(25, 4153.5, 12888.8, 139500, 2.567e+18, 4,  36, 4,   1.6)
+  
+  
+  #took values of ferragnes repetition 1 from adamedor as starting point
+  x_0 &lt;- c(21.3952307, 404.5477002, 0.8639453)
+  x_U &lt;- c(80, 700, 1.2)
+  x_L &lt;- c(5, 100, 0.1)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L &lt;- c(  0,   0,   0,     0, 0)
+  c_U &lt;- c(Inf, Inf, Inf,     Inf, Inf)
+  
+  problem&lt;-list(f=&quot;evalfun&quot;,
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts&lt;-list(maxeval = 5000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc &lt;- 36
+  theta_star &lt;- 279
+  
+  # cult &lt;- unique(apricot_master$cultivar)[1]
+  # ncal_i &lt;- c('full', 'scarce')[1]
+  # i &lt;- unique(apricot_master$repetition)[1]
+  
+  for(cult in unique(apricot_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res &lt;- read.csv(fname)
+      if(any(res$n_cal == ncali &amp; 
+             res$cultivar == cult &amp;
+             res$fit == 'baseline')) next()
+    }
+    
+    
+    sub &lt;- apricot_master %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      filter(ncal == ncali) %&gt;% 
+      filter(split == 'Calibration') %&gt;% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc &lt;- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list &lt;- LarsChill::custom_essr(problem = problem,
+                                       opts,
+                                       modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                                       bloomJDays = sub$yday,
+                                       SeasonList = seasonlist[as.character(sub$loc.year)],
+                                       par_fixed = par_fixed)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  par_fixed[1],
+               theta_star =  NA,
+               theta_c =  NA,
+               tau =  NA,
+               pie_c =  NA,
+               Tf =  par_fixed[6],
+               Tc = par_fixed[7],
+               Tb =  par_fixed[8],
+               slope =  par_fixed[9],
+               E0 = par_fixed[2],
+               E1 = par_fixed[3],
+               A0 = par_fixed[4],
+               A1 = par_fixed[5],
+               fit = 'baseline',
+               n_cal = ncali) %&gt;%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+    
+  }
+}
+</code>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+<sub-article article-type="notebook" id="nb-16-nb-4">
+<front-stub>
+<title-group>
+<article-title>Calibrate Sweet Cherry</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<p>Same structure as in almonds and apricot. Please refer to the
+notebook for the calibration of almonds for more details.</p>
+<sec specific-use="notebook-content">
+<code language="r script">
+library(chillR)
+library(LarsChill)
+library(evalpheno)
+library(tidyverse)
+
+
+cherry_master &lt;- read.csv('data/master_cherry.csv')
+
+#prepare temperature data
+zaragoza &lt;- read.csv('data/zaragoza_clean.csv') %&gt;%
+  chillR::stack_hourly_temps(latitude = 41.65) %&gt;%
+  purrr::pluck('hourtemps') %&gt;%
+  chillR::genSeasonList(years = 1974:2022) %&gt;%
+  setNames(paste0('Zaragoza.',1974:2022))
+cka &lt;- read.csv('data/cka_clean.csv') %&gt;%
+  chillR::stack_hourly_temps(latitude = 50.61) %&gt;%
+  purrr::pluck('hourtemps') %&gt;%
+  chillR::genSeasonList(years = 1959:2022) %&gt;%
+  setNames(paste0('Klein-Altendorf.', 1959:2022))
+
+seasonlist &lt;- c(cka, zaragoza)
+rm(cka, zaragoza)
+
+
+#par file
+fname &lt;- 'data/par-cherry.csv'
+
+
+
+#-----------------------#
+#combined fitting #
+#-----------------------#
+for(ncali in unique(cherry_master$ncal)){
+  if(file.exists(fname)){
+    res &lt;- read.csv(fname)
+    if(any(res$ncal == ncali)) next()
+  }
+  n_cult &lt;- cherry_master$cultivar %&gt;% unique() %&gt;% length()
+  
+  #choose different starting point
+  #         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+  x_0 &lt;- c(rep(21.3952307,n_cult),   rep(404.5477002,n_cult),   rep(0.8639453,n_cult),  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+  x_U &lt;- c(rep(80,n_cult),   rep(700,n_cult),   rep(1.2,n_cult),  30,        287,       48,             50,       10,   10,    5.00)
+  x_L &lt;- c(rep(5,n_cult),    rep(100,n_cult),   rep(0.1,n_cult),  15,        286,       16,             24,        2,    0,    1.2)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+  c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+  
+  problem&lt;-list(f=&quot;eval_phenoflex_combined&quot;,
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts&lt;-list(maxeval = 50000,
+             #maxeval = 1000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc &lt;- 36
+  theta_star &lt;- 279
+  
+  sub &lt;- cherry_master %&gt;% 
+    filter(ncal == ncali) %&gt;% 
+    filter(split == 'Calibration') %&gt;% 
+    mutate(loc.year = paste(location, year, sep ='.'))
+  
+  bloomlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(yday)
+  })
+  
+
+  seasonlist_train &lt;- purrr::map(unique(sub$cultivar), function(cult){
+    sub %&gt;%
+      filter(cultivar == cult) %&gt;%
+      pull(loc.year) %&gt;%
+      seasonlist[.]
+  })
+  
+  set.seed(123456789)
+  
+  res_list &lt;- LarsChill::custom_essr(problem = problem,
+                          opts,
+                          modelfn = custom_PhenoFlex_GDHwrapper,
+                          bloomJDays = bloomlist_train,
+                          SeasonList = seasonlist_train,
+                          ncult = n_cult)
+  
+  location &lt;- c()
+  for(cult in unique(sub$cultivar)){
+  l &lt;-   sub %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      pull(location) %&gt;% 
+      unique()
+  location &lt;- c(location,l)
+  }
+
+  
+  #save outcome in a table, append the table
+  data.frame(cultivar = unique(sub$cultivar),
+             location = location,
+             yc = res_list$xbest[1:n_cult],
+             zc = res_list$xbest[(n_cult+1):(n_cult*2)],
+             s1 = res_list$xbest[(n_cult*2+1):(n_cult*3)],
+             Tu =  res_list$xbest[n_cult*3+1],
+             theta_star =  theta_star,
+             theta_c =  res_list$xbest[n_cult*3+2],
+             tau =  res_list$xbest[n_cult*3+3],
+             pie_c =  res_list$xbest[n_cult*3+4],
+             Tf =  res_list$xbest[n_cult*3+5],
+             Tc = Tc,
+             Tb =  res_list$xbest[n_cult*3+6],
+             slope =  res_list$xbest[n_cult*3+7],
+             E0 = NA,
+             E1 = NA,
+             A0 = NA,
+             A1 = NA,
+             fit = 'combined',
+             n_cal = ncali) %&gt;%
+    write.table(file = fname,
+                append = TRUE,
+                row.names = FALSE,
+                sep = ',',
+                col.names=!file.exists(fname))
+}
+
+
+#--------------------#
+#single fitting #
+#--------------------#
+  #         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+  x_0 &lt;- c(21.3952307,   404.5477002,   0.8639453,  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+  x_U &lt;- c(80,  700,   1.2,  30,        287,       48,             50,       10,   10,    5.00)
+  x_L &lt;- c(5,   100,   0.1,  15,        286,       16,             24,        2,    0,    1.2)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L &lt;- c(  0,   0,   0,     1.5, 1.5)
+  c_U &lt;- c(Inf, Inf, Inf,     3.5, 3.5)
+  
+  evalfun &lt;- evalpheno::eval_phenoflex_single_twofixed
+  
+  problem&lt;-list(f=&quot;evalfun&quot;,
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts&lt;-list(maxeval = 30000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  Tc &lt;- 36
+  theta_star &lt;- 279
+  
+  # cult &lt;- unique(pheno_master$cultivar)[1]
+  # ncal_i &lt;- c('full', 'scarce')[1]
+  # i &lt;- unique(apricot_master$repetition)[1]
+for(ncali in unique(cherry_master$ncal)){
+    
+  for(cult in unique(cherry_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res &lt;- read.csv(fname)
+      if(any(res$n_cal == ncali &amp; 
+             res$cultivar == cult &amp;
+             res$fit == 'single')) next()
+    }
+    
+    
+    sub &lt;- cherry_master %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      filter(ncal == ncali) %&gt;% 
+      filter(split == 'Calibration') %&gt;% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc &lt;- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list &lt;- custom_essr(problem = problem,
+                            opts,
+                            modelfn = custom_PhenoFlex_GDHwrapper,
+                            bloomJDays = sub$yday,
+                            SeasonList = seasonlist[as.character(sub$loc.year)],
+                            Tc = Tc,
+                            theta_star = theta_star)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  res_list$xbest[4],
+               theta_star =  theta_star,
+               theta_c =  res_list$xbest[5],
+               tau =  res_list$xbest[6],
+               pie_c =  res_list$xbest[7],
+               Tf =  res_list$xbest[8],
+               Tc =  Tc,
+               Tb =  res_list$xbest[9],
+               slope =  res_list$xbest[10],
+               E0 = NA,
+               E1 = NA,
+               A0 = NA,
+               A1 = NA,
+               fit = 'single',
+               n_cal = ncali) %&gt;%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+  }
+}
+
+
+
+#--------------------#
+#baseline fitting #
+#--------------------#
+
+for(ncali in unique(cherry_master$ncal)){
+  
+
+  #calibrate baseline (with dynamic model paraemters)
+  par_names &lt;- c( 'yc', 'zc', 's1', 'Tu', 'theta_star', 'theta_c', 'tau', 'pie_c', 'Tf', 'Tc', 'Tb', 'slope')
+  par_names_old &lt;- par_names
+  par_names_old[5:8] &lt;- c('E0', 'E1', 'A0', 'A1')
+  
+  evalfun &lt;- evalpheno::eval_phenoflex_onlyreq
+  
+  #             Tu    E0      E1      A0      A1         Tf  Tc  Tb  slope
+  par_fixed &lt;- c(25, 4153.5, 12888.8, 139500, 2.567e+18, 4,  36, 4,   1.6)
+  
+  
+  #took values of ferragnes repetition 1 from adamedor as starting point
+  x_0 &lt;- c(21.3952307, 404.5477002, 0.8639453)
+  x_U &lt;- c(80, 700, 1.2)
+  x_L &lt;- c(5, 100, 0.1)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L &lt;- c(  0,   0,   0,     0, 0)
+  c_U &lt;- c(Inf, Inf, Inf,     Inf, Inf)
+  
+  problem&lt;-list(f=&quot;evalfun&quot;,
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts&lt;-list(maxeval = 5000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc &lt;- 36
+  theta_star &lt;- 279
+  
+  # cult &lt;- unique(apricot_master$cultivar)[1]
+  # ncal_i &lt;- c('full', 'scarce')[1]
+  # i &lt;- unique(apricot_master$repetition)[1]
+  
+  for(cult in unique(cherry_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res &lt;- read.csv(fname)
+      if(any(res$n_cal == ncali &amp; 
+             res$cultivar == cult &amp;
+             res$fit == 'baseline')) next()
+    }
+    
+    
+    sub &lt;- cherry_master %&gt;% 
+      filter(cultivar == cult) %&gt;% 
+      filter(ncal == ncali) %&gt;% 
+      filter(split == 'Calibration') %&gt;% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc &lt;- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list &lt;- LarsChill::custom_essr(problem = problem,
+                                       opts,
+                                       modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                                       bloomJDays = sub$yday,
+                                       SeasonList = seasonlist[as.character(sub$loc.year)],
+                                       par_fixed = par_fixed)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  par_fixed[1],
+               theta_star =  NA,
+               theta_c =  NA,
+               tau =  NA,
+               pie_c =  NA,
+               Tf =  par_fixed[6],
+               Tc = par_fixed[7],
+               Tb =  par_fixed[8],
+               slope =  par_fixed[9],
+               E0 = par_fixed[2],
+               E1 = par_fixed[3],
+               A0 = par_fixed[4],
+               A1 = par_fixed[5],
+               fit = 'baseline',
+               n_cal = ncali) %&gt;%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+
+  }
+}
+</code>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+<sub-article article-type="notebook" id="nb-20-nb-5">
+<front-stub>
+<title-group>
+<article-title>Evaluate parameters</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>Caspersen</surname>
+<given-names>Lars</given-names>
+</name>
+<string-name>Lars Caspersen</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<sec id="aim-nb-5">
+  <title>Aim</title>
+  <p>Read the estimated model parameters and produce figures for the
+  manuscript. Output will be a bunch of figures including prediction vs
+  observation plots. Boxplots summarizing the model performance in terms
+  of RMSE and RPIQ, as well as plots visualizing the chill and heat
+  submodels in form of temperature response curves.</p>
+</sec>
+<sec id="prepare-the-parameters-nb-5">
+  <title>Prepare the parameters</title>
+  <p>For convenience we convert the parameters in the standard format,
+  that PhenoFlex expects. I wrote a little helper function, that
+  automatically checks which sets of parameters need to be converted and
+  which not.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">library(tidyverse)
+  </code>
+  <boxed-text>
+    <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+  </boxed-text>
+  <code language="r script">library(chillR)
+  </code>
+  <boxed-text>
+    <preformat>
+Attaching package: 'chillR'
+
+The following object is masked from 'package:lubridate':
+
+    leap_year</preformat>
+  </boxed-text>
+  <code language="r script">library(LarsChill)
+  </code>
+  <boxed-text>
+    <preformat>Loading required package: magrittr
+
+Attaching package: 'magrittr'
+
+The following object is masked from 'package:purrr':
+
+    set_names
+
+The following object is masked from 'package:tidyr':
+
+    extract</preformat>
+  </boxed-text>
+  <code language="r script">par_all &lt;-read.csv('data/par_all_slim_paper.csv')
+
+par_all$cultivar &lt;- ifelse(par_all$cultivar == 'B\xfalida', yes = 'Bulida',
+                           no = par_all$cultivar)
+  </code>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">library(tidyverse)
+library(chillR)
+library(LarsChill)
+#devtools::install_github('larscaspersen/eval_phenoflex')
+
+
+#helper function that converts the parameters of the intermediate format (theta_star, theta_c, pie_c, tau) to the proper format that phenoflex expects (E0, E1, A0, A1)
+
+
+convert_all_par &lt;- function(par_df){
+  
+  #identify which rows need to be converted
+  conv_i &lt;- which(is.na(par_df$E0) |
+                    is.na(par_df$E1) |
+                    is.na(par_df$A0) |
+                    is.na(par_df$A1)) 
+  
+  if(length(conv_i) == 0) return(par_df)
+  
+  par_df_no_conv &lt;- par_df[-conv_i, ]
+  
+  par_conv &lt;- par_df[conv_i,]
+  
+  par_conv &lt;- purrr::map(1:nrow(par_conv), function(i){
+    par &lt;- par_conv[i, LarsChill::phenoflex_parnames_new] %&gt;% 
+      unlist() %&gt;% 
+      convert_parameters() %&gt;% 
+      unname()
+    
+    return(data.frame(E0 = par[5], E1 = par[6], A0 = par[7], A1 = par[8]))
+  }) %&gt;% 
+    bind_rows()
+  
+  par_df[conv_i,] %&gt;% 
+    select(-E0, -E1, -A0, -A1) %&gt;% 
+    cbind(par_conv) %&gt;% 
+    rbind(par_df_no_conv) %&gt;% 
+    return()
+}
+
+#read model parameters
+par_cherry &lt;- read.csv('data/par-cherry.csv') %&gt;% 
+  mutate(species = 'Sweet Cherry') %&gt;% 
+  convert_all_par()
+
+par_apricot &lt;- read.csv('data/par-apricot.csv') %&gt;% 
+  mutate(species = 'Apricot')%&gt;% 
+  convert_all_par()
+
+par_almond &lt;- read.csv('data/par-almond.csv') %&gt;% 
+  mutate(species = 'Almond')%&gt;%
+  select(-repetition) %&gt;% 
+  convert_all_par()
+
+par_all &lt;- par_almond %&gt;% 
+  rbind(par_apricot) %&gt;% 
+  rbind(par_cherry)
+
+rm(par_almond, par_apricot, par_cherry)
+
+write.csv(par_all, 'data/par_all_slim_paper.csv', row.names = FALSE)
+  </code>
+  </sec>
+</sec>
+<sec id="predict-bloom-dates-for-calibration-and-validation-data-nb-5">
+  <title>Predict bloom dates for calibration and validation data</title>
+  <p>Next task is to prepare the temperature data and predict the bloom
+  dates using the different parameter sets. We also need to read the
+  actual observation data for the comparison later.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#compare the prediction accuracy for the different cultivars and models
+master_apricot &lt;- read.csv('data/master_apricot.csv') %&gt;% 
+  select(species, cultivar, yday, year, split, ncal, location)
+master_cherry &lt;- read.csv('data/master_cherry.csv') %&gt;% 
+  select(species, cultivar, yday, year, split, ncal, location)
+master_almond &lt;- read.csv('data/master_almond.csv') %&gt;% 
+  select(species, cultivar, yday, year, split, ncal, location)
+
+#combine the different master files to one grand data.frame
+master &lt;- master_almond %&gt;% 
+  rbind(master_apricot) %&gt;% 
+  rbind(master_cherry) %&gt;% 
+  mutate(loc.year = paste(location, year, sep = '.'))
+
+rm(master_almond, master_apricot, master_cherry)
+
+#read temperature data
+sfax &lt;- read.csv('data/sfax.csv')
+meknes &lt;- read.csv('data/meknes.csv')
+santomera &lt;- read.csv('data/santomera.csv')
+zaragoza &lt;- read.csv('data/zaragoza_clean.csv')
+cka &lt;- read.csv('data/cka_clean.csv')
+cieza &lt;- read.csv('data/cieza_clean.csv')
+
+weather_list &lt;- list('Meknes' = meknes,
+                     'Santomera' = santomera, 
+                     'Sfax' = sfax,
+                     'Zaragoza' = zaragoza,
+                     'Klein-Altendorf' = cka,
+                     'Cieza' = cieza)
+
+station_list &lt;- read.csv('data/weather_stations.csv', sep = ',', dec = '.')
+
+#generate seasonlist
+seasonlist &lt;- purrr::map2(weather_list, names(weather_list), function(weather, stat){
+  ymin &lt;- min(weather$Year)
+  ymax &lt;- max(weather$Year)
+  
+  weather %&gt;% 
+    chillR::stack_hourly_temps(latitude = station_list$lat[station_list$station == stat]) %&gt;% 
+    purrr::pluck('hourtemps') %&gt;% 
+    chillR::genSeasonList(years = ymin:ymax) %&gt;% 
+    setNames(ymin:ymax) %&gt;% 
+    return()
+}) %&gt;% 
+  unlist(recursive = FALSE)
+
+rm(zaragoza, cieza, cka, meknes, sfax, santomera, station_list, weather_list)
+  </code>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">master$cultivar &lt;- ifelse(master$cultivar == 'B\xfalida', yes = 'Bulida',
+                           no = master$cultivar)
+  </code>
+  </sec>
+  <p>Now we can do the actual bloom prediction. I use the
+  <monospace>purrr::map</monospace> function, which works similar to a
+  loop or lapply, with the extra benefit of being a bit faster and
+  having a convenient loading bar implemented. I iterate over the rows
+  in the parameter data.frame and predict bloom dates for all the
+  seasonlist. That may take a few seconds longer, but I found it more
+  convenient to weed out the preditions that we do not need when merging
+  with observed bloom instead of weeding the unneeded combinations of
+  parameter and seasonlists beforehand.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">
+#predict bloom dates
+pred_out &lt;- purrr::map(1:nrow(par_all), function(i){
+  sub &lt;- master %&gt;% 
+    filter(species == par_all$species[i],
+           cultivar == par_all$cultivar[i],
+           ncal == par_all$n_cal[i])
+  
+
+  pred &lt;- par_all[i, LarsChill::phenoflex_parnames_old] %&gt;% 
+    unlist() %&gt;% 
+    return_predicted_days(modelfn = evalpheno::custom_PhenoFlex_GDHwrapper, SeasonList =   seasonlist[sub$loc.year]) %&gt;% 
+    round(digits = 2) 
+  
+  data.frame(predicted = pred,
+             species = par_all$species[i],
+             cultivar = par_all$cultivar[i],
+             ncal = par_all$n_cal[i],
+             split = sub$split,
+             location = sub$location,
+             year = sub$year,
+             fit = par_all$fit[i],
+             observed = sub$yday) %&gt;% 
+    return()
+}, .progress = TRUE)
+
+pred_out &lt;- do.call(rbind, pred_out)
+
+write.csv(pred_out, file = 'data/predicted-observed.csv', row.names = FALSE)
+  </code>
+  </sec>
+</sec>
+<sec id="plot-rmse-nb-5">
+  <title>Plot RMSE</title>
+  <p>At first, let’s look for effects of the four variables:
+  <monospace>ncal</monospace> (calibration dataset size: scarce or
+  full), <monospace>fit</monospace> (calibration method: single,
+  combined or baseline), <monospace>species</monospace> (almond,
+  apricot, sweet cherry) and <monospace>split</monospace>. (calibration,
+  validation). Initially, I was expecting to see that baseline model and
+  combined fit may outperform the single calibration for scarce data
+  set, because they require less parameters. Also, it was commonly
+  suggested, that 10 observations are not sufficient for the single
+  calibration method. That turned out to be not true.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">pred_out &lt;- read.csv('data/predicted-observed.csv')
+
+perf &lt;- pred_out %&gt;% 
+  group_by(species, cultivar, fit, split, ncal) %&gt;% 
+  summarise(rmse = chillR::RMSEP(predicted, observed))
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'species', 'cultivar', 'fit', 'split'. You
+can override using the `.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">ggplot(perf, aes(x = species, y = rmse)) +
+  geom_boxplot(aes(fill = fit)) +
+  facet_grid(~ncal)
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-6-1.png" />
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">ggplot(perf, aes(x = ncal, y = rmse)) +
+  geom_boxplot(aes(fill = fit)) +
+  facet_grid(~split)
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-7-1.png" />
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">ggplot(perf, aes(x = ncal, y = rmse)) +
+  geom_boxplot(aes(fill = fit)) +
+  facet_grid(species~split)
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-8-1.png" />
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">#emphasize the difference in calibration and validation
+perf %&gt;% 
+  mutate(ncal_plot = factor(ncal, 
+                            levels = c('full', 'scarce'),
+                            labels = c('Full Calibration Dataset', 'Scarce Calibration Dataset')),
+         fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  ggplot(aes(x = ncal_plot, y = rmse)) +
+  geom_boxplot(aes(fill = split)) +
+  facet_grid(species~fit_plot) +
+  ylab('Root Mean Square Error (days)') +
+  xlab('Size of Calibration Dataset') +
+  theme_bw()
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-9-1.png" />
+  </sec>
+  <p>Next, I want to check if the difference in calibration and
+  validation differs a lot. This may be an indicator for overfitting.
+  The single-fit data based on the scarce calibration dataset shows
+  signs of overfitting. But it in the plots above we didn’t see that the
+  validation performance of single-fit data was worse than in the other
+  treatments. Rather, it seems that the calibration performance of
+  single-fit was just better, but that did not translate into better
+  validation performance.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#table for writing 
+test &lt;- perf %&gt;% 
+  group_by(species, ncal, fit, split) %&gt;% 
+  summarise(median = median(rmse) %&gt;% round(digits = 1),
+            sd = sd(rmse) %&gt;% round(digits = 1))
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'species', 'ncal', 'fit'. You can override
+using the `.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">perf %&gt;% 
+  pivot_wider(values_from = rmse, names_from = split) %&gt;% 
+  mutate(diff = Validation - Calibration) %&gt;% 
+  group_by(ncal, fit) %&gt;% 
+  summarise(median = median(diff) %&gt;% round(digits = 1),
+            sd = sd(diff) %&gt;% round(digits = 1))
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'ncal'. You can override using the
+`.groups` argument.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat># A tibble: 6 × 4
+# Groups:   ncal [2]
+  ncal   fit      median    sd
+  &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1 full   baseline   -0.5   2.5
+2 full   combined    0     1.9
+3 full   single      1.8   2.3
+4 scarce baseline    1.5   2.8
+5 scarce combined    0.9   2.7
+6 scarce single      3.2   3.5</preformat>
+  </boxed-text>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">perf %&gt;% 
+  #filter(fit != 'single') %&gt;% 
+  pivot_wider(values_from = rmse, names_from = split) %&gt;% 
+  mutate(diff = Validation - Calibration) %&gt;% 
+  group_by(ncal) %&gt;% 
+  summarise(median = median(diff) %&gt;% round(digits = 1),
+            sd = sd(diff) %&gt;% round(digits = 1))
+  </code>
+  <boxed-text>
+    <preformat># A tibble: 2 × 3
+  ncal   median    sd
+  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+1 full      0.4   2.4
+2 scarce    2.1   3.1</preformat>
+  </boxed-text>
+  </sec>
+  <p>Now let’s make a more refined plot, suitable for publishing.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#emphasize the difference in fit
+p1 &lt;- perf %&gt;% 
+  mutate(ncal_plot = factor(ncal, 
+                            levels = c('full', 'scarce'),
+                            labels = c('Full Calibration Dataset', 'Scarce Calibration Dataset')),
+         fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  ggplot(aes(x = split, y = rmse)) +
+  geom_boxplot(aes(fill = fit_plot)) +
+  facet_grid(species~ncal_plot) +
+  scale_fill_manual(name = 'Calibration Method', values = c(&quot;#009E73&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;)) +
+  ylab('Root Mean Square Error (days)') +
+  xlab('Data Split') +
+  theme_bw()+
+  theme(legend.position = 'bottom') 
+  
+
+p1
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-12-1.png" />
+  <code language="r script"># ggsave(filename = 'figures/submission/fig3.tiff', plot = p1, height = 15, width = 15, units = 'cm', device = 'tiff', dpi = 600)
+# ggsave(filename = 'figures/rmse_slim.jpeg', plot = p1, 
+#        height = 15, width = 15, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <p>I also want to check how much the model performance differed by
+  cultivar.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#check differences in cultivars
+p2 &lt;- perf %&gt;% 
+  mutate(cultivar = recode(cultivar, 
+                           `B\xfalida` = 'Búlida'),
+    ncal_plot = factor(ncal, 
+                            levels = c('full', 'scarce'),
+                            labels = c('Full', 'Scarce')),
+         fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  ggplot(aes(x = cultivar, y = rmse)) +
+  geom_boxplot(aes(fill = fit_plot)) +
+  facet_wrap(species~., scales = 'free_x', ncol = 1, nrow = 3) +
+  scale_fill_manual(name = 'Calibration Method', values = c(&quot;#009E73&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;)) +
+  ylab('Root Mean Square Error (days)') +
+  xlab('Cultivar') +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = 'bottom')
+
+p2
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-13-1.png" />
+  <code language="r script"># ggsave(filename = 'figures/rmse_slim_bycultivar.jpeg',plot = p2,
+#        height = 20, width = 15, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">#emphasize the difference full and scarce
+perf %&gt;% 
+  mutate(ncal_plot = factor(ncal, 
+                            levels = c('full', 'scarce'),
+                            labels = c('Full', 'Scarce')),
+         fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  ggplot(aes(x = split, y = rmse)) +
+  geom_boxplot(aes(fill = ncal_plot)) +
+  facet_grid(species~fit_plot) +
+  ylab('Root Mean Square Error (days)') +
+  xlab('Size of Calibration Dataset') +
+  theme_bw()
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-14-1.png" />
+  </sec>
+</sec>
+<sec id="predicted-vs-observed-nb-5">
+  <title>Predicted vs Observed</title>
+  <p>Next, I want to generate a plot where predicted and observed bloom
+  dates are visualized more explicitly. For that I will need some helper
+  objects that will make plotting easier.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#---------------------------#
+#predicted vs observed plot
+#---------------------------#
+
+start &lt;- floor(min(c(pred_out$observed, pred_out$predicted)))
+end &lt;- ceiling(max(c(pred_out$observed, pred_out$predicted)))
+threshold &lt;- 7
+ribbon_df &lt;- data.frame(mid = start:end) %&gt;% 
+  mutate(lower = mid - threshold,
+         upper = mid + threshold)
+
+pred_out &lt;- pred_out %&gt;% 
+  mutate(ncal_plot = factor(ncal, 
+                            levels = c('full', 'scarce'),
+                            labels = c('Full Calibration Dataset', 'Scarce Calibration Dataset')),
+         fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit')))
+
+iqr_df &lt;- pred_out %&gt;% 
+  group_by(fit, ncal, fit_plot, ncal_plot) %&gt;% 
+  summarise(iqr = IQR(observed))
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'fit', 'ncal', 'fit_plot'. You can override
+using the `.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">text_df &lt;- pred_out %&gt;% 
+  mutate(res = predicted - observed) %&gt;% 
+  group_by(split, fit, ncal, fit_plot, ncal_plot) %&gt;% 
+  summarise(rmse = chillR::RMSEP(predicted, observed) %&gt;%  round(digits = 1),
+            mean_bias = mean(predicted - observed) %&gt;%  round(digits = 1),
+            n = n(),
+            share_large_res = (sum(abs(res) &gt; threshold) / n()) %&gt;%  round(digits = 2)) %&gt;%  
+  ungroup() %&gt;% 
+  merge(iqr_df, by = c('fit', 'ncal', 'fit_plot', 'ncal_plot')) %&gt;% 
+  mutate(rpiq = (iqr / rmse) %&gt;%  round(digits = 1)) %&gt;% 
+  pivot_longer(cols = c('rmse', 'rpiq', 'mean_bias')) %&gt;% 
+  mutate(name.split = paste(name, split, sep= '.')) %&gt;% 
+  select(-name, -split, -share_large_res, -iqr, -n) %&gt;% 
+  pivot_wider(names_from = name.split)
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'split', 'fit', 'ncal', 'fit_plot'. You can
+override using the `.groups` argument.</preformat>
+  </boxed-text>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">p3 &lt;- pred_out %&gt;% 
+  ggplot() +
+  geom_ribbon(data = ribbon_df, aes(x= mid, ymin = lower, ymax = upper), alpha = 0.3) +
+  geom_point(aes(x = observed, y = predicted,
+                 shape = split, col = species, fill = species), size = 2) +
+  geom_abline(slope = 1, intercept = 0, linetype = 'dashed') +
+  geom_text(data = text_df, aes(x = 15, y = 130, 
+                label = paste0('Calibration (Validation)\nRMSE: ',
+                               format(rmse.Calibration, digits = 2),
+                               ' (', format(rmse.Validation, digits = 2), 
+                               # ')\nRPIQ: ',
+                               # format(rpiq.Calibration, digits = 2),
+                               # ' (', format(rpiq.Validation, digits = 2), 
+                               ')\nMean Bias: ',
+                               format(mean_bias.Calibration, digits = 1),
+                               ' (', format(mean_bias.Validation, digits = 1), ')'
+                               )),
+            hjust = 0)+
+  scale_shape_manual(values = c(1, 16),
+                     name = 'Data Split') +
+  scale_color_manual(values = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+                     name = 'Species')+
+  scale_fill_manual(values = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+                    name = 'Species')+
+  scale_x_continuous(breaks = c(1, 32, 60,91, 121, 152), 
+                     labels = c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun')) +
+  scale_y_continuous(breaks = c(1, 32, 60,91, 121, 152), 
+                     labels = c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun')) +
+  facet_grid(ncal_plot~fit_plot) +
+  ylab('Predicted Bloom Date') +
+  xlab('Observed Bloom Date') +
+  theme_bw(base_size = 15)+
+  theme(legend.position = 'bottom')
+
+p3
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-16-1.png" />
+  <code language="r script"># ggsave('figures/submission/fig4.tiff', plot = p3,
+#        height = 20, width = 23, units = 'cm', device = 'tiff', dpi = 600)
+# ggsave('figures/pred_obs_slim.jpeg', plot = p3,
+#        height = 20, width = 23, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <p>Some more summary tables that I may need for reporting.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">test &lt;- pred_out %&gt;% 
+  mutate(res = predicted - observed) %&gt;% 
+  group_by(split, fit, ncal, fit_plot, ncal_plot, species) %&gt;% 
+  summarise(rmse = chillR::RMSEP(predicted, observed) %&gt;%  round(digits = 1),
+            mean_bias = mean(predicted - observed) %&gt;%  round(digits = 1),
+            n = n(),
+            share_large_res = (sum(abs(res) &gt; threshold) / n()) %&gt;%  round(digits = 2),
+            nlarge_res = (sum(abs(res) &gt; threshold)) ) %&gt;%  
+  ungroup()
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'split', 'fit', 'ncal', 'fit_plot',
+'ncal_plot'. You can override using the `.groups` argument.</preformat>
+  </boxed-text>
+  <code language="r script">pred_out %&gt;% 
+  mutate(res = predicted - observed) %&gt;% 
+  group_by(split, fit, ncal, fit_plot, ncal_plot) %&gt;% 
+  summarise(rmse = chillR::RMSEP(predicted, observed) %&gt;%  round(digits = 1),
+            mean_bias = mean(predicted - observed) %&gt;%  round(digits = 1),
+            n = n(),
+            share_large_res = (sum(abs(res) &gt; threshold) / n()) %&gt;%  round(digits = 2)) %&gt;%  
+  ungroup()
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'split', 'fit', 'ncal', 'fit_plot'. You can
+override using the `.groups` argument.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat># A tibble: 12 × 9
+   split    fit   ncal  fit_plot ncal_plot  rmse mean_bias     n share_large_res
+   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;           &lt;dbl&gt;
+ 1 Calibra… base… full  Baselin… Full Cal…   6.5       0.1   385            0.25
+ 2 Calibra… base… scar… Baselin… Scarce C…   5.4      -0.1   210            0.17
+ 3 Calibra… comb… full  Combine… Full Cal…   5.9       0.2   385            0.21
+ 4 Calibra… comb… scar… Combine… Scarce C…   4.5       0     210            0.11
+ 5 Calibra… sing… full  Cultiva… Full Cal…   4.6      -0.2   385            0.12
+ 6 Calibra… sing… scar… Cultiva… Scarce C…   3.6       0     210            0.06
+ 7 Validat… base… full  Baselin… Full Cal…   6.5       0.4   139            0.2 
+ 8 Validat… base… scar… Baselin… Scarce C…   9.1       2.4   314            0.33
+ 9 Validat… comb… full  Combine… Full Cal…   6.6       0.1   139            0.23
+10 Validat… comb… scar… Combine… Scarce C…   7.2       1.5   314            0.25
+11 Validat… sing… full  Cultiva… Full Cal…   6.8       0     139            0.22
+12 Validat… sing… scar… Cultiva… Scarce C…   8.1       1.9   314            0.31</preformat>
+  </boxed-text>
+  </sec>
+</sec>
+<sec id="temperature-response-plots-nb-5">
+  <title>Temperature response plots</title>
+  <p>We did not find stark difference in the prediction performance, but
+  we may inspect the parameters themselves. Temperature response curves
+  are a convenient tool the visualize how the parameters translate into
+  the temperature sensitivity of the submodel.</p>
+  <p>The LarsChill package has some convenience functions for generating
+  he temperature response curves. It has also some functions to
+  visualize them, but we make our own code for that</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">temp &lt;- seq(-5, 40, by = 0.1)
+
+
+#make data.fame with temperature response plots
+response_df &lt;- purrr::map(1:nrow(par_all), function(i){
+  
+  par_all[i, LarsChill::phenoflex_parnames_old] %&gt;% 
+    unlist() %&gt;% 
+    LarsChill::get_temp_response_df(temp_values = temp) %&gt;% 
+    mutate(species = par_all$species[i],
+           cultivar = par_all$cultivar[i],
+           fit = par_all$fit[i],
+           n_cal = par_all$n_cal[i]) %&gt;% 
+    return()
+  
+}, .progress = TRUE) %&gt;% 
+  bind_rows()
+
+write.csv(response_df, file = 'data/response_df.csv', row.names = FALSE)
+  </code>
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">#--------------------------#
+#temperature reaction plots
+#--------------------------#
+
+response_df &lt;- read.csv('data/response_df.csv')
+
+p4 &lt;- response_df %&gt;% 
+  filter(n_cal == 'full') %&gt;% 
+  mutate(Heat_response = Heat_response * 40) %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                    levels = c('baseline', 'single', 'combined'),
+                    labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  pivot_longer(cols = c('Chill_response', 'Heat_response')) %&gt;% 
+  mutate(name_plot = factor(name, 
+                            levels = c('Chill_response', 'Heat_response'),
+                            labels = c('Chill Response', 'Heat Response'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, name_plot, sep = '_')) %&gt;% 
+  ggplot(aes(x = Temperature, y = value, group = id, col = name_plot)) +
+  geom_line(aes(linetype = name_plot), show.legend = FALSE) +
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = &quot;Chill Response&quot;,
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( transform=~./40, name=&quot;Heat Response&quot;)
+  ) +
+  theme_bw(base_size = 15) +
+  scale_color_manual(values = c('#377eb8',  '#e41a1c')) +
+  scale_linetype_manual(values = c('dashed', 'solid')) +
+  facet_grid(species~fit_plot) +
+  theme(
+    # Primary Y-axis (left)
+    axis.text.y.left = element_text(color = '#377eb8'),
+    axis.title.y.left = element_text(color = '#377eb8'),
+    axis.line.y.left = element_line(color = '#377eb8'),
+    
+    # Secondary Y-axis (right)
+    axis.text.y.right = element_text(color = '#e41a1c'),
+    axis.title.y.right = element_text(color = '#e41a1c'),
+    axis.line.y.right = element_line(color = '#e41a1c'),
+      legend.position = 'none'
+    ) 
+p4
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-19-1.png" />
+  <code language="r script"># ggsave('figures/submission/fig5.tiff',plot = p4, height = 20, width = 25, units = 'cm', device = 'tiff', dpi = 600)
+# ggsave('figures/tempresponse_full.jpeg', plot = p4,height = 20, width = 25, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <p>For the sake of completion, I will also generate the temperature
+  response curve of the scarcity dataset and a combine figure were the
+  curves for both treatments are shown.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">p5 &lt;- response_df %&gt;% 
+  filter(n_cal == 'scarce') %&gt;% 
+  mutate(Heat_response = Heat_response * 40) %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  pivot_longer(cols = c('Chill_response', 'Heat_response')) %&gt;% 
+  mutate(name_plot = factor(name, 
+                            levels = c('Chill_response', 'Heat_response'),
+                            labels = c('Chill Response', 'Heat Response'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, name_plot, sep = '_')) %&gt;% 
+  ggplot(aes(x = Temperature, y = value, group = id, col = name_plot)) +
+  geom_line(aes(linetype = name_plot), show.legend = FALSE) +
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = &quot;Chill Response&quot;,
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( transform=~./40, name=&quot;Heat Response&quot;)
+  ) +
+  theme_bw(base_size = 15) +
+  scale_color_manual(values = c('#377eb8',  '#e41a1c')) +
+  scale_linetype_manual(values = c('dashed', 'solid')) +
+  facet_grid(species~fit_plot) +
+  theme(
+    # Primary Y-axis (left)
+    axis.text.y.left = element_text(color = '#377eb8'),
+    axis.title.y.left = element_text(color = '#377eb8'),
+    axis.line.y.left = element_line(color = '#377eb8'),
+    
+    # Secondary Y-axis (right)
+    axis.text.y.right = element_text(color = '#e41a1c'),
+    axis.title.y.right = element_text(color = '#e41a1c'),
+    axis.line.y.right = element_line(color = '#e41a1c'),
+    legend.position = 'none'
+  ) 
+#ggsave('figures/tempresponse_scarce.jpeg', plot = p5,height = 20, width = 25, units = 'cm', device = 'jpeg')
+
+
+p6 &lt;- response_df %&gt;% 
+  mutate(Heat_response = Heat_response * 40) %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  pivot_longer(cols = c('Chill_response', 'Heat_response')) %&gt;% 
+  mutate(name_plot = factor(name, 
+                            levels = c('Chill_response', 'Heat_response'),
+                            labels = c('Chill Response', 'Heat Response'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, name_plot, sep = '_')) %&gt;% 
+  ggplot(aes(x = Temperature, y = value, group = id, col = name_plot)) +
+  geom_line(aes(linetype = name_plot), show.legend = FALSE) +
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = &quot;Chill Response&quot;,
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( transform=~./40, name=&quot;Heat Response&quot;)
+  ) +
+  theme_bw(base_size = 15) +
+  scale_color_manual(values = c('#377eb8',  '#e41a1c')) +
+  scale_linetype_manual(values = c('dashed', 'solid')) +
+  facet_grid(species~fit_plot) +
+  theme(
+    # Primary Y-axis (left)
+    axis.text.y.left = element_text(color = '#377eb8'),
+    axis.title.y.left = element_text(color = '#377eb8'),
+    axis.line.y.left = element_line(color = '#377eb8'),
+    
+    # Secondary Y-axis (right)
+    axis.text.y.right = element_text(color = '#e41a1c'),
+    axis.title.y.right = element_text(color = '#e41a1c'),
+    axis.line.y.right = element_line(color = '#e41a1c'),
+    legend.position = 'none'
+  ) 
+#ggsave('figures/tempresponse_both.jpeg', plot = p6, height = 20, width = 25, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+</sec>
+<sec id="further-evaluations-on-the-model-parameters-nb-5">
+  <title>Further evaluations on the model parameters</title>
+  <p>I decided to also make plots for the cultivar-specific parameters:
+  vc, zc, s1.</p>
+  <p>First, I tried to graph for myself what s1 actually means. The
+  black line is the function representing the share of potential GDH
+  that gets actually accumulated depending on the level of chill
+  accumulation. The idea is, that the more chill is accumulated the more
+  heat can be accumulated. The chill requirement yc (red dashed line)
+  moves the curve left or right. The steepness of the curve is
+  determined by the s1 parameter (blue line). High values of s1 lead to
+  steeper, more step-like transition function. Lower s1 value lead to a
+  more leaning function.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#vizualize also the transition parameters. yc and s1
+get_share_heat &lt;- function(y, yc, s1){
+  sr &lt;- exp(s1 * yc * ((y - yc)/y))
+  return((sr) / (1+sr))
+}
+
+s1 &lt;- 1
+yc &lt;- 40
+y &lt;- 40
+
+
+curve_df &lt;- purrr::map(1:nrow(par_all), function(i){
+  curve &lt;- get_share_heat(0:100, par_all[i,'yc'], par_all[i,'s1'])
+  return(data.frame(y = 0:100,
+                    yc = par_all[i,'yc'],
+                    s1 = par_all[i,'s1'],
+                    share_heat = curve,
+                    species = par_all$species[i],
+                    cultivar = par_all$cultivar[i],
+                    fit = par_all$fit[i],
+                    n_cal = par_all$n_cal[i]))
+  
+}) 
+curve_df &lt;- do.call('rbind', curve_df)
+
+#calculate the yintercept for the line around the infliction point
+vector_length &lt;- 0.5
+step_right &lt;- 1
+
+curve_df %&gt;%    mutate(fit_plot = factor(fit,                             levels = c('baseline', 'single', 'combined'),                            labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;%    mutate(id = paste(species, cultivar, fit, n_cal, sep = '_'),          a = 0.5 - (s1*yc),          x_start = yc-step_right,          x_end = yc+step_right,          y_start = a + s1 *x_start,          y_end = a + s1 * x_end) %&gt;%    mutate(x_vec = x_start - x_end,          y_vec = y_start - y_end,          length = sqrt(x_vec^2 + y_vec^2),          x_einheit = x_vec / length,          y_einheit = y_vec / length,          x_plot_start = yc - (x_einheit*vector_length),          x_plot_end = yc + (x_einheit*vector_length),          y_plot_start = 0.5 - (y_einheit*vector_length),          y_plot_end = 0.5 + (y_einheit * vector_length)) %&gt;%    filter(cultivar == 'Schneiders', fit == 'combined', n_cal == 'full') %&gt;%    ggplot(aes(x = y, y = share_heat, group = id)) +   geom_line(show.legend = FALSE) +   geom_segment(aes(y = 0.5, yend = 0, x = yc, xend = yc), col = 'red',                linetype = 'dashed') +   geom_point(aes(y = 0.5, x = yc), col = 'red',              shape = 4, size = 1) +   geom_segment(aes(y = y_plot_start,                    yend = y_plot_end,                    x = x_plot_start,                    xend = x_plot_end),                col = 'blue') +   theme_bw(base_size = 15) +   ylab('Share of potential heat that gets accumulated') +   ylab('Amount of chill (y) accumulated') 
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-21-1.png" />
+  </sec>
+  <p>First is a plot that depicts how different values in s1 lead to
+  different transition curves.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">curve_df %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, sep = '_'),
+         a = 0.5 - (s1*yc),
+         x_start = yc-step_right,
+         x_end = yc+step_right,
+         y_start = a + s1 *x_start,
+         y_end = a + s1 * x_end) %&gt;% 
+  mutate(x_vec = x_start - x_end,
+         y_vec = y_start - y_end,
+         length = sqrt(x_vec^2 + y_vec^2),
+         x_einheit = x_vec / length,
+         y_einheit = y_vec / length,
+         x_plot_start = yc - (x_einheit*vector_length),
+         x_plot_end = yc + (x_einheit*vector_length),
+         y_plot_start = 0.5 - (y_einheit*vector_length),
+         y_plot_end = 0.5 + (y_einheit * vector_length)) %&gt;% 
+  ggplot(aes(x = y, y = share_heat, group = id)) +
+  geom_line(show.legend = FALSE) +
+  # geom_segment(aes(y = 0.5, yend = 0, x = yc, xend = yc), col = 'red',
+  #              linetype = 'dashed') +
+  # geom_point(aes(y = 0.5, x = yc), col = 'red',
+  #            shape = 4, size = 1) +
+  # geom_segment(aes(y = y_plot_start,
+  #                  yend = y_plot_end,
+  #                  x = x_plot_start,
+  #                  xend = x_plot_end),
+  #              col = 'blue') +
+  theme_bw(base_size = 15) +
+  ylab('Share of potential heat that gets accumulated') +
+  ylab('Amount of chill (y) accumulated') +
+  facet_grid(species~fit_plot)
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-22-1.png" />
+  <code language="r script"># ggsave('figures/vizualize_sigmoidalcurve_s1_yc.jpeg', height = 20, width = 20, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <p>Same plot but with color differentiation among the cultivars.</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">p1 &lt;- curve_df %&gt;% 
+  filter(species == 'Almond') %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, sep = '_')) %&gt;% 
+  ggplot(aes(x = y, y = share_heat, group = id, col = cultivar)) +
+  geom_line(show.legend = FALSE) +
+  theme_bw(base_size = 15) +
+  facet_grid(species~fit_plot) 
+
+p2 &lt;- curve_df %&gt;% 
+  filter(species == 'Apricot') %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, sep = '_')) %&gt;% 
+  ggplot(aes(x = y, y = share_heat, group = id, col = cultivar)) +
+  geom_line(show.legend = FALSE) +
+  theme_bw(base_size = 15) +
+  facet_grid(species~fit_plot) 
+
+p3 &lt;- curve_df %&gt;% 
+  filter(species == 'Sweet Cherry') %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;% 
+  mutate(id = paste(species, cultivar, fit, n_cal, sep = '_')) %&gt;% 
+  ggplot(aes(x = y, y = share_heat, group = id, col = cultivar)) +
+  geom_line(show.legend = FALSE) +
+  theme_bw(base_size = 15) +
+  facet_grid(species~fit_plot) 
+
+library(patchwork)
+p1/p2/p3
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-23-1.png" />
+  </sec>
+  <sec specific-use="notebook-content">
+  <code language="r script">force_label &lt;- data.frame(species_label = factor('Almond',
+                                                 levels = c('Almond', 'Apricot', 'Sweet Cherry'),
+                                                 labels = c('Almond', 'Apricot', 'Sweet~Cherry')),
+                          fit_plot = factor('baseline', 
+                                            levels = c('baseline', 'single', 'combined'),
+                                            labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit')),
+                          name = factor(c('yc', 'zc', 's1'),
+                                        levels = c('yc', 'zc', 's1'),
+                                        labels = c('y[c]', 'z[c]','s[1]')),
+                          value = rep(0,3))
+
+par_all %&gt;% 
+  mutate(fit_plot = factor(fit, 
+                           levels = c('baseline', 'single', 'combined'),
+                           labels = c('Baseline Model', 'Cultivar-Fit', 'Combined-Fit'))) %&gt;%
+  pivot_longer(cols = c('yc', 'zc', 's1')) %&gt;% 
+  mutate(name = factor(name,
+                       levels = c('yc', 'zc', 's1'),
+                       labels = c('y[c]', 'z[c]','s[1]')),
+         species_grid = factor(species,
+                               levels = c('Almond', 'Apricot', 'Sweet Cherry'),
+                               labels = c('Almond', 'Apricot', 'Sweet~Cherry'))) %&gt;% 
+  ggplot(aes(x = fit_plot, y = value, fill = fit_plot)) +
+  geom_boxplot() +
+  geom_point(data = force_label, col = 'white', size = 0.1) +
+  scale_fill_manual(name = 'Calibration Method', values = c(&quot;#009E73&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;)) +
+  facet_grid(name~species_grid, scales ='free_y', labeller = label_parsed) +
+  theme_bw(base_size = 15) +
+  ylab('Estimated Parameter Value') +
+  xlab('Model Calibration Method') +
+  theme(legend.position = 'none')
+  </code>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="05-make-figures_files/figure-jats/unnamed-chunk-24-1.png" />
+  <code language="r script"># ggsave('figures/spread_parameters_slim.jpeg', height = 20, width = 29, units = 'cm', device = 'jpeg')
+  </code>
+  </sec>
+  <p>Summary table for the input data</p>
+  <sec specific-use="notebook-content">
+  <code language="r script">#table for text
+master %&gt;% 
+  filter(ncal == 'full') %&gt;% 
+  group_by(species, location) %&gt;% 
+  summarise(n = n(),
+            start = min(year),
+            end = max(year))
+  </code>
+  <boxed-text>
+    <preformat>`summarise()` has grouped output by 'species'. You can override using the
+`.groups` argument.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat># A tibble: 7 × 5
+# Groups:   species [3]
+  species      location            n start   end
+  &lt;chr&gt;        &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1 Almond       Meknes            117  1974  2014
+2 Almond       Santomera          48  1997  2022
+3 Almond       Sfax               67  1981  2016
+4 Apricot      Cieza              41  2003  2022
+5 Apricot      Zaragoza           86  1999  2022
+6 Sweet Cherry Klein-Altendorf    93  1978  2020
+7 Sweet Cherry Zaragoza           72  1991  2022</preformat>
+  </boxed-text>
+  </sec>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+
+</article>

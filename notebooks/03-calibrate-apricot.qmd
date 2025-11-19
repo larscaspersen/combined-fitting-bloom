@@ -1,0 +1,356 @@
+---
+title: "Calibrate Apricot"
+author: Lars Caspersen
+editor: visual
+---
+
+The structure is similar to the calibration of almonds.
+
+```{r}
+#| eval: false
+library(chillR)
+library(LarsChill)
+library(evalpheno)
+library(tidyverse)
+
+#prepare temperature data
+zaragoza <- read.csv('data/zaragoza_clean.csv') %>%
+  chillR::stack_hourly_temps(latitude = 41.65) %>%
+  purrr::pluck('hourtemps') %>%
+  chillR::genSeasonList(years = 1974:2022) %>%
+  setNames(paste0('Zaragoza.',1974:2022))
+cieza <- read.csv('data/cieza_clean.csv') %>%
+  chillR::stack_hourly_temps(latitude = 38.24) %>%
+  purrr::pluck('hourtemps') %>%
+  chillR::genSeasonList(years = 1996:2022) %>%
+  setNames(paste0('Cieza.', 1996:2022))
+
+seasonlist <- c(cieza, zaragoza)
+rm(cieza, zaragoza)
+
+apricot_master <- read.csv('data/master_apricot.csv')
+
+
+#par file
+fname <- 'data/par-apricot.csv'
+
+
+
+#-----------------------#
+#combined fitting #
+#-----------------------#
+for(ncali in unique(apricot_master$ncal)){
+  if(file.exists(fname)){
+    res <- read.csv(fname)
+    if(any(res$n_cal == ncali & res$fit == 'combined')) next()
+  }
+  n_cult <- apricot_master$cultivar %>% unique() %>% length()
+  
+  #choose different starting point
+  #         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+  x_0 <- c(rep(21.3952307,n_cult),   rep(404.5477002,n_cult),   rep(0.8639453,n_cult),  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+  x_U <- c(rep(80,n_cult),   rep(700,n_cult),   rep(1.2,n_cult),  30,        287,       48,             50,       10,   10,    5.00)
+  x_L <- c(rep(5,n_cult),    rep(100,n_cult),   rep(0.1,n_cult),  15,        286,       16,             24,        2,    0,    1.2)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L <- c(  0,   0,   0,     1.5, 1.5)
+  c_U <- c(Inf, Inf, Inf,     3.5, 3.5)
+  
+  problem<-list(f="eval_phenoflex_combined",
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts<-list(maxeval = 50000,
+             #maxeval = 1000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc <- 36
+  theta_star <- 279
+  
+  sub <- apricot_master %>% 
+    filter(ncal == ncali) %>% 
+    filter(split == 'Calibration') %>% 
+    mutate(loc.year = paste(location, year, sep ='.'))
+  
+  bloomlist_train <- purrr::map(unique(sub$cultivar), function(cult){
+    sub %>%
+      filter(cultivar == cult) %>%
+      pull(yday)
+  })
+  
+  
+  seasonlist_train <- purrr::map(unique(sub$cultivar), function(cult){
+    sub %>%
+      filter(cultivar == cult) %>%
+      pull(loc.year) %>%
+      seasonlist[.]
+  })
+  
+  set.seed(123456789)
+  
+  res_list <- LarsChill::custom_essr(problem = problem,
+                                     opts,
+                                     modelfn = custom_PhenoFlex_GDHwrapper,
+                                     bloomJDays = bloomlist_train,
+                                     SeasonList = seasonlist_train,
+                                     ncult = n_cult)
+  
+  location <- c()
+  for(cult in unique(sub$cultivar)){
+    l <-   sub %>% 
+      filter(cultivar == cult) %>% 
+      pull(location) %>% 
+      unique()
+    location <- c(location,l)
+  }
+  
+  
+  #save outcome in a table, append the table
+  data.frame(cultivar = unique(sub$cultivar),
+             location = location,
+             yc = res_list$xbest[1:n_cult],
+             zc = res_list$xbest[(n_cult+1):(n_cult*2)],
+             s1 = res_list$xbest[(n_cult*2+1):(n_cult*3)],
+             Tu =  res_list$xbest[n_cult*3+1],
+             theta_star =  theta_star,
+             theta_c =  res_list$xbest[n_cult*3+2],
+             tau =  res_list$xbest[n_cult*3+3],
+             pie_c =  res_list$xbest[n_cult*3+4],
+             Tf =  res_list$xbest[n_cult*3+5],
+             Tc = Tc,
+             Tb =  res_list$xbest[n_cult*3+6],
+             slope =  res_list$xbest[n_cult*3+7],
+             E0 = NA,
+             E1 = NA,
+             A0 = NA,
+             A1 = NA,
+             fit = 'combined',
+             n_cal = ncali) %>%
+    write.table(file = fname,
+                append = TRUE,
+                row.names = FALSE,
+                sep = ',',
+                col.names=!file.exists(fname))
+}
+
+
+#--------------------#
+#single fitting #
+#--------------------#
+#         yc                          zc                        s1                    Tu             theta_c   tau               pie_c     Tf    Tb      slope
+x_0 <- c(21.3952307,   404.5477002,   0.8639453,  15.6854627,      286.7333573,     37.6044377,             24.0478411,        7.3577423,    9.2680642,    4.6845785)
+x_U <- c(80,  700,   1.2,  30,        287,       48,             50,       10,   10,    5.00)
+x_L <- c(5,   100,   0.1,  15,        286,       16,             24,        2,    0,    1.2)
+
+#limits for the inequality constraints
+#         #gdh parameters   #q10 for E0 and E1
+c_L <- c(  0,   0,   0,     1.5, 1.5)
+c_U <- c(Inf, Inf, Inf,     3.5, 3.5)
+
+evalfun <- evalpheno::eval_phenoflex_single_twofixed
+
+problem<-list(f="evalfun",
+              x_0 = x_0,
+              x_L = x_L,
+              x_U = x_U,
+              c_L = c_L,
+              c_U = c_U)
+
+
+#you can control the maximum time of running or max number of iterations
+#options for fitter
+opts<-list(maxeval = 30000,
+           #maxtime = 60 * 30,
+           local_solver = 'DHC',
+           local_bestx = 1,
+           inter_save = 0,
+           plot = 1)
+Tc <- 36
+theta_star <- 279
+
+# cult <- unique(pheno_master$cultivar)[1]
+# ncal_i <- c('full', 'scarce')[1]
+# i <- unique(apricot_master$repetition)[1]
+for(ncali in unique(apricot_master$ncal)){
+  
+  for(cult in unique(apricot_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res <- read.csv(fname)
+      if(any(res$n_cal == ncali & 
+             res$cultivar == cult &
+             res$fit == 'single')) next()
+    }
+    
+    
+    sub <- apricot_master %>% 
+      filter(cultivar == cult) %>% 
+      filter(ncal == ncali) %>% 
+      filter(split == 'Calibration') %>% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc <- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list <- custom_essr(problem = problem,
+                            opts,
+                            modelfn = custom_PhenoFlex_GDHwrapper,
+                            bloomJDays = sub$yday,
+                            SeasonList = seasonlist[as.character(sub$loc.year)],
+                            Tc = Tc,
+                            theta_star = theta_star)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  res_list$xbest[4],
+               theta_star =  theta_star,
+               theta_c =  res_list$xbest[5],
+               tau =  res_list$xbest[6],
+               pie_c =  res_list$xbest[7],
+               Tf =  res_list$xbest[8],
+               Tc =  Tc,
+               Tb =  res_list$xbest[9],
+               slope =  res_list$xbest[10],
+               E0 = NA,
+               E1 = NA,
+               A0 = NA,
+               A1 = NA,
+               fit = 'single',
+               n_cal = ncali) %>%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+  }
+}
+
+
+
+#--------------------#
+#baseline fitting #
+#--------------------#
+
+for(ncali in unique(apricot_master$ncal)){
+  
+  
+  #calibrate baseline (with dynamic model paraemters)
+  par_names <- c( 'yc', 'zc', 's1', 'Tu', 'theta_star', 'theta_c', 'tau', 'pie_c', 'Tf', 'Tc', 'Tb', 'slope')
+  par_names_old <- par_names
+  par_names_old[5:8] <- c('E0', 'E1', 'A0', 'A1')
+  
+  evalfun <- evalpheno::eval_phenoflex_onlyreq
+  
+  #             Tu    E0      E1      A0      A1         Tf  Tc  Tb  slope
+  par_fixed <- c(25, 4153.5, 12888.8, 139500, 2.567e+18, 4,  36, 4,   1.6)
+  
+  
+  #took values of ferragnes repetition 1 from adamedor as starting point
+  x_0 <- c(21.3952307, 404.5477002, 0.8639453)
+  x_U <- c(80, 700, 1.2)
+  x_L <- c(5, 100, 0.1)
+  
+  #limits for the inequality constraints
+  #         #gdh parameters   #q10 for E0 and E1
+  c_L <- c(  0,   0,   0,     0, 0)
+  c_U <- c(Inf, Inf, Inf,     Inf, Inf)
+  
+  problem<-list(f="evalfun",
+                x_0 = x_0,
+                x_L = x_L,
+                x_U = x_U,
+                c_L = c_L,
+                c_U = c_U)
+  
+  
+  #you can control the maximum time of running or max number of iterations
+  #options for fitter
+  opts<-list(maxeval = 5000,
+             #maxtime = 60 * 30,
+             local_solver = 'DHC',
+             local_bestx = 1,
+             inter_save = 0,
+             plot = 1)
+  
+  Tc <- 36
+  theta_star <- 279
+  
+  # cult <- unique(apricot_master$cultivar)[1]
+  # ncal_i <- c('full', 'scarce')[1]
+  # i <- unique(apricot_master$repetition)[1]
+  
+  for(cult in unique(apricot_master$cultivar)){
+    
+    if(file.exists(fname)){
+      res <- read.csv(fname)
+      if(any(res$n_cal == ncali & 
+             res$cultivar == cult &
+             res$fit == 'baseline')) next()
+    }
+    
+    
+    sub <- apricot_master %>% 
+      filter(cultivar == cult) %>% 
+      filter(ncal == ncali) %>% 
+      filter(split == 'Calibration') %>% 
+      mutate(loc.year = paste(location, year, sep ='.'))
+    
+    loc <- unique(sub$location)
+    
+    set.seed(123456789)
+    
+    res_list <- LarsChill::custom_essr(problem = problem,
+                                       opts,
+                                       modelfn = evalpheno::custom_PhenoFlex_GDHwrapper,
+                                       bloomJDays = sub$yday,
+                                       SeasonList = seasonlist[as.character(sub$loc.year)],
+                                       par_fixed = par_fixed)
+    
+    #save outcome in a table, append the table
+    data.frame(cultivar = cult,
+               location = loc,
+               yc = res_list$xbest[1],
+               zc = res_list$xbest[2],
+               s1 = res_list$xbest[3],
+               Tu =  par_fixed[1],
+               theta_star =  NA,
+               theta_c =  NA,
+               tau =  NA,
+               pie_c =  NA,
+               Tf =  par_fixed[6],
+               Tc = par_fixed[7],
+               Tb =  par_fixed[8],
+               slope =  par_fixed[9],
+               E0 = par_fixed[2],
+               E1 = par_fixed[3],
+               A0 = par_fixed[4],
+               A1 = par_fixed[5],
+               fit = 'baseline',
+               n_cal = ncali) %>%
+      write.table(file = fname,
+                  append = TRUE,
+                  row.names = FALSE,
+                  sep = ',',
+                  col.names=!file.exists(fname))
+    
+    
+  }
+}
+```

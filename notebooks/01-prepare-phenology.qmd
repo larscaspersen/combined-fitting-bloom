@@ -1,0 +1,269 @@
+---
+title: "Prepare data splits for calibration and validation"
+author: Lars Caspersen
+editor: visual
+---
+
+## Aim
+
+This notebook creates two versions of calibration / validation splits of the bloom observations: a "full" split using a common 75% calibration and 25% validation and a "scarcity" split with only ten observations per cultivar for calibration and the remaining data for validation.
+
+We decided to have three cultivars per location. We only included phenology data from a single location even if there were observations from multiple locations to balance the experiment design.
+
+Prepare the cherry data
+
+```{r}
+library(tidyverse)
+library(lubridate)
+#take three cultivars per location
+cherry <- read.csv('data/combined_phenological_data_adamedor_clean.csv') %>% 
+  filter(species == 'Sweet Cherry') %>% 
+  select(species, cultivar, location, flowering_f50, year) %>% 
+  mutate(yday = lubridate::mdy(flowering_f50) %>% lubridate::yday()) %>% 
+  na.omit()  
+
+
+cherry_summary <- cherry %>% 
+  group_by(cultivar, location) %>% 
+  summarise(n = n(),
+            mean = mean(yday)) %>% 
+  filter(n >= 20)
+
+#also take lapins from zaragoza
+
+#need to take burlat schneiders and regina from klein-altendorf
+#rainier, sam, van from zaragoza
+
+cherry_sub <- cherry %>% 
+  filter(cultivar == 'Burlat' & location == 'Klein-Altendorf' |
+         cultivar == 'Regina' & location == 'Klein-Altendorf' |
+         cultivar == 'Schneiders' & location == 'Klein-Altendorf'|
+         cultivar == 'Rainier' & location == 'Zaragoza' |
+         cultivar == 'Van' & location == 'Zaragoza' |
+         cultivar == 'Sam' & location == 'Zaragoza')
+
+#sample for full and scarcity split
+cherry_master <- data.frame()
+share_full<- 0.75
+n_scarce <- 10
+
+set.seed(12345667)
+for(cult in unique(cherry_sub$cultivar)){
+  sub <- cherry_sub %>% 
+    filter(cultivar == cult)
+  
+  i_cal_full <- sample(1:nrow(sub), size = floor(share_full*nrow(sub)))
+  i_cal_scarce <- sample(i_cal_full, size = 10)
+  
+  cherry_master <- cherry_master %>% 
+    rbind(data.frame(sub[i_cal_full,],
+             split = 'Calibration',
+             ncal = 'full')) %>% 
+    rbind(data.frame(sub[i_cal_scarce,],
+             split = 'Calibration',
+             ncal = 'scarce')) %>% 
+    rbind(data.frame(sub[-i_cal_full,],
+             split = 'Validation',
+             ncal = 'full')) %>% 
+    rbind(data.frame(sub[-i_cal_scarce,],
+             split = 'Validation',
+             ncal = 'scarce'))
+  
+}
+
+write.csv(cherry_master, 'data/master_cherry.csv', row.names = FALSE)
+
+
+```
+
+Prepare the apricot data
+
+```{r}
+
+#take three cultivars per location
+apricot <- read.csv('data/combined_phenological_data_adamedor_clean.csv') %>% 
+  filter(species == 'Apricot') %>% 
+  select(species, cultivar, location, flowering_f50, year) %>% 
+  mutate(yday = lubridate::mdy(flowering_f50) %>% lubridate::yday()) %>% 
+  na.omit()  
+
+#sometimes R makes trouble with accents. So remove it from Bulida
+apricot$cultivar <- ifelse(apricot$cultivar == "B\xfalida",
+                           yes = 'Bulida',
+                           no = apricot$cultivar)
+
+
+apricot_summary <- apricot %>% 
+  group_by(cultivar, location) %>% 
+  summarise(n = n(),
+            mean = mean(yday)) %>% 
+  filter(n >= 20)
+
+#select cultivars
+apricot_sub <- apricot %>% 
+  filter(cultivar == 'Bulida' & location == 'Cieza' |
+           cultivar == 'Dorada' & location == 'Cieza' |
+           cultivar == 'Goldrich' & location == 'Zaragoza'|
+           cultivar == 'Henderson' & location == 'Zaragoza' |
+           cultivar == 'Sunglo' & location == 'Zaragoza' |
+           cultivar == 'Harcot' & location == 'Zaragoza')
+
+#exclude one way too early observation of bulida
+apricot_sub <- apricot_sub %>% 
+  filter(yday > 44)
+
+# ggplot(apricot_sub, aes(x = yday, y = cultivar)) +
+#   geom_point() +
+#   facet_grid(~location)
+
+share_full<- 0.75
+n_scarce <- 10
+
+apricot_master <- data.frame()
+
+set.seed(12345667)
+for(cult in unique(apricot_sub$cultivar)){
+  sub <- apricot_sub %>% 
+    filter(cultivar == cult)
+  
+  i_cal_full <- sample(1:nrow(sub), size = floor(share_full*nrow(sub)))
+  i_cal_scarce <- sample(i_cal_full, size = 10)
+  
+  apricot_master <- apricot_master %>% 
+    rbind(data.frame(sub[i_cal_full,],
+                     split = 'Calibration',
+                     ncal = 'full')) %>% 
+    rbind(data.frame(sub[i_cal_scarce,],
+                     split = 'Calibration',
+                     ncal = 'scarce')) %>% 
+    rbind(data.frame(sub[-i_cal_full,],
+                     split = 'Validation',
+                     ncal = 'full')) %>% 
+    rbind(data.frame(sub[-i_cal_scarce,],
+                     split = 'Validation',
+                     ncal = 'scarce'))
+  
+}
+
+write.csv(apricot_master, 'data/master_apricot.csv', row.names = FALSE)
+```
+
+Prepare the almond data. In almond data I accidentally started first with the scarcity split, but in the end it has the same structure. Calibration data that is part of the scarcity split is also present in the calibration data of the "full split". I decided to keep this structure, so that the splits are reproducible.
+
+```{r}
+
+almond_adamedor <- read.csv('data/combined_phenological_data_adamedor_clean.csv') %>%
+  filter(species == 'Almond') %>% 
+  select(species, cultivar, location, year, flowering_f50) %>%
+  drop_na() %>%
+  mutate(yday = lubridate::mdy(flowering_f50) %>% lubridate::yday())
+
+overview <- almond_adamedor %>%
+  mutate(cult_loc = paste(cultivar, location, sep ='-')) %>%
+  group_by(cult_loc, cultivar, location) %>%
+  summarise(n = n())
+
+#keep it flexible so that I can do cross-validation if I want to
+repetitions <- 1
+sample_size <- 10
+training_df <- data.frame()
+validation_df <- data.frame()
+
+#use all cultivars of meknes, santomera and the
+#cultivars mazzetto (late flowering, good performance),
+#garghzel (early flowering, good performance) and
+#fasciuneddu (normal flowering, inconsistent performance)
+
+# overview %>%
+#   filter(location %in% c('Meknes', 'Santomera')) %>%
+#   filter(n > 10)
+
+#achaak santomera, desmayo santomera, ferragnes meknes, ferragnes santomera, marcona meknes, marcona santomera,
+
+cult_loc_fit <-c('Achaak-Santomera', 'Desmayo-Santomera', 'Marta-Santomera',
+  'Marcona-Meknes', 'Ferragnes-Meknes', 'Tuono-Meknes',
+  'Nonpareil-Sfax', 'Fasciuneddu-Sfax', 'Mazzetto-Sfax')
+
+overview_sub <- overview %>%
+  filter(cult_loc %in% cult_loc_fit)
+
+
+for(l in unique(overview_sub$cult_loc)){
+  #l <- overview_sub$cult_loc[1]
+
+  sub <- almond_adamedor %>%
+    mutate(cult_loc = paste(cultivar, location, sep ='-')) %>%
+    filter(cult_loc == l)
+
+  set.seed(123456789)
+  for(i in 1:repetitions){
+    sample_row <-sample(1:nrow(sub), size = sample_size)
+    sub_sub <- sub[sample_row,] %>%
+      mutate(r  = i)
+    sub_val <- sub[-sample_row,] %>%
+      mutate(r  = i)
+
+    training_df <- rbind(training_df, sub_sub)
+    validation_df <- rbind(validation_df, sub_val)
+  }
+}
+
+#--------------------#
+#"full calibration####
+#--------------------#
+share_train <- 0.75
+
+train_full <- data.frame()
+val_full <- data.frame()
+
+#take some of the validation data and put it in calibration
+for(i in 1:repetitions){
+  for(cult in unique(training_df$cultivar)){
+    #i <- 1
+   # cult <- unique(training_df$cultivar)[2]
+    train_sub <- training_df %>% 
+      filter(r == i,
+             cultivar == cult)
+    
+    val_sub <- validation_df %>% 
+      filter(r == i,
+             cultivar == cult)
+    
+    n_train <- floor((nrow(train_sub) + nrow(val_sub))*share_train)
+    n_val <- nrow(train_sub) + nrow(val_sub) - n_train
+    
+    if(n_train <= nrow(train_sub)){
+      train_full <- rbind(train_full, train_sub)
+      val_full <- rbind(val_full, val_sub)
+    } else {
+      
+      #sample which validation goes to training
+      set.seed(123456789)
+      i_new_train <- sample(x = 1:nrow(val_sub), size = nrow(val_sub) - n_val)
+      train_sub <- train_sub %>% 
+        rbind(val_sub[i_new_train,])
+      train_full <- rbind(train_full, train_sub)
+      val_full <- rbind(val_full, val_sub[-i_new_train,])
+    }
+    
+  }
+}
+
+#bring the datasets together in one master file
+train_full$split <- 'Calibration'
+training_df$split <- 'Calibration'
+validation_df$split <- 'Validation'
+val_full$split <- 'Validation'
+
+train_full$ncal <- 'full'
+training_df$ncal <- 'scarce'
+validation_df$ncal <- 'scarce'
+val_full$ncal <- 'full'
+
+almond_master <- rbind(train_full,
+                       training_df) %>% 
+  rbind(validation_df) %>% 
+  rbind(val_full)
+
+write.csv(almond_master, 'data/master_almond.csv', row.names = FALSE)
+```
