@@ -155,7 +155,7 @@ master$cultivar <- ifelse(master$cultivar == 'B\xfalida', yes = 'Bulida',
 
 ```
 
-Now we can do the actual bloom prediction. I use the `purrr::map` function, which works similar to a loop or lapply, with the extra benefit of being a bit faster and having a convenient loading bar implemented. I iterate over the rows in the parameter data.frame and predict bloom dates for all the seasonlist. That may take a few seconds longer, but I found it more convenient to weed out the preditions that we do not need when merging with observed bloom instead of weeding the unneeded combinations of parameter and seasonlists beforehand.
+Now we can do the actual bloom prediction. I use the `purrr::map` function, which works similar to a `for` loop or `lapply`, with the extra benefit of being a bit faster and having a convenient loading bar implemented. I iterate over the rows in the parameter data.frame and predict bloom dates for all the respective entries in the `seasonlist`.
 
 ```{r}
 #| eval: false
@@ -339,7 +339,7 @@ perf %>%
   theme_bw()
 ```
 
-## Predicted vs Observed 
+## Predicted vs Observed
 
 Next, I want to generate a plot where predicted and observed bloom dates are visualized more explicitly. For that I will need some helper objects that will make plotting easier.
 
@@ -780,9 +780,17 @@ Summary table for the input data
 
 #table for text
 master %>% 
+  mutate(country = case_when(
+    location == 'Meknes' ~ 'Morocco',
+    location == 'Sfax' ~ 'Tunisia',
+    location %in% c('Zaragoza', 'Cieza', 'Santomera') ~ 'Spain',
+    location == 'Klein-Altendorf' ~ 'Germany'
+  )) %>% 
   filter(ncal == 'full') %>% 
-  group_by(species, location) %>% 
-  summarise(n = n(),
-            start = min(year),
-            end = max(year))
+  group_by(species, location, country, cultivar) %>% 
+  summarise(`Year Start` =   min(year),
+            `Year End` =  max(year),
+            n = n()) %>% 
+  knitr::kable()
+
 ```

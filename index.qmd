@@ -1,6 +1,5 @@
 ---
-title: "Supplementary Materials to the Manuscript:
-Combining temperate fruit tree cultivars to fit spring phenology models"
+title: "Supplementary Materials to the Manuscript: Combining temperate fruit tree cultivars to fit spring phenology models"
 authors:
     - name: Lars Caspersen
       orcid: 0009-0000-3057-7327
@@ -49,35 +48,71 @@ number-sections: true
 
 ## Introduction
 
-This document contains supplementary materials for the journal article: *Combining temperate fruit tree cultivar to fit spring phenology models*. It contains some extra tables and files that were not included in the main article. Also, it contains code snippets that help the reader to replicate parts of the analyses.
+This document contains supplementary materials for the journal article: *Combining temperate fruit tree cultivar to fit spring phenology models*. It includes additional tables and files that were not part of the main article, as well as the code to replicate the analyses.
 
-The phenology data that we analyse is part of a long-term phenology dataset [@luedeling_long-term_2024] compiled by the *Adapting Mediterranean Orchards (AdaMedOr)* project. Of the more than 270 cultivars comprised by the dataset, a subset of 110 cultivars has been analyzed with the PhenoFlex framework [@luedeling_phenoflex_2021], available via the R package *chillR* [@luedelingChillRStatisticalMethods2024]. The analysis contains next to model calibration also climate change impact projections on future bloom dates [@caspersen_contrasting_2025].
+The phenology analyzed here are part of a long-term phenology dataset [@luedeling_long-term_2024] compiled within the *Adapting Mediterranean Orchards (AdaMedOr)* project. Of the more than 270 cultivars in the dataset, a subset of 110 cultivars has been analyzed by @caspersen_contrasting_2025 using the PhenoFlex framework [@luedeling_phenoflex_2021], available via the R package *chillR* [@luedelingChillRStatisticalMethods2024]. In addition to model calibration, the analysis includes climate change impact projections on future bloom dates.
 
-More than 50% of the cultivars in the dataset were not analysed, because the bloom observations were deemed too short to be analysed with PhenoFlex. We propose an alternative calibration method called combine-fitting, that reduces the number of model parameters estimated per cultivar and may allow the joined analysis too short for conventional model calibration. We evaluate the method for three temperate fruit and nut trees (almond, apricot, sweet cherry) and compared the results with a baseline model and a common calibration approach where each cultivar is calibrated separately. We perform the analysis for the full dataset and an artificially shortened dataset.
+More than 50% of the cultivars in the dataset were not analyzed because the bloom observations were considered too short for calibration with PhenoFlex. We propose an alternative calibration method, **combine- fitting**, which reduces the number parameters estimated per cultivar and may allow the joint analysis of cultivars of the same fruit tree species. We evaluate combined-fit approach for three temperate fruit and nut species (almond, apricot, sweet cherry) and compare the results with those from a baseline model and from a common calibration approach in which each cultivar is calibrated seperately. We perform the analysis for the full dataset and for an artificially shortened dataset.
 
 Parts of the function that we present in this document are available via the R packages *evalpheno* [@caspersen_evalpheno_2025] and *LarsChill* [@caspersen_larschill_2025]. Both packages are currently available via GitHub.
 
-## Preparing Bloom Data
+## Supplementary Table
+
+```{r}
+#| tbl-cap: "Table S1. Overview on the full bloom dataset for almond, apricot and sweet cherry cultivars"
+
+library(tidyverse)
+
+master <- read.csv('notebooks/data/master_all.csv')
+
+master %>% 
+  mutate(country = case_when(
+    location == 'Meknes' ~ 'Morocco',
+    location == 'Sfax' ~ 'Tunisia',
+    location %in% c('Zaragoza', 'Cieza', 'Santomera') ~ 'Spain',
+    location == 'Klein-Altendorf' ~ 'Germany'
+  )) %>% 
+  mutate(Species = species,
+         Location = location, 
+         Country = country,
+         Cultivar = cultivar) %>% 
+  filter(ncal == 'full') %>% 
+  group_by(Species, Location, Country, Cultivar) %>% 
+  summarise(`Year Start` =   min(year),
+            `Year End` =  max(year),
+            n = n()) %>% 
+  knitr::kable()
+```
+
+## Supplementary Figure
+
+![Figure S1. Root Mean Square Error (RMSE, days) of predicted bloom dates for each species (almond, apricot, sweet cherry) and cultivar (indicated at the x-axis). Boxplot summarizes RMSE for calibration and validation split and for ‘scarce’ and ‘full’ calibration sets. Calibration methods are indicated by color, green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for 'Combined-Fit’.](images/rmse_slim_bycultivar.jpeg)
+
+## Supplementary Code
+
+### Data splitting
 
 This notebook shows the preparation of the phenology data. Performs calibration and validation data splits. Check out the notebook for more details:
 
-[Split data in calibration and validation](notebooks/01-prepare-phenology.qmd)
+[Split data in calibration and validation](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/01-prepare-phenology.html)
 
-## Model Calibration
+### Model Calibration
+
+When calibrating the model, we specified the search space for each model parameter. We substituted the model parameters E~0~, E~1~, A~0~ and A~1~ of the chill submodel with intermediate parameters $\theta^*$ , $\theta_c$ , $\pi_c$ and $\tau$ , following @egea_reducing_2021 and implemented for PhenoFlex by @caspersen2024. Additionally, we restricted parameters, so that the `E10` quotient of the process modeling chill formation and degradation ranges between 1.5 and 3.5, a range said to be realistic in biological systems [@egea_reducing_2021; @luedeling_phenoflex_2021]. During model calibration, the optimization algorithm ran for 5,000 iterations for baseline model; 30,000 evaluations for single-fit; 50,000 evaluations for combined fit. We chose different total number of evaluations for the calibration methods, to account for varying number of model parameters estimated during each individual calibration step. The optimization algorithm estimates model parameters by minimizing the residual sum of squares (RSS) of predicted and observed bloom dates. In a pre-trial we confirmed that by the end of the total number of model evaluations the RSS converged, indicating that the algorithm fails to find parameters providing better model performance.
 
 These three notebooks perform the model calibration. The notebook for almond calibration has also some more comments on the different procedures. The notebooks for apricot and sweet cherry only contain the uncommented code.
 
--   [Almond calibration](notebooks/02-calibrate-almond.qmd)
+-   [Almond calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/02-calibrate-almond.html)
 
--   [Apricot calibration](03-calibrate-apricot.qmd)
+-   [Apricot calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/03-calibrate-apricot.html)
 
--   [Sweet Cherry calibration](04-calibrate-cherry.qmd)
+-   [Sweet Cherry calibration](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/04-calibrate-cherry.html)
 
-## Model Evaluation
+### Model Evaluation
 
 This code shows how the calibrated models are evaluated. This script generates figures and tables for the manuscript.
 
-[Generate figures for the manuscript](notebooks/05-make-figures.qmd)
+[Generate figures for the manuscript](https://larscaspersen.github.io/combined-fitting-bloom/notebooks/05-make-figures.html)
 
 ## References {.unnumbered}
 
