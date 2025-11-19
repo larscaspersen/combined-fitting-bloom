@@ -358,7 +358,7 @@ species.</p>
 </ref-list>
 </back>
 
-<sub-article article-type="notebook" id="nb-4-nb-1">
+<sub-article article-type="notebook" id="nb-2-nb-1">
 <front-stub>
 <title-group>
 <article-title>Prepare data splits for calibration and
@@ -677,7 +677,7 @@ write.csv(almond_master, 'data/master_almond.csv', row.names = FALSE)
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-8-nb-2">
+<sub-article article-type="notebook" id="nb-4-nb-2">
 <front-stub>
 <title-group>
 <article-title>Calibrate Almond</article-title>
@@ -1210,7 +1210,7 @@ for(c.l in  unique(almond_master$cult_loc)){
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-12-nb-3">
+<sub-article article-type="notebook" id="nb-6-nb-3">
 <front-stub>
 <title-group>
 <article-title>Calibrate Apricot</article-title>
@@ -1586,7 +1586,7 @@ for(ncali in unique(apricot_master$ncal)){
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-16-nb-4">
+<sub-article article-type="notebook" id="nb-8-nb-4">
 <front-stub>
 <title-group>
 <article-title>Calibrate Sweet Cherry</article-title>
@@ -1965,7 +1965,7 @@ for(ncali in unique(cherry_master$ncal)){
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-20-nb-5">
+<sub-article article-type="notebook" id="nb-12-nb-5">
 <front-stub>
 <title-group>
 <article-title>Evaluate parameters</article-title>

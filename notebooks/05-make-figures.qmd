@@ -339,7 +339,7 @@ perf %>%
   theme_bw()
 ```
 
-## Predicted vs Observed 
+## Predicted vs Observed
 
 Next, I want to generate a plot where predicted and observed bloom dates are visualized more explicitly. For that I will need some helper objects that will make plotting easier.
 
