@@ -26,6 +26,7 @@ and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
 <article-title>Supplementary Materials to the Manuscript: Combining
 temperate fruit tree cultivars to fit spring phenology
 models</article-title>
+<subtitle>Sumbited to International Journal of Biometeorology</subtitle>
 </title-group>
 
 <contrib-group>
@@ -173,20 +174,19 @@ species.</p>
   replicate the analyses.</p>
   <p>The phenology analyzed here are part of a long-term phenology
   dataset
-  (<xref alt="Luedeling et al. 2024" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling
-  et al. 2024</xref>) compiled within the <italic>Adapting Mediterranean
-  Orchards (AdaMedOr)</italic> project. Of the more than 270 cultivars
-  in the dataset, a subset of 110 cultivars has been analyzed by
-  Caspersen et al.
+  (<xref alt="Luedeling et al., 2024a" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling
+  et al., 2024a</xref>) compiled within the <italic>Adapting
+  Mediterranean Orchards (AdaMedOr)</italic> project. Of the more than
+  270 cultivars in the dataset, a subset of 110 cultivars has been
+  analyzed by Caspersen et al.
   (<xref alt="2025" rid="ref-caspersen_contrasting_2025" ref-type="bibr">2025</xref>)
   using the PhenoFlex framework
-  (<xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
-  et al. 2021</xref>), available via the R package
+  (<xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
+  et al., 2021</xref>), available via the R package
   <italic>chillR</italic>
-  (<xref alt="Luedeling, Caspersen, and Fernandez 2024" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling,
-  Caspersen, and Fernandez 2024</xref>). In addition to model
-  calibration, the analysis includes climate change impact projections
-  on future bloom dates.</p>
+  (<xref alt="Luedeling et al., 2024b" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling
+  et al., 2024b</xref>). In addition to model calibration, the analysis
+  includes climate change impact projections on future bloom dates.</p>
   <p>More than 50% of the cultivars in the dataset were not analyzed
   because the bloom observations were considered too short for
   calibration with PhenoFlex. We propose an alternative calibration
@@ -200,17 +200,17 @@ species.</p>
   and for an artificially shortened dataset.</p>
   <p>Parts of the function that we present in this document are
   available via the R packages <italic>evalpheno</italic>
-  (<xref alt="Caspersen 2025a" rid="ref-caspersen_evalpheno_2025" ref-type="bibr">Caspersen
+  (<xref alt="Caspersen, 2025a" rid="ref-caspersen_evalpheno_2025" ref-type="bibr">Caspersen,
   2025a</xref>) and <italic>LarsChill</italic>
-  (<xref alt="Caspersen 2025b" rid="ref-caspersen_larschill_2025" ref-type="bibr">Caspersen
+  (<xref alt="Caspersen, 2025b" rid="ref-caspersen_larschill_2025" ref-type="bibr">Caspersen,
   2025b</xref>). Both packages are currently available via GitHub.</p>
 </sec>
 <sec id="supplementary-table">
   <title>2 Supplementary Table</title>
   <table-wrap>
     <caption>
-      <p>Table S1. Overview on the full bloom dataset for almond,
-      apricot and sweet cherry cultivars</p>
+      <p>Overview on the full bloom dataset for almond, apricot and
+      sweet cherry cultivars</p>
     </caption>
     <table>
       <colgroup>
@@ -430,12 +430,12 @@ species.</p>
 <sec id="supplementary-figure">
   <title>3 Supplementary Figure</title>
   <fig>
-    <caption><p>Figure S1. Root Mean Square Error (RMSE, days) of
-    predicted bloom dates for each species (almond, apricot, sweet
-    cherry) and cultivar (indicated at the x-axis). Boxplot summarizes
-    RMSE for calibration and validation split and for ‘scarce’ and
-    ‘full’ calibration sets. Calibration methods are indicated by color,
-    green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for
+    <caption><p>Root Mean Square Error (RMSE, days) of predicted bloom
+    dates for each species (almond, apricot, sweet cherry) and cultivar
+    (indicated at the x-axis). Boxplot summarizes RMSE for calibration
+    and validation split and for ‘scarce’ and ‘full’ calibration sets.
+    Calibration methods are indicated by color, green for ‘Baseline
+    Model’, yellow for ‘Cultivar-Fit’ and blue for
     ‘Combined-Fit’.</p></caption>
     <graphic mimetype="image" mime-subtype="jpeg" xlink:href="images/rmse_slim_bycultivar.jpeg" />
   </fig>
@@ -468,19 +468,18 @@ species.</p>
     and <inline-formula><alternatives>
     <tex-math><![CDATA[\tau]]></tex-math>
     <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>τ</mml:mi></mml:math></alternatives></inline-formula>
-    , following Egea, Egea, and Ruiz
+    , following Egea et al.
     (<xref alt="2021" rid="ref-egea_reducing_2021" ref-type="bibr">2021</xref>)
-    and implemented for PhenoFlex by Caspersen, Jarvis-Shean, and
-    Luedeling
+    and implemented for PhenoFlex by Caspersen et al.
     (<xref alt="2024" rid="ref-caspersen2024" ref-type="bibr">2024</xref>).
     Additionally, we restricted parameters, so that the
     <monospace>E10</monospace> quotient of the process modeling chill
     formation and degradation ranges between 1.5 and 3.5, a range said
     to be realistic in biological systems
-    (<xref alt="Egea, Egea, and Ruiz 2021" rid="ref-egea_reducing_2021" ref-type="bibr">Egea,
-    Egea, and Ruiz 2021</xref>;
-    <xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
-    et al. 2021</xref>). During model calibration, the optimization
+    (<xref alt="Egea et al., 2021" rid="ref-egea_reducing_2021" ref-type="bibr">Egea
+    et al., 2021</xref>;
+    <xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
+    et al., 2021</xref>). During model calibration, the optimization
     algorithm ran for 5,000 iterations for baseline model; 30,000
     evaluations for single-fit; 50,000 evaluations for combined fit. We
     chose different total number of evaluations for the calibration
@@ -681,6 +680,7 @@ species.</p>
 <article-title>Supplementary Materials to the Manuscript: Combining
 temperate fruit tree cultivars to fit spring phenology
 models</article-title>
+<subtitle>Sumbited to International Journal of Biometeorology</subtitle>
 </title-group>
 <contrib-group>
 <contrib contrib-type="author" corresp="yes">
@@ -797,20 +797,19 @@ species.</p>
   replicate the analyses.</p>
   <p>The phenology analyzed here are part of a long-term phenology
   dataset
-  (<xref alt="Luedeling et al. 2024" rid="ref-luedeling_long-term_2024-nb-article" ref-type="bibr">Luedeling
-  et al. 2024</xref>) compiled within the <italic>Adapting Mediterranean
-  Orchards (AdaMedOr)</italic> project. Of the more than 270 cultivars
-  in the dataset, a subset of 110 cultivars has been analyzed by
-  Caspersen et al.
+  (<xref alt="Luedeling et al., 2024a" rid="ref-luedeling_long-term_2024-nb-article" ref-type="bibr">Luedeling
+  et al., 2024a</xref>) compiled within the <italic>Adapting
+  Mediterranean Orchards (AdaMedOr)</italic> project. Of the more than
+  270 cultivars in the dataset, a subset of 110 cultivars has been
+  analyzed by Caspersen et al.
   (<xref alt="2025" rid="ref-caspersen_contrasting_2025-nb-article" ref-type="bibr">2025</xref>)
   using the PhenoFlex framework
-  (<xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
-  et al. 2021</xref>), available via the R package
+  (<xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
+  et al., 2021</xref>), available via the R package
   <italic>chillR</italic>
-  (<xref alt="Luedeling, Caspersen, and Fernandez 2024" rid="ref-luedelingChillRStatisticalMethods2024-nb-article" ref-type="bibr">Luedeling,
-  Caspersen, and Fernandez 2024</xref>). In addition to model
-  calibration, the analysis includes climate change impact projections
-  on future bloom dates.</p>
+  (<xref alt="Luedeling et al., 2024b" rid="ref-luedelingChillRStatisticalMethods2024-nb-article" ref-type="bibr">Luedeling
+  et al., 2024b</xref>). In addition to model calibration, the analysis
+  includes climate change impact projections on future bloom dates.</p>
   <p>More than 50% of the cultivars in the dataset were not analyzed
   because the bloom observations were considered too short for
   calibration with PhenoFlex. We propose an alternative calibration
@@ -824,9 +823,9 @@ species.</p>
   and for an artificially shortened dataset.</p>
   <p>Parts of the function that we present in this document are
   available via the R packages <italic>evalpheno</italic>
-  (<xref alt="Caspersen 2025a" rid="ref-caspersen_evalpheno_2025-nb-article" ref-type="bibr">Caspersen
+  (<xref alt="Caspersen, 2025a" rid="ref-caspersen_evalpheno_2025-nb-article" ref-type="bibr">Caspersen,
   2025a</xref>) and <italic>LarsChill</italic>
-  (<xref alt="Caspersen 2025b" rid="ref-caspersen_larschill_2025-nb-article" ref-type="bibr">Caspersen
+  (<xref alt="Caspersen, 2025b" rid="ref-caspersen_larschill_2025-nb-article" ref-type="bibr">Caspersen,
   2025b</xref>). Both packages are currently available via GitHub.</p>
 </sec>
 <sec id="supplementary-table-nb-article">
@@ -870,8 +869,8 @@ override using the `.groups` argument.</preformat>
   </boxed-text>
   <table-wrap>
     <caption>
-      <p>Table S1. Overview on the full bloom dataset for almond,
-      apricot and sweet cherry cultivars</p>
+      <p>Overview on the full bloom dataset for almond, apricot and
+      sweet cherry cultivars</p>
     </caption>
     <table>
       <colgroup>
@@ -1092,12 +1091,12 @@ override using the `.groups` argument.</preformat>
 <sec id="supplementary-figure-nb-article">
   <title>3 Supplementary Figure</title>
   <fig>
-    <caption><p>Figure S1. Root Mean Square Error (RMSE, days) of
-    predicted bloom dates for each species (almond, apricot, sweet
-    cherry) and cultivar (indicated at the x-axis). Boxplot summarizes
-    RMSE for calibration and validation split and for ‘scarce’ and
-    ‘full’ calibration sets. Calibration methods are indicated by color,
-    green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for
+    <caption><p>Root Mean Square Error (RMSE, days) of predicted bloom
+    dates for each species (almond, apricot, sweet cherry) and cultivar
+    (indicated at the x-axis). Boxplot summarizes RMSE for calibration
+    and validation split and for ‘scarce’ and ‘full’ calibration sets.
+    Calibration methods are indicated by color, green for ‘Baseline
+    Model’, yellow for ‘Cultivar-Fit’ and blue for
     ‘Combined-Fit’.</p></caption>
     <graphic mimetype="image" mime-subtype="jpeg" xlink:href="images/rmse_slim_bycultivar.jpeg" />
   </fig>
@@ -1130,19 +1129,18 @@ override using the `.groups` argument.</preformat>
     and <inline-formula><alternatives>
     <tex-math><![CDATA[\tau]]></tex-math>
     <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>τ</mml:mi></mml:math></alternatives></inline-formula>
-    , following Egea, Egea, and Ruiz
+    , following Egea et al.
     (<xref alt="2021" rid="ref-egea_reducing_2021-nb-article" ref-type="bibr">2021</xref>)
-    and implemented for PhenoFlex by Caspersen, Jarvis-Shean, and
-    Luedeling
+    and implemented for PhenoFlex by Caspersen et al.
     (<xref alt="2024" rid="ref-caspersen2024-nb-article" ref-type="bibr">2024</xref>).
     Additionally, we restricted parameters, so that the
     <monospace>E10</monospace> quotient of the process modeling chill
     formation and degradation ranges between 1.5 and 3.5, a range said
     to be realistic in biological systems
-    (<xref alt="Egea, Egea, and Ruiz 2021" rid="ref-egea_reducing_2021-nb-article" ref-type="bibr">Egea,
-    Egea, and Ruiz 2021</xref>;
-    <xref alt="Luedeling et al. 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
-    et al. 2021</xref>). During model calibration, the optimization
+    (<xref alt="Egea et al., 2021" rid="ref-egea_reducing_2021-nb-article" ref-type="bibr">Egea
+    et al., 2021</xref>;
+    <xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
+    et al., 2021</xref>). During model calibration, the optimization
     algorithm ran for 5,000 iterations for baseline model; 30,000
     evaluations for single-fit; 50,000 evaluations for combined fit. We
     chose different total number of evaluations for the calibration

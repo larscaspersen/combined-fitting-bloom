@@ -1,5 +1,7 @@
 ---
 title: "Supplementary Materials to the Manuscript: Combining temperate fruit tree cultivars to fit spring phenology models"
+subtitle: "Sumbited to International Journal of Biometeorology"
+title-block-style: default
 authors:
     - name: Lars Caspersen
       orcid: 0009-0000-3057-7327
@@ -43,6 +45,7 @@ date: last-modified
 bibliography: references.bib
 citation:
   container-title: International Journal of Biometeorology
+csl: elsevier-harvard-modifed.csl
 number-sections: true
 ---
 
@@ -56,10 +59,12 @@ More than 50% of the cultivars in the dataset were not analyzed because the bloo
 
 Parts of the function that we present in this document are available via the R packages *evalpheno* [@caspersen_evalpheno_2025] and *LarsChill* [@caspersen_larschill_2025]. Both packages are currently available via GitHub.
 
+
 ## Supplementary Table
 
 ```{r}
-#| tbl-cap: "Table S1. Overview on the full bloom dataset for almond, apricot and sweet cherry cultivars"
+#| tbl-cap: "Overview on the full bloom dataset for almond, apricot and sweet cherry cultivars"
+#| tbl_prefix: "Table S"
 
 library(tidyverse)
 
@@ -86,7 +91,7 @@ master %>%
 
 ## Supplementary Figure
 
-![Figure S1. Root Mean Square Error (RMSE, days) of predicted bloom dates for each species (almond, apricot, sweet cherry) and cultivar (indicated at the x-axis). Boxplot summarizes RMSE for calibration and validation split and for ‘scarce’ and ‘full’ calibration sets. Calibration methods are indicated by color, green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for 'Combined-Fit’.](images/rmse_slim_bycultivar.jpeg)
+![Root Mean Square Error (RMSE, days) of predicted bloom dates for each species (almond, apricot, sweet cherry) and cultivar (indicated at the x-axis). Boxplot summarizes RMSE for calibration and validation split and for ‘scarce’ and ‘full’ calibration sets. Calibration methods are indicated by color, green for ‘Baseline Model’, yellow for ‘Cultivar-Fit’ and blue for 'Combined-Fit’.](images/rmse_slim_bycultivar.jpeg)
 
 ## Supplementary Code
 

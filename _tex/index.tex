@@ -247,14 +247,13 @@ models}. It includes additional tables and files that were not part of
 the main article, as well as the code to replicate the analyses.
 
 The phenology analyzed here are part of a long-term phenology dataset
-(Luedeling, Caspersen, Delgado Delgado, et al., 2024) compiled within
-the \emph{Adapting Mediterranean Orchards (AdaMedOr)} project. Of the
-more than 270 cultivars in the dataset, a subset of 110 cultivars has
-been analyzed by Caspersen et al. (2025) using the PhenoFlex framework
-(Luedeling et al., 2021), available via the R package \emph{chillR}
-(Luedeling, Caspersen, \& Fernandez, 2024). In addition to model
-calibration, the analysis includes climate change impact projections on
-future bloom dates.
+(Luedeling et al., 2024a) compiled within the \emph{Adapting
+Mediterranean Orchards (AdaMedOr)} project. Of the more than 270
+cultivars in the dataset, a subset of 110 cultivars has been analyzed by
+Caspersen et al. (2025) using the PhenoFlex framework (Luedeling et al.,
+2021), available via the R package \emph{chillR} (Luedeling et al.,
+2024b). In addition to model calibration, the analysis includes climate
+change impact projections on future bloom dates.
 
 More than 50\% of the cultivars in the dataset were not analyzed because
 the bloom observations were considered too short for calibration with
@@ -282,8 +281,8 @@ the R packages \emph{evalpheno} (Caspersen, 2025a) and \emph{LarsChill}
   >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1528}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1250}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0417}}@{}}
-\caption{Table S1. Overview on the full bloom dataset for almond,
-apricot and sweet cherry cultivars}\tabularnewline
+\caption{Overview on the full bloom dataset for almond, apricot and
+sweet cherry cultivars}\tabularnewline
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Species
@@ -358,12 +357,12 @@ Notebook}}
 
 }
 
-\caption{Figure S1. Root Mean Square Error (RMSE, days) of predicted
-bloom dates for each species (almond, apricot, sweet cherry) and
-cultivar (indicated at the x-axis). Boxplot summarizes RMSE for
-calibration and validation split and for `scarce' and `full' calibration
-sets. Calibration methods are indicated by color, green for `Baseline
-Model', yellow for `Cultivar-Fit' and blue for `Combined-Fit'.}
+\caption{Root Mean Square Error (RMSE, days) of predicted bloom dates
+for each species (almond, apricot, sweet cherry) and cultivar (indicated
+at the x-axis). Boxplot summarizes RMSE for calibration and validation
+split and for `scarce' and `full' calibration sets. Calibration methods
+are indicated by color, green for `Baseline Model', yellow for
+`Cultivar-Fit' and blue for `Combined-Fit'.}
 
 \end{figure}%
 
@@ -433,56 +432,57 @@ figures for the manuscript}
 \vspace{1em}
 
 \bibitem[\citeproctext]{ref-caspersen_evalpheno_2025}
-Caspersen, L. (2025a). Evalpheno: {Wrapper} functions to customize
-calibration of the {PhenoFlex} phenology model. Zenodo. Retrieved from
-\url{https://zenodo.org/doi/10.5281/zenodo.15174551}
+Caspersen, L., 2025a.
+\href{https://zenodo.org/doi/10.5281/zenodo.15174551}{Evalpheno:
+{Wrapper} functions to customize calibration of the {PhenoFlex}
+phenology model}.
 
 \bibitem[\citeproctext]{ref-caspersen_larschill_2025}
-Caspersen, L. (2025b). {LarsChill}: {Supplementary} functions to the
-dormancy and phenology {R}-package {chillR}. Zenodo. Retrieved from
-\url{https://zenodo.org/doi/10.5281/zenodo.15174333}
+Caspersen, L., 2025b.
+\href{https://zenodo.org/doi/10.5281/zenodo.15174333}{{LarsChill}:
+{Supplementary} functions to the dormancy and phenology {R}-package
+{chillR}}.
 
 \bibitem[\citeproctext]{ref-caspersen2024}
-Caspersen, L., Jarvis-Shean, Katherine., \& Luedeling, E. (2024).
-Projecting almond bloom dates in California with the PhenoFlex
-framework. \emph{Acta Horticulturae}, (1406), 455--464.
+Caspersen, L., Jarvis-Shean, Katherine., Luedeling, E., 2024. Projecting
+almond bloom dates in California with the PhenoFlex framework. Acta
+Horticulturae 455--464.
 \url{https://doi.org/10.17660/ActaHortic.2024.1406.64}
 
 \bibitem[\citeproctext]{ref-caspersen_contrasting_2025}
-Caspersen, L., Schiffers, K., Picornell, A., Egea, J. A., Delgado, A.,
-El Yaacoubi, A., et al. (2025). Contrasting {Responses} to {Climate}
-{Change} -- {Predicting} {Bloom} of {Major} {Temperate} {Fruit} {Tree}
-{Species} in the {Mediterranean} {Region} and {Central} {Europe}.
-\emph{Agricultural and Forest Meteorology}, \emph{375}, 110859.
+Caspersen, L., Schiffers, K., Picornell, A., Egea, J.A., Delgado, A., El
+Yaacoubi, A., Benmoussa, H., Rodrigo, J., Fadón, E., Ben Mimoun, M.,
+Ghrab, M., Kodad, O., Ruiz, D., Luedeling, E., 2025. Contrasting
+{Responses} to {Climate} {Change} -- {Predicting} {Bloom} of {Major}
+{Temperate} {Fruit} {Tree} {Species} in the {Mediterranean} {Region} and
+{Central} {Europe}. Agricultural and Forest Meteorology 375, 110859.
 https://doi.org/\url{https://doi.org/10.1016/j.agrformet.2025.110859}
 
 \bibitem[\citeproctext]{ref-egea_reducing_2021}
-Egea, J. A., Egea, J., \& Ruiz, D. (2021). Reducing the uncertainty on
+Egea, J.A., Egea, J., Ruiz, D., 2021. Reducing the uncertainty on
 chilling requirements for endodormancy breaking of temperate fruits by
 data-based parameter estimation of the dynamic model: A test case in
-apricot. \emph{Tree Physiology}, \emph{41}(4), 644--656.
+apricot. Tree Physiology 41, 644--656.
 \url{https://doi.org/10.1093/treephys/tpaa054}
 
-\bibitem[\citeproctext]{ref-luedeling_phenoflex_2021}
-Luedeling, E., Schiffers, K., Fohrmann, T., \& Urbach, C. (2021).
-Phenoflex - an {Integrated} {Model} to {Predict} {Spring} {Phenology} in
-{Temperate} {Fruit} {Trees}. \emph{Agricultural and Forest Meteorology},
-\emph{307}, 108491.
-\url{https://doi.org/10.1016/j.agrformet.2021.108491}
+\bibitem[\citeproctext]{ref-luedeling_long-term_2024}
+Luedeling, E., Caspersen, L., Delgado Delgado, A., Egea, J.A., Ruiz, D.,
+Ben Mimoun, M., Benmoussa, H., Ghrab, M., Kodad, O., El Yaacoubi, A.,
+Fadón, E., Rodrigo, J., 2024a. Long-{Term} {Phenology} {Observations}
+for {Temperate} {Fruit} {Trees} in the {Mediterranean} {Region} (and
+{Germany}): {A} {Dataset} {Compiled} by the {Adamedor} {Project}.
+\url{https://doi.org/10.60507/FK2/MZIELI}
 
 \bibitem[\citeproctext]{ref-luedelingChillRStatisticalMethods2024}
-Luedeling, E., Caspersen, L., \& Fernandez, E. (2024). {chillR}:
-{Statistical} methods for phenology analysis in temperate fruit trees.
-Contributed package for R:
-https://cran.r-project.org/web/packages/chillR/. Retrieved from
-\url{https://cran.r-project.org/web/packages/chillR/index.html}
+Luedeling, E., Caspersen, L., Fernandez, E., 2024b.
+\href{https://cran.r-project.org/web/packages/chillR/index.html}{{chillR}:
+{Statistical} methods for phenology analysis in temperate fruit trees}.
 
-\bibitem[\citeproctext]{ref-luedeling_long-term_2024}
-Luedeling, E., Caspersen, L., Delgado Delgado, A., Egea, J. A., Ruiz,
-D., Ben Mimoun, M., et al. (2024, May). Long-{Term} {Phenology}
-{Observations} for {Temperate} {Fruit} {Trees} in the {Mediterranean}
-{Region} (and {Germany}): {A} {Dataset} {Compiled} by the {Adamedor}
-{Project}. bonndata. \url{https://doi.org/10.60507/FK2/MZIELI}
+\bibitem[\citeproctext]{ref-luedeling_phenoflex_2021}
+Luedeling, E., Schiffers, K., Fohrmann, T., Urbach, C., 2021. Phenoflex
+- an {Integrated} {Model} to {Predict} {Spring} {Phenology} in
+{Temperate} {Fruit} {Trees}. Agricultural and Forest Meteorology 307,
+108491. \url{https://doi.org/10.1016/j.agrformet.2021.108491}
 
 \end{CSLReferences}
 
