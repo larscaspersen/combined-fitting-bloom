@@ -23,7 +23,7 @@ and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
 
 
 <title-group>
-<article-title>Supplementary Materials to the Manuscript: Combining
+<article-title>Supplementary Material to the Manuscript: Combining
 temperate fruit tree cultivars to fit spring phenology
 models</article-title>
 <subtitle>Sumbited to International Journal of Biometeorology</subtitle>
@@ -174,19 +174,20 @@ species.</p>
   replicate the analyses.</p>
   <p>The phenology analyzed here are part of a long-term phenology
   dataset
-  (<xref alt="Luedeling et al., 2024a" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling
-  et al., 2024a</xref>) compiled within the <italic>Adapting
-  Mediterranean Orchards (AdaMedOr)</italic> project. Of the more than
-  270 cultivars in the dataset, a subset of 110 cultivars has been
-  analyzed by Caspersen et al.
+  (<xref alt="Luedeling, Caspersen, Delgado Delgado, et al., 2024" rid="ref-luedeling_long-term_2024" ref-type="bibr">Luedeling,
+  Caspersen, Delgado Delgado, et al., 2024</xref>) compiled within the
+  <italic>Adapting Mediterranean Orchards (AdaMedOr)</italic> project.
+  Of the more than 270 cultivars in the dataset, a subset of 110
+  cultivars has been analyzed by Caspersen et al.
   (<xref alt="2025" rid="ref-caspersen_contrasting_2025" ref-type="bibr">2025</xref>)
   using the PhenoFlex framework
   (<xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021" ref-type="bibr">Luedeling
   et al., 2021</xref>), available via the R package
   <italic>chillR</italic>
-  (<xref alt="Luedeling et al., 2024b" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling
-  et al., 2024b</xref>). In addition to model calibration, the analysis
-  includes climate change impact projections on future bloom dates.</p>
+  (<xref alt="Luedeling, Caspersen, &amp; Fernandez, 2024" rid="ref-luedelingChillRStatisticalMethods2024" ref-type="bibr">Luedeling,
+  Caspersen, &amp; Fernandez, 2024</xref>). In addition to model
+  calibration, the analysis includes climate change impact projections
+  on future bloom dates.</p>
   <p>More than 50% of the cultivars in the dataset were not analyzed
   because the bloom observations were considered too short for
   calibration with PhenoFlex. We propose an alternative calibration
@@ -196,7 +197,7 @@ species.</p>
   approach for three temperate fruit and nut species (almond, apricot,
   sweet cherry) and compare the results with those from a baseline model
   and from a common calibration approach in which each cultivar is
-  calibrated seperately. We perform the analysis for the full dataset
+  calibrated separately. We perform the analysis for the full dataset
   and for an artificially shortened dataset.</p>
   <p>Parts of the function that we present in this document are
   available via the R packages <italic>evalpheno</italic>
@@ -603,7 +604,7 @@ species.</p>
       <date-in-citation content-type="access-date"><year iso-8601-date="2025-03-24">2025</year><month>03</month><day>24</day></date-in-citation>
       <volume>375</volume>
       <uri>https://doi.org/10.1016/j.agrformet.2025.110859</uri>
-      <pub-id pub-id-type="doi">https://doi.org/10.1016/j.agrformet.2025.110859</pub-id>
+      <pub-id pub-id-type="doi">10.1016/j.agrformet.2025.110859</pub-id>
       <fpage>110859</fpage>
       <lpage></lpage>
     </element-citation>
@@ -677,7 +678,7 @@ species.</p>
 <sub-article article-type="notebook" id="nb-14-nb-article">
 <front-stub>
 <title-group>
-<article-title>Supplementary Materials to the Manuscript: Combining
+<article-title>Supplementary Material to the Manuscript: Combining
 temperate fruit tree cultivars to fit spring phenology
 models</article-title>
 <subtitle>Sumbited to International Journal of Biometeorology</subtitle>
@@ -797,19 +798,20 @@ species.</p>
   replicate the analyses.</p>
   <p>The phenology analyzed here are part of a long-term phenology
   dataset
-  (<xref alt="Luedeling et al., 2024a" rid="ref-luedeling_long-term_2024-nb-article" ref-type="bibr">Luedeling
-  et al., 2024a</xref>) compiled within the <italic>Adapting
-  Mediterranean Orchards (AdaMedOr)</italic> project. Of the more than
-  270 cultivars in the dataset, a subset of 110 cultivars has been
-  analyzed by Caspersen et al.
+  (<xref alt="Luedeling, Caspersen, Delgado Delgado, et al., 2024" rid="ref-luedeling_long-term_2024-nb-article" ref-type="bibr">Luedeling,
+  Caspersen, Delgado Delgado, et al., 2024</xref>) compiled within the
+  <italic>Adapting Mediterranean Orchards (AdaMedOr)</italic> project.
+  Of the more than 270 cultivars in the dataset, a subset of 110
+  cultivars has been analyzed by Caspersen et al.
   (<xref alt="2025" rid="ref-caspersen_contrasting_2025-nb-article" ref-type="bibr">2025</xref>)
   using the PhenoFlex framework
   (<xref alt="Luedeling et al., 2021" rid="ref-luedeling_phenoflex_2021-nb-article" ref-type="bibr">Luedeling
   et al., 2021</xref>), available via the R package
   <italic>chillR</italic>
-  (<xref alt="Luedeling et al., 2024b" rid="ref-luedelingChillRStatisticalMethods2024-nb-article" ref-type="bibr">Luedeling
-  et al., 2024b</xref>). In addition to model calibration, the analysis
-  includes climate change impact projections on future bloom dates.</p>
+  (<xref alt="Luedeling, Caspersen, &amp; Fernandez, 2024" rid="ref-luedelingChillRStatisticalMethods2024-nb-article" ref-type="bibr">Luedeling,
+  Caspersen, &amp; Fernandez, 2024</xref>). In addition to model
+  calibration, the analysis includes climate change impact projections
+  on future bloom dates.</p>
   <p>More than 50% of the cultivars in the dataset were not analyzed
   because the bloom observations were considered too short for
   calibration with PhenoFlex. We propose an alternative calibration
@@ -819,7 +821,7 @@ species.</p>
   approach for three temperate fruit and nut species (almond, apricot,
   sweet cherry) and compare the results with those from a baseline model
   and from a common calibration approach in which each cultivar is
-  calibrated seperately. We perform the analysis for the full dataset
+  calibrated separately. We perform the analysis for the full dataset
   and for an artificially shortened dataset.</p>
   <p>Parts of the function that we present in this document are
   available via the R packages <italic>evalpheno</italic>
@@ -1266,7 +1268,7 @@ override using the `.groups` argument.</preformat>
       <date-in-citation content-type="access-date"><year iso-8601-date="2025-03-24">2025</year><month>03</month><day>24</day></date-in-citation>
       <volume>375</volume>
       <uri>https://doi.org/10.1016/j.agrformet.2025.110859</uri>
-      <pub-id pub-id-type="doi">https://doi.org/10.1016/j.agrformet.2025.110859</pub-id>
+      <pub-id pub-id-type="doi">10.1016/j.agrformet.2025.110859</pub-id>
       <fpage>110859</fpage>
       <lpage></lpage>
     </element-citation>

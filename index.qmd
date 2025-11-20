@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Materials to the Manuscript: Combining temperate fruit tree cultivars to fit spring phenology models"
+title: "Supplementary Material to the Manuscript: Combining temperate fruit tree cultivars to fit spring phenology models"
 subtitle: "Sumbited to International Journal of Biometeorology"
 title-block-style: default
 authors:
@@ -45,7 +45,7 @@ date: last-modified
 bibliography: references.bib
 citation:
   container-title: International Journal of Biometeorology
-csl: elsevier-harvard-modifed.csl
+csl: apa.csl
 number-sections: true
 ---
 
@@ -55,7 +55,7 @@ This document contains supplementary materials for the journal article: *Combini
 
 The phenology analyzed here are part of a long-term phenology dataset [@luedeling_long-term_2024] compiled within the *Adapting Mediterranean Orchards (AdaMedOr)* project. Of the more than 270 cultivars in the dataset, a subset of 110 cultivars has been analyzed by @caspersen_contrasting_2025 using the PhenoFlex framework [@luedeling_phenoflex_2021], available via the R package *chillR* [@luedelingChillRStatisticalMethods2024]. In addition to model calibration, the analysis includes climate change impact projections on future bloom dates.
 
-More than 50% of the cultivars in the dataset were not analyzed because the bloom observations were considered too short for calibration with PhenoFlex. We propose an alternative calibration method, **combine- fitting**, which reduces the number parameters estimated per cultivar and may allow the joint analysis of cultivars of the same fruit tree species. We evaluate combined-fit approach for three temperate fruit and nut species (almond, apricot, sweet cherry) and compare the results with those from a baseline model and from a common calibration approach in which each cultivar is calibrated seperately. We perform the analysis for the full dataset and for an artificially shortened dataset.
+More than 50% of the cultivars in the dataset were not analyzed because the bloom observations were considered too short for calibration with PhenoFlex. We propose an alternative calibration method, **combine- fitting**, which reduces the number parameters estimated per cultivar and may allow the joint analysis of cultivars of the same fruit tree species. We evaluate combined-fit approach for three temperate fruit and nut species (almond, apricot, sweet cherry) and compare the results with those from a baseline model and from a common calibration approach in which each cultivar is calibrated separately. We perform the analysis for the full dataset and for an artificially shortened dataset.
 
 Parts of the function that we present in this document are available via the R packages *evalpheno* [@caspersen_evalpheno_2025] and *LarsChill* [@caspersen_larschill_2025]. Both packages are currently available via GitHub.
 
